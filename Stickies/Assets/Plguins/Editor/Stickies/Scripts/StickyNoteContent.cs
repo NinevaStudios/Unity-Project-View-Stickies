@@ -7,6 +7,13 @@ public class StickyNoteContent : PopupWindowContent
     bool toggle2 = true;
     bool toggle3 = true;
 
+    string _guid;
+
+    public StickyNoteContent(string guid)
+    {
+        _guid = guid;
+    }
+
     public override Vector2 GetWindowSize()
     {
         return new Vector2(200, 150);

@@ -36,7 +36,7 @@ namespace DeadMosquito.Stickies
             var path = AssetDatabase.GUIDToAssetPath(guid);
             if (GUI.Button(iconRect, GUIContent.none, GUIStyle.none))
             {
-                PopupWindow.Show(iconRect, new StickyNoteContent());
+                PopupWindow.Show(iconRect, new StickyNoteContent(guid));
             }
         }
 
