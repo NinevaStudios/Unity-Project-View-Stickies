@@ -41,13 +41,13 @@ namespace DeadMosquito.Revealer
             float iconSize = EditorGUIUtility.singleLineHeight;
             var iconRect = new Rect(rect.width + rect.x - iconSize, rect.y, iconSize - Offset, iconSize - Offset);
 
-            GUI.DrawTexture(iconRect, GetTex());
+            //GUI.DrawTexture(iconRect, GetTex());
 
-            var path = AssetDatabase.GUIDToAssetPath(guid);
-            if (GUI.Button(iconRect, GUIContent.none, GUIStyle.none))
-            {
-                EditorUtility.RevealInFinder(path);
-            }
+            //var path = AssetDatabase.GUIDToAssetPath(guid);
+            //if (GUI.Button(iconRect, GUIContent.none, GUIStyle.none))
+            //{
+            //    EditorUtility.RevealInFinder(path);
+            //}
         }
 
         static Texture2D GetTex()
