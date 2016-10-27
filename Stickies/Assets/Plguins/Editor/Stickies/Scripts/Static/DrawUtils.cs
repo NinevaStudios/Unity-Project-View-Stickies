@@ -4,10 +4,44 @@ using UnityEditor;
 
 public static class DrawUtils
 {
-    public static void DrawColorChooser(Vector2 center, float radius, Color fill, Color outline)
+    public static bool DrawColorChooser(Rect rect, Color fill, Color outline)
     {
-        DrawDisc(center, radius, outline);
-        DrawDisc(center, radius - 3f, fill);
+        int controlID = GUIUtility.GetControlID(FocusType.Passive);
+
+        var center = rect.center;
+        var radius = rect.width / 2f;
+
+        switch (Event.current.GetTypeForControl(controlID))
+        {
+            case EventType.Repaint:
+                {
+                    Debug.Log("Repaint");
+                    var outlineColor = rect.HasMouseInside() ? outline : fill;
+                    DrawDisc(center, radius, outlineColor);
+                    DrawDisc(center, radius - 2f, fill);
+                    break;
+                }
+            case EventType.MouseDown:
+                {
+                    if (rect.HasMouseInside()
+                        && Event.current.button == 0
+                        && GUIUtility.hotControl == 0)
+                    {
+                        GUIUtility.hotControl = controlID;
+                    }
+                    break;
+                }
+            case EventType.MouseUp:
+                {
+                    if (GUIUtility.hotControl == controlID && rect.HasMouseInside())
+                    {
+                        return true;
+                    }
+                    break;
+                }
+        }
+
+        return false;
     }
 
     static void DrawDisc(Vector2 center, float radius, Color fill)

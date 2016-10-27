@@ -44,12 +44,11 @@ public class StickyNoteContent : PopupWindowContent
     public override void OnGUI(Rect rect)
     {
         Handles.DrawSolidRectangleWithOutline(rect, Color.yellow, Color.yellow);
-        DrawUtils.DrawColorChooser(rect.center, 32, Colors.YellowHeader, Colors.YellowBg);
-
-        GUILayout.Label("Popup Options Example", EditorStyles.boldLabel);
-        toggle1 = EditorGUILayout.Toggle("Toggle 1", toggle1);
-        toggle2 = EditorGUILayout.Toggle("Toggle 2", toggle2);
-        toggle3 = EditorGUILayout.Toggle("Toggle 3", toggle3);
+        if (DrawUtils.DrawColorChooser(new Rect(15, 15, 32, 32), Colors.YellowHeader, Colors.YellowBg))
+        {
+            Debug.Log("Color click");
+        }
+        editorWindow.Repaint();
     }
 
 //    public void DrawShutterGraph(float angle)
