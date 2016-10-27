@@ -15,7 +15,6 @@ public static class DrawUtils
         {
             case EventType.Repaint:
                 {
-                    Debug.Log("Repaint");
                     var outlineColor = rect.HasMouseInside() ? outline : fill;
                     DrawDisc(center, radius, outlineColor);
                     DrawDisc(center, radius - 2f, fill);

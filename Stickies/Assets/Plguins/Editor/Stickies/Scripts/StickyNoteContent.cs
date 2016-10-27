@@ -48,6 +48,15 @@ public class StickyNoteContent : PopupWindowContent
         {
             Debug.Log("Color click");
         }
+        if (DrawUtils.DrawColorChooser(new Rect(15, 15+32, 32, 32), Colors.YellowHeader, Colors.YellowBg))
+        {
+            Debug.Log("Color click");
+        }
+        if (DrawUtils.DrawColorChooser(new Rect(15, 15+32+32, 32, 32), Colors.YellowHeader, Colors.YellowBg))
+        {
+            Debug.Log("Color click");
+        }
+
         editorWindow.Repaint();
     }
 
