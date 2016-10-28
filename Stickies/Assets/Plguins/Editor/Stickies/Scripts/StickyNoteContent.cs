@@ -25,7 +25,8 @@ public class StickyNoteContent : PopupWindowContent
 
     public override void OnGUI(Rect rect)
     {
-        Handles.DrawSolidRectangleWithOutline(rect, Color.yellow, Color.yellow);
+        Handles.DrawSolidRectangleWithOutline(rect, Colors.YellowBg, Colors.YellowOutline);
+        Handles.DrawSolidRectangleWithOutline(new Rect(rect.x, rect.y, rect.width, 50), Colors.YellowHeader, Colors.YellowOutline);
         DrawColorPicker(new Rect(rect.x, rect.y, rect.width, ColorPickerHeight));
 
         editorWindow.Repaint();
@@ -35,7 +36,7 @@ public class StickyNoteContent : PopupWindowContent
     {
         for (int i = 0; i < 6; i++)
         {
-            if (DrawUtils.DrawColorChooser(new Rect(15 + i * 32, rect.y, 32, 32), Colors.YellowHeader, Colors.YellowBg))
+            if (DrawUtils.DrawColorChooser(new Rect(15 + i * 32, rect.y, 32, 32), Colors.YellowBg, Colors.YellowOutline))
             {
                 Debug.Log("Color click");
             }
