@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Contexts;
 
 public static class Colors
 {
@@ -61,5 +62,26 @@ public static class Colors
     {
         var size = Enum.GetValues(typeof(NoteColor)).Length;
         _noteColors = new Dictionary<NoteColor, NoteColorCollection>(size);
+        InitColors();
+    }
+
+    static void InitColors()
+    {
+        _noteColors[NoteColor.Yellow] = new NoteColorCollection(YellowBg, YellowHeader, YellowOutline);
+        _noteColors[NoteColor.Green] = new NoteColorCollection(GreenBg, GreenHeader, GreenOutline);
+        _noteColors[NoteColor.Blue] = new NoteColorCollection(BlueBg, BlueHeader, BlueOutline);
+        _noteColors[NoteColor.Purple] = new NoteColorCollection(PurpleBg, PurpleHeader, PurpleOutline);
+        _noteColors[NoteColor.Pink] = new NoteColorCollection(PinkBg, PinkHeader, PinkOutline);
+        _noteColors[NoteColor.White] = new NoteColorCollection(WhiteBg, WhiteHeader, WhiteOutline);
+    }
+
+    public static NoteColorCollection ColorById(NoteColor color)
+    {
+        if (_noteColors.ContainsKey(color))
+        {
+            return _noteColors[color];
+        }
+
+        throw new ArgumentException("Color not present in dictionary: " + color);
     }
 }

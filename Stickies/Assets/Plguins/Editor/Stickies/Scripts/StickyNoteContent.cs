@@ -1,55 +1,64 @@
-﻿using UnityEngine;
+﻿#if UNITY_EDITOR
+using System;
+using UnityEngine;
 using UnityEditor;
 
-public class StickyNoteContent : PopupWindowContent
+namespace DeadMosquito.Stickies
 {
-    const float ColorPickerHeight = 48f;
-
-    string _guid;
-
-    Vector3[] m_RectVertices = new Vector3[4];
-
-    GUIStyle m_MiddleCenterStyle;
-
-    public StickyNoteContent(string guid)
+    public class StickyNoteContent : PopupWindowContent
     {
-        _guid = guid;
+        const float ColorPickerHeight = 48f;
 
-        m_MiddleCenterStyle = new GUIStyle(EditorStyles.miniLabel) { alignment = TextAnchor.MiddleCenter };
-    }
+        string _guid;
 
-    public override Vector2 GetWindowSize()
-    {
-        return new Vector2(200, 150);
-    }
+        Vector3[] m_RectVertices = new Vector3[4];
 
-    public override void OnGUI(Rect rect)
-    {
-        Handles.DrawSolidRectangleWithOutline(rect, Colors.YellowBg, Colors.YellowOutline);
-        Handles.DrawSolidRectangleWithOutline(new Rect(rect.x, rect.y, rect.width, 50), Colors.YellowHeader, Colors.YellowOutline);
-        DrawColorPicker(new Rect(rect.x, rect.y, rect.width, ColorPickerHeight));
+        GUIStyle m_MiddleCenterStyle;
 
-        editorWindow.Repaint();
-    }
-
-    void DrawColorPicker(Rect rect)
-    {
-        for (int i = 0; i < 6; i++)
+        public StickyNoteContent(string guid)
         {
-            if (DrawUtils.DrawColorChooser(new Rect(15 + i * 32, rect.y, 32, 32), Colors.YellowBg, Colors.YellowOutline))
+            _guid = guid;
+
+            m_MiddleCenterStyle = new GUIStyle(EditorStyles.miniLabel) {alignment = TextAnchor.MiddleCenter};
+        }
+
+        public override Vector2 GetWindowSize()
+        {
+            return new Vector2(200, 150);
+        }
+
+        public override void OnGUI(Rect rect)
+        {
+            Handles.DrawSolidRectangleWithOutline(rect, Colors.YellowBg, Colors.YellowOutline);
+            Handles.DrawSolidRectangleWithOutline(new Rect(rect.x, rect.y, rect.width, 50), Colors.YellowHeader,
+                Colors.YellowOutline);
+            DrawColorPicker(new Rect(rect.x, rect.y, rect.width, ColorPickerHeight));
+
+            editorWindow.Repaint();
+        }
+
+        void DrawColorPicker(Rect rect)
+        {
+            foreach (var color in Enum.GetValues(typeof(NoteColor)))
             {
-                Debug.Log("Color click");
+                Debug.Log(color);
+                //if (DrawUtils.DrawColorChooser(new Rect(15 + i * 32, rect.y, 32, 32), Colors.YellowBg,
+                //    Colors.YellowOutline))
+                //{
+                //    Debug.Log("Color click");
+                //}
             }
         }
-    }
 
-    public override void OnOpen()
-    {
-        Debug.Log("Popup opened: " + this);
-    }
+        public override void OnOpen()
+        {
+            Debug.Log("Popup opened: " + this);
+        }
 
-    public override void OnClose()
-    {
-        Debug.Log("Popup closed: " + this);
+        public override void OnClose()
+        {
+            Debug.Log("Popup closed: " + this);
+        }
     }
 }
+#endif

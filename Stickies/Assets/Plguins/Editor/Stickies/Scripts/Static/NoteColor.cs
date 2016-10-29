@@ -1,12 +1,9 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public enum NoteColor
+﻿public enum NoteColor
 {
-    Blue,
-    Green,
-    Pink,
-    Purple,
-    White,
-    Yellow
+    Yellow = 0,
+    Blue = 1,
+    Green = 2,
+    Pink = 3,
+    Purple = 4,
+    White = 5,
 }

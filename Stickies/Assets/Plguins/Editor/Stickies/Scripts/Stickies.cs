@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿#if UNITY_EDITOR
+using UnityEngine;
 using System.Linq;
 using UnityEditor;
 
@@ -47,3 +47,4 @@ namespace DeadMosquito.Stickies
         }
     }
 }
+#endif
