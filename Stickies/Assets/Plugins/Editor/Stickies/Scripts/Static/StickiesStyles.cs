@@ -22,6 +22,8 @@ namespace DeadMosquito.Stickies
                 focused = { background = null }
             };
             VerticalScrollbar = new GUIStyle(GUI.skin.verticalScrollbar);
+            GUI.skin = AssetDatabase.LoadAssetAtPath<GUISkin>("Test");
+            Debug.Log(GUI.skin);//
         }
     }
 }
