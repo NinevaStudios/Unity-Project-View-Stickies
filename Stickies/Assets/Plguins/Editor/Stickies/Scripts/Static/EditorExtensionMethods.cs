@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public static class EditorExtensionMethods
+namespace DeadMosquito.Stickies
 {
-    public static bool HasMouseInside(this Rect rect)
+    public static class EditorExtensionMethods
     {
-        return rect.Contains(Event.current.mousePosition);
+        public static bool HasMouseInside(this Rect rect)
+        {
+            return rect.Contains(Event.current.mousePosition);
+        }
     }
 }

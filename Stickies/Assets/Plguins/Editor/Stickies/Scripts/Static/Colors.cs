@@ -1,87 +1,89 @@
 ﻿using System;
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Contexts;
+using System.Linq;
 
-public static class Colors
+namespace DeadMosquito.Stickies
 {
-    public struct NoteColorCollection
+    public static class Colors
     {
-        public Color main;
-        public Color header;
-        public Color chooserOutline;
-
-        public NoteColorCollection(Color main, Color header, Color outline)
+        public struct NoteColorCollection
         {
-            this.main = main;
-            this.header = header;
-            chooserOutline = outline;
-        }
-    }
+            public Color main;
+            public Color header;
+            public Color chooserOutline;
 
-    #region yellow
-    public static readonly Color YellowHeader = new Color(0.976f, 0.953f, 0.631f, 1.000f);
-    public static readonly Color YellowBg = new Color(0.980f, 0.965f, 0.741f, 1.000f);
-    public static readonly Color YellowOutline = new Color(0.890f, 0.910f, 0.451f, 1.000f);
-    #endregion
-
-    #region green
-    public static readonly Color GreenHeader = new Color(0.722f, 0.875f, 0.663f, 1.000f);
-    public static readonly Color GreenBg = new Color(0.769f, 0.886f, 0.722f, 1.000f);
-    public static readonly Color GreenOutline = new Color(0.702f, 0.827f, 0.647f, 1.000f);
-    #endregion
-
-    #region blue
-    public static readonly Color BlueHeader = new Color();
-    public static readonly Color BlueBg = new Color();
-    public static readonly Color BlueOutline = new Color();
-    #endregion
-
-    #region purple
-    public static readonly Color PurpleHeader = new Color();
-    public static readonly Color PurpleBg = new Color();
-    public static readonly Color PurpleOutline = new Color();
-    #endregion
-
-    #region pink
-    public static readonly Color PinkHeader = new Color();
-    public static readonly Color PinkBg = new Color();
-    public static readonly Color PinkOutline = new Color();
-    #endregion
-
-    #region white
-    public static readonly Color WhiteHeader = new Color();
-    public static readonly Color WhiteBg = new Color();
-    public static readonly Color WhiteOutline = new Color();
-    #endregion
-
-    static readonly Dictionary<NoteColor, NoteColorCollection> _noteColors;
-
-    static Colors()
-    {
-        var size = Enum.GetValues(typeof(NoteColor)).Length;
-        _noteColors = new Dictionary<NoteColor, NoteColorCollection>(size);
-        InitColors();
-    }
-
-    static void InitColors()
-    {
-        _noteColors[NoteColor.Yellow] = new NoteColorCollection(YellowBg, YellowHeader, YellowOutline);
-        _noteColors[NoteColor.Green] = new NoteColorCollection(GreenBg, GreenHeader, GreenOutline);
-        _noteColors[NoteColor.Blue] = new NoteColorCollection(BlueBg, BlueHeader, BlueOutline);
-        _noteColors[NoteColor.Purple] = new NoteColorCollection(PurpleBg, PurpleHeader, PurpleOutline);
-        _noteColors[NoteColor.Pink] = new NoteColorCollection(PinkBg, PinkHeader, PinkOutline);
-        _noteColors[NoteColor.White] = new NoteColorCollection(WhiteBg, WhiteHeader, WhiteOutline);
-    }
-
-    public static NoteColorCollection ColorById(NoteColor color)
-    {
-        if (_noteColors.ContainsKey(color))
-        {
-            return _noteColors[color];
+            public NoteColorCollection(Color main, Color header, Color outline)
+            {
+                this.main = main;
+                this.header = header;
+                chooserOutline = outline;
+            }
         }
 
-        throw new ArgumentException("Color not present in dictionary: " + color);
+        #region yellow
+        public static readonly Color YellowHeader = new Color(0.976f, 0.953f, 0.631f, 1.000f);
+        public static readonly Color YellowBg = new Color(0.980f, 0.965f, 0.741f, 1.000f);
+        public static readonly Color YellowOutline = new Color(0.890f, 0.910f, 0.451f, 1.000f);
+        #endregion
+
+        #region green
+        public static readonly Color GreenHeader = new Color(0.722f, 0.875f, 0.663f, 1.000f);
+        public static readonly Color GreenBg = new Color(0.769f, 0.886f, 0.722f, 1.000f);
+        public static readonly Color GreenOutline = new Color(0.702f, 0.827f, 0.647f, 1.000f);
+        #endregion
+
+        #region blue
+        public static readonly Color BlueHeader = new Color();
+        public static readonly Color BlueBg = new Color();
+        public static readonly Color BlueOutline = new Color();
+        #endregion
+
+        #region purple
+        public static readonly Color PurpleHeader = new Color();
+        public static readonly Color PurpleBg = new Color();
+        public static readonly Color PurpleOutline = new Color();
+        #endregion
+
+        #region pink
+        public static readonly Color PinkHeader = new Color();
+        public static readonly Color PinkBg = new Color();
+        public static readonly Color PinkOutline = new Color();
+        #endregion
+
+        #region white
+        public static readonly Color WhiteHeader = new Color();
+        public static readonly Color WhiteBg = new Color();
+        public static readonly Color WhiteOutline = new Color();
+        #endregion
+
+        static readonly Dictionary<NoteColor, NoteColorCollection> _noteColors;
+
+        static Colors()
+        {
+            var size = Enum.GetValues(typeof(NoteColor)).Length;
+            _noteColors = new Dictionary<NoteColor, NoteColorCollection>(size);
+            InitColors();
+        }
+
+        static void InitColors()
+        {
+            _noteColors[NoteColor.Yellow] = new NoteColorCollection(YellowBg, YellowHeader, YellowOutline);
+            _noteColors[NoteColor.Green] = new NoteColorCollection(GreenBg, GreenHeader, GreenOutline);
+            _noteColors[NoteColor.Blue] = new NoteColorCollection(BlueBg, BlueHeader, BlueOutline);
+            _noteColors[NoteColor.Purple] = new NoteColorCollection(PurpleBg, PurpleHeader, PurpleOutline);
+            _noteColors[NoteColor.Pink] = new NoteColorCollection(PinkBg, PinkHeader, PinkOutline);
+            _noteColors[NoteColor.White] = new NoteColorCollection(WhiteBg, WhiteHeader, WhiteOutline);
+        }
+
+        public static NoteColorCollection ColorById(NoteColor color)
+        {
+            if (_noteColors.ContainsKey(color))
+            {
+                return _noteColors[color];
+            }
+
+            throw new ArgumentException("Color not present in dictionary: " + color);
+        }
     }
 }

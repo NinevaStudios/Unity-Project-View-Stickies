@@ -7,6 +7,10 @@ namespace DeadMosquito.Stickies
 {
     public class StickyNoteContent : PopupWindowContent
     {
+        const float DefaultSize = 320f;
+        const float HeaderSize = 320f;
+
+
         const float ColorPickerHeight = 48f;
 
         string _guid;
@@ -24,7 +28,7 @@ namespace DeadMosquito.Stickies
 
         public override Vector2 GetWindowSize()
         {
-            return new Vector2(200, 150);
+            return new Vector2(DefaultSize, DefaultSize);
         }
 
         public override void OnGUI(Rect rect)
@@ -37,16 +41,21 @@ namespace DeadMosquito.Stickies
             editorWindow.Repaint();
         }
 
+        void DrawHeader()
+        {
+            
+        }
+
         void DrawColorPicker(Rect rect)
         {
-            foreach (var color in Enum.GetValues(typeof(NoteColor)))
+            var colors = Enum.GetValues(typeof(NoteColor));
+            for (int i = 0; i < colors.Length; i++)
             {
-                Debug.Log(color);
-                //if (DrawUtils.DrawColorChooser(new Rect(15 + i * 32, rect.y, 32, 32), Colors.YellowBg,
-                //    Colors.YellowOutline))
-                //{
-                //    Debug.Log("Color click");
-                //}
+                if (StickiesGUI.ColorButton(new Rect(15 + i * 32, rect.y, 32, 32), Colors.YellowBg,
+                    Colors.YellowOutline))
+                {
+                    Debug.Log("Color click");
+                }
             }
         }
 
