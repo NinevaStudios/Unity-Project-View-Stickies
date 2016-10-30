@@ -39,7 +39,7 @@ namespace DeadMosquito.Stickies
             Handles.DrawSolidRectangleWithOutline(rect, Color.cyan, Color.clear);
         
             DrawHeader(rect);
-            //DrawColorPicker(new Rect(rect.x, rect.y, rect.width, ColorPickerHeight));
+            DrawColorPicker(new Rect(rect.x, rect.y, rect.width, ColorPickerHeight));
             DrawNoteText(rect);
             editorWindow.Repaint();
             GUI.skin = null;

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if UNITY_EDITOR
+using UnityEngine;
 
 namespace DeadMosquito.Stickies
 {
@@ -10,3 +11,4 @@ namespace DeadMosquito.Stickies
         }
     }
 }
+#endif

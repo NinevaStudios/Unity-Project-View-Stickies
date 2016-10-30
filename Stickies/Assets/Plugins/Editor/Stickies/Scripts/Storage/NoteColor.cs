@@ -1,4 +1,5 @@
-﻿namespace DeadMosquito.Stickies
+﻿#if UNITY_EDITOR
+namespace DeadMosquito.Stickies
 {
     public enum NoteColor
     {
@@ -10,3 +11,4 @@
         Clean = 5,
     }
 }
+#endif

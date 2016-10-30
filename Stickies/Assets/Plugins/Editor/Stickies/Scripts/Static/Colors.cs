@@ -49,9 +49,9 @@ namespace DeadMosquito.Stickies
         #endregion
 
         #region pink
-        static readonly Color RoseHeader = new Color();
-        static readonly Color RoseBg = new Color();
-        static readonly Color RoseOutline = new Color();
+        static readonly Color RoseHeader = new Color(0.953f, 0.722f, 0.773f, 1.000f);
+        static readonly Color RoseBg = new Color(0.957f, 0.753f, 0.796f, 1.000f);
+        static readonly Color RoseOutline = new Color(0.769f, 0.608f, 0.671f, 1.000f);
         #endregion
 
         #region white
