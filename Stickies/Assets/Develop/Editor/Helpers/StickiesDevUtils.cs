@@ -14,10 +14,17 @@ public static class StickiesDevUtils
         style.label = new GUIStyle("label");
         style.textField = new GUIStyle("textfield");
         style.textArea = new GUIStyle("textArea");
+
+        style.horizontalScrollbar = new GUIStyle("horizontalScrollbar");
+        style.horizontalScrollbarLeftButton = new GUIStyle("horizontalScrollbarLeftButton");
+        style.horizontalScrollbarRightButton = new GUIStyle("horizontalScrollbarRightButton");
+        style.horizontalScrollbarThumb = new GUIStyle("horizontalScrollbarThumb");
+
         style.verticalScrollbar = new GUIStyle("verticalscrollbar");
         style.verticalScrollbarDownButton = new GUIStyle("verticalScrollbarDownButton");
         style.verticalScrollbarUpButton = new GUIStyle("verticalScrollbarUpButton");
         style.verticalScrollbarThumb = new GUIStyle("verticalScrollbarThumb");
+
         var newBtnStyle = new GUIStyle(style.button);
         newBtnStyle.name = "xxx";
         style.customStyles = new[] { newBtnStyle };
