@@ -57,7 +57,7 @@ namespace DeadMosquito.Stickies
             GUILayout.BeginArea(textAreaRect);
             EditorGUILayout.BeginVertical();
 
-            _scroll = EditorGUILayout.BeginScrollView(_scroll);
+            _scroll = EditorGUILayout.BeginScrollView(_scroll, GUIStyle.none, StickiesStyles.VerticalScrollbar);
             _text = EditorGUILayout.TextArea(_text, StickiesStyles.TextArea);
             EditorGUILayout.EndScrollView();
 

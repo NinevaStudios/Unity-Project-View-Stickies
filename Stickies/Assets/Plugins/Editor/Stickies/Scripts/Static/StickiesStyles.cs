@@ -10,6 +10,7 @@ namespace DeadMosquito.Stickies
     public static class StickiesStyles
     {
         public static readonly GUIStyle TextArea;
+        public static readonly GUIStyle VerticalScrollbar;
 
         static StickiesStyles()
         {
@@ -20,6 +21,7 @@ namespace DeadMosquito.Stickies
                 active = { background = null },
                 focused = { background = null }
             };
+            VerticalScrollbar = new GUIStyle(GUI.skin.verticalScrollbar);
         }
     }
 }
