@@ -8,12 +8,15 @@ namespace DeadMosquito.Stickies
     public class StickyNoteContent : PopupWindowContent
     {
         const float DefaultSize = 320f;
-        const float HeaderSize = 320f;
+        const float HeaderSize = 32f;
 
+        Vector2 _scroll = Vector2.zero;
 
         const float ColorPickerHeight = 48f;
 
         string _guid;
+
+        string _text = string.Empty;
 
         Vector3[] m_RectVertices = new Vector3[4];
 
@@ -34,10 +37,21 @@ namespace DeadMosquito.Stickies
         public override void OnGUI(Rect rect)
         {
             Handles.DrawSolidRectangleWithOutline(rect, Color.white, Color.clear);
-            //Handles.DrawSolidRectangleWithOutline(new Rect(rect.x, rect.y, rect.width, 50), Colors.YellowHeader,
-            //    Colors.YellowOutline);
+ 
             DrawColorPicker(new Rect(rect.x, rect.y, rect.width, ColorPickerHeight));
+            var rectX = new Rect(rect.x + HeaderSize, rect.y + HeaderSize, 200, 200);
+            GUILayout.BeginArea(rectX);
+            _scroll = GUILayout.BeginScrollView(_scroll);
+            _text = EditorGUILayout.TextArea(_text, StickiesStyles.TextArea);
+            GUILayout.EndScrollView();
+            GUILayout.EndArea();
 
+            //_scroll = GUI.BeginScrollView(new Rect(10, 10, 100, 100), _scroll, new Rect(0, 0, 220, 200));
+            //GUI.Button(new Rect(0, 0, 100, 20), "Top-left");
+            //GUI.Button(new Rect(120, 0, 100, 20), "Top-right");
+            //GUI.Button(new Rect(0, 180, 100, 20), "Bottom-left");
+            //GUI.Button(new Rect(120, 180, 100, 20), "Bottom-right");
+            //GUI.EndScrollView();
             editorWindow.Repaint();
         }
 
