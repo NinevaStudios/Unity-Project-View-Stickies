@@ -36,27 +36,27 @@ namespace DeadMosquito.Stickies
         #endregion
 
         #region blue
-        static readonly Color BlueHeader = new Color(0.627f, 0.867f, 0.925f, 1.000f);
-        static readonly Color BlueBg = new Color(0.686f, 0.878f, 0.925f, 1.000f);
-        static readonly Color BlueOutline = new Color(0.494f, 0.718f, 0.753f, 1.000f);
+        static readonly Color SkyBlueHeader = new Color(0.627f, 0.867f, 0.925f, 1.000f);
+        static readonly Color SkyBlueBg = new Color(0.686f, 0.878f, 0.925f, 1.000f);
+        static readonly Color SkyBlueOutline = new Color(0.494f, 0.718f, 0.753f, 1.000f);
         #endregion
 
         #region purple
-        static readonly Color PurpleHeader = new Color(0.784f, 0.702f, 0.855f, 1.000f);
-        static readonly Color PurpleBg = new Color(0.812f, 0.737f, 0.863f, 1.000f);
-        static readonly Color PurpleOutline = new Color(0.682f, 0.624f, 0.714f, 1.000f);
+        static readonly Color AmethystHeader = new Color(0.784f, 0.702f, 0.855f, 1.000f);
+        static readonly Color AmethystBg = new Color(0.812f, 0.737f, 0.863f, 1.000f);
+        static readonly Color AmethystOutline = new Color(0.682f, 0.624f, 0.714f, 1.000f);
         #endregion
 
         #region pink
-        static readonly Color PinkHeader = new Color();
-        static readonly Color PinkBg = new Color();
-        static readonly Color PinkOutline = new Color();
+        static readonly Color RoseHeader = new Color();
+        static readonly Color RoseBg = new Color();
+        static readonly Color RoseOutline = new Color();
         #endregion
 
         #region white
-        static readonly Color WhiteHeader = new Color();
-        static readonly Color WhiteBg = new Color();
-        static readonly Color WhiteOutline = new Color();
+        static readonly Color CleanHeader = new Color();
+        static readonly Color CleanBg = new Color();
+        static readonly Color CleanOutline = new Color();
         #endregion
 
         static readonly Dictionary<NoteColor, NoteColorCollection> _noteColors;
@@ -74,10 +74,10 @@ namespace DeadMosquito.Stickies
         {
             _noteColors[NoteColor.Lemon] = new NoteColorCollection(LemonBg, LemonHeader, LemonOutline);
             _noteColors[NoteColor.Grass] = new NoteColorCollection(GrassBg, GrassHeader, GrassOutline);
-            _noteColors[NoteColor.SkyBlue] = new NoteColorCollection(BlueBg, BlueHeader, BlueOutline);
-            _noteColors[NoteColor.Rose] = new NoteColorCollection(PurpleBg, PurpleHeader, PurpleOutline);
-            _noteColors[NoteColor.Amethyst] = new NoteColorCollection(PinkBg, PinkHeader, PinkOutline);
-            _noteColors[NoteColor.Clean] = new NoteColorCollection(WhiteBg, WhiteHeader, WhiteOutline);
+            _noteColors[NoteColor.SkyBlue] = new NoteColorCollection(SkyBlueBg, SkyBlueHeader, SkyBlueOutline);
+            _noteColors[NoteColor.Amethyst] = new NoteColorCollection(AmethystBg, AmethystHeader, AmethystOutline);
+            _noteColors[NoteColor.Rose] = new NoteColorCollection(RoseBg, RoseHeader, RoseOutline);
+            _noteColors[NoteColor.Clean] = new NoteColorCollection(CleanBg, CleanHeader, CleanOutline);
         }
 
         public static NoteColorCollection ColorById(NoteColor color)
