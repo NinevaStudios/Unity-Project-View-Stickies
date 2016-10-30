@@ -15,9 +15,10 @@ namespace DeadMosquito.Stickies
         {
             TextArea = new GUIStyle(EditorStyles.textArea)
             {
-                //normal = {background = null},
-                //active = {background = null},
-                //focused = {background = null}
+                stretchHeight = true,
+                normal = { background = null },
+                active = { background = null },
+                focused = { background = null }
             };
         }
     }

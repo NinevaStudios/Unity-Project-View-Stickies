@@ -36,15 +36,11 @@ namespace DeadMosquito.Stickies
 
         public override void OnGUI(Rect rect)
         {
-            Handles.DrawSolidRectangleWithOutline(rect, Color.white, Color.clear);
- 
-            DrawColorPicker(new Rect(rect.x, rect.y, rect.width, ColorPickerHeight));
-            var rectX = new Rect(rect.x + HeaderSize, rect.y + HeaderSize, 200, 200);
-            GUILayout.BeginArea(rectX);
-            _scroll = GUILayout.BeginScrollView(_scroll);
-            _text = EditorGUILayout.TextArea(_text, StickiesStyles.TextArea);
-            GUILayout.EndScrollView();
-            GUILayout.EndArea();
+            Handles.DrawSolidRectangleWithOutline(rect, Color.cyan, Color.clear);
+
+            DrawHeader(rect);
+            //DrawColorPicker(new Rect(rect.x, rect.y, rect.width, ColorPickerHeight));
+            DrawNoteText(rect);
 
             //_scroll = GUI.BeginScrollView(new Rect(10, 10, 100, 100), _scroll, new Rect(0, 0, 220, 200));
             //GUI.Button(new Rect(0, 0, 100, 20), "Top-left");
@@ -55,9 +51,23 @@ namespace DeadMosquito.Stickies
             editorWindow.Repaint();
         }
 
-        void DrawHeader()
+        void DrawNoteText(Rect rect)
         {
-            
+            var textAreaRect = new Rect(rect.x, rect.y + HeaderSize, rect.width, rect.height - HeaderSize);
+            GUILayout.BeginArea(textAreaRect);
+            EditorGUILayout.BeginVertical();
+
+            _scroll = EditorGUILayout.BeginScrollView(_scroll);
+            _text = EditorGUILayout.TextArea(_text, StickiesStyles.TextArea);
+            EditorGUILayout.EndScrollView();
+
+            EditorGUILayout.EndVertical();
+            GUILayout.EndArea();
+        }
+
+        void DrawHeader(Rect whole)
+        {
+            Handles.DrawSolidRectangleWithOutline(new Rect(whole.x, whole.y, whole.width, HeaderSize), Color.red, Color.clear);
         }
 
         void DrawColorPicker(Rect rect)
