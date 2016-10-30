@@ -24,15 +24,15 @@ namespace DeadMosquito.Stickies
         public static NoteColor[] Values { get; private set; }
 
         #region yellow
-        static readonly Color YellowHeader = new Color(0.976f, 0.953f, 0.631f, 1.000f);
-        static readonly Color YellowBg = new Color(0.980f, 0.965f, 0.741f, 1.000f);
-        static readonly Color YellowOutline = new Color(0.890f, 0.910f, 0.451f, 1.000f);
+        static readonly Color LemonHeader = new Color(0.976f, 0.953f, 0.631f, 1.000f);
+        static readonly Color LemonBg = new Color(0.980f, 0.965f, 0.741f, 1.000f);
+        static readonly Color LemonOutline = new Color(0.890f, 0.910f, 0.451f, 1.000f);
         #endregion
 
         #region green
-        static readonly Color GreenHeader = new Color(0.722f, 0.875f, 0.663f, 1.000f);
-        static readonly Color GreenBg = new Color(0.769f, 0.886f, 0.722f, 1.000f);
-        static readonly Color GreenOutline = new Color(0.702f, 0.827f, 0.647f, 1.000f);
+        static readonly Color GrassHeader = new Color(0.722f, 0.875f, 0.663f, 1.000f);
+        static readonly Color GrassBg = new Color(0.769f, 0.886f, 0.722f, 1.000f);
+        static readonly Color GrassOutline = new Color(0.702f, 0.827f, 0.647f, 1.000f);
         #endregion
 
         #region blue
@@ -72,8 +72,8 @@ namespace DeadMosquito.Stickies
 
         static void InitColors()
         {
-            _noteColors[NoteColor.Lemon] = new NoteColorCollection(YellowBg, YellowHeader, YellowOutline);
-            _noteColors[NoteColor.Grass] = new NoteColorCollection(GreenBg, GreenHeader, GreenOutline);
+            _noteColors[NoteColor.Lemon] = new NoteColorCollection(LemonBg, LemonHeader, LemonOutline);
+            _noteColors[NoteColor.Grass] = new NoteColorCollection(GrassBg, GrassHeader, GrassOutline);
             _noteColors[NoteColor.SkyBlue] = new NoteColorCollection(BlueBg, BlueHeader, BlueOutline);
             _noteColors[NoteColor.Rose] = new NoteColorCollection(PurpleBg, PurpleHeader, PurpleOutline);
             _noteColors[NoteColor.Amethyst] = new NoteColorCollection(PinkBg, PinkHeader, PinkOutline);
