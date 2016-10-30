@@ -2,11 +2,11 @@
 {
     public enum NoteColor
     {
-        Yellow = 0,
-        Blue = 1,
-        Green = 2,
-        Pink = 3,
-        Purple = 4,
-        White = 5,
+        Lemon = 0,
+        Grass = 1,
+        SkyBlue = 2,
+        Amethyst = 3,
+        Rose = 4,
+        Clean = 5,
     }
 }

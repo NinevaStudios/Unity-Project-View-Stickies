@@ -33,9 +33,9 @@ namespace DeadMosquito.Stickies
 
         public override void OnGUI(Rect rect)
         {
-            Handles.DrawSolidRectangleWithOutline(rect, Colors.YellowBg, Colors.YellowOutline);
-            Handles.DrawSolidRectangleWithOutline(new Rect(rect.x, rect.y, rect.width, 50), Colors.YellowHeader,
-                Colors.YellowOutline);
+            Handles.DrawSolidRectangleWithOutline(rect, Color.white, Color.clear);
+            //Handles.DrawSolidRectangleWithOutline(new Rect(rect.x, rect.y, rect.width, 50), Colors.YellowHeader,
+            //    Colors.YellowOutline);
             DrawColorPicker(new Rect(rect.x, rect.y, rect.width, ColorPickerHeight));
 
             editorWindow.Repaint();
@@ -48,11 +48,12 @@ namespace DeadMosquito.Stickies
 
         void DrawColorPicker(Rect rect)
         {
-            var colors = Enum.GetValues(typeof(NoteColor));
+            var colors = Colors.Values;
             for (int i = 0; i < colors.Length; i++)
             {
-                if (StickiesGUI.ColorButton(new Rect(15 + i * 32, rect.y, 32, 32), Colors.YellowBg,
-                    Colors.YellowOutline))
+                var noteColors = Colors.ColorById(colors[i]);
+                if (StickiesGUI.ColorButton(new Rect(15 + i * 32, rect.y, 32, 32), noteColors.main,
+                    noteColors.chooserOutline))
                 {
                     Debug.Log("Color click");
                 }
