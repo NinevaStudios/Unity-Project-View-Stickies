@@ -14,6 +14,7 @@ public static class StickiesDevUtils
         style.label = new GUIStyle("label");
         style.textField = new GUIStyle("textfield");
         style.textArea = new GUIStyle("textArea");
+        style.window = new GUIStyle("window");
 
         style.horizontalScrollbar = new GUIStyle("horizontalScrollbar");
         style.horizontalScrollbarLeftButton = new GUIStyle("horizontalScrollbarLeftButton");
@@ -24,6 +25,8 @@ public static class StickiesDevUtils
         style.verticalScrollbarDownButton = new GUIStyle("verticalScrollbarDownButton");
         style.verticalScrollbarUpButton = new GUIStyle("verticalScrollbarUpButton");
         style.verticalScrollbarThumb = new GUIStyle("verticalScrollbarThumb");
+
+        style.scrollView = new GUIStyle("scrollView");
 
         var newBtnStyle = new GUIStyle(style.button);
         newBtnStyle.name = "xxx";
