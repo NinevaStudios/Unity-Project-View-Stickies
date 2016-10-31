@@ -42,24 +42,6 @@ namespace DeadMosquito.Stickies
             }
         }
 
-        public void AddEntry(string guid, NoteData entry)
-        {
-            Validate();
-
-            var serObj = new SerializedObject(Instance);
-            serObj.Update();
-
-            if (fileGuids.Contains(guid))
-            {
-                Debug.LogWarning(guid + " already there");
-            }
-
-            fileGuids.Add(guid);
-            notes.Add(entry);
-
-            serObj.ApplyModifiedPropertiesWithoutUndo();
-        }
-
         static void LoadOrCreate()
         {
             _instance = LoadFromAsset();
@@ -83,6 +65,26 @@ namespace DeadMosquito.Stickies
                 Debug.LogError("Database is out of sync. Something wrong happened.");
             }
         }
+
+        #region API
+        public void AddEntry(string guid, NoteData entry)
+        {
+            Validate();
+
+            var serObj = new SerializedObject(Instance);
+            serObj.Update();
+
+            if (fileGuids.Contains(guid))
+            {
+                Debug.LogWarning(guid + " already there");
+            }
+
+            fileGuids.Add(guid);
+            notes.Add(entry);
+
+            serObj.ApplyModifiedPropertiesWithoutUndo();
+        }
+        #endregion
     }
 }
 #endif
