@@ -83,7 +83,7 @@ namespace DeadMosquito.Stickies
             return fileGuids.Contains(guid);
         }
 
-        public void AddEntry(string guid, NoteData entry)
+        public void AddOrUpdate(string guid, NoteData entry)
         {
             Validate();
 
@@ -92,11 +92,16 @@ namespace DeadMosquito.Stickies
 
             if (fileGuids.Contains(guid))
             {
-                Debug.LogWarning(guid + " already there");
+                // update
+                int index = fileGuids.IndexOf(guid);
+                notes[index] = entry;
             }
-
-            fileGuids.Add(guid);
-            notes.Add(entry);
+            else
+            {
+                // create
+                fileGuids.Add(guid);
+                notes.Add(entry);
+            }
 
             serObj.ApplyModifiedPropertiesWithoutUndo();
         }

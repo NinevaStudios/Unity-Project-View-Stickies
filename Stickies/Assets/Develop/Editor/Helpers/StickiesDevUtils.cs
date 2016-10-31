@@ -52,7 +52,7 @@ public static class StickiesDevUtils
 
         var serObj = new SerializedObject(database);
         serObj.Update();
-        database.AddEntry(Random.value.ToString(), new NoteData());
+        database.AddOrUpdate(Random.value.ToString(), new NoteData());
         serObj.ApplyModifiedPropertiesWithoutUndo();
     }
 
