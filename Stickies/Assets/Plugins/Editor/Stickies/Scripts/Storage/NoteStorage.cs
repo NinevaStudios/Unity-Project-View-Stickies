@@ -67,6 +67,11 @@ namespace DeadMosquito.Stickies
         }
 
         #region API
+        public bool HasItem(string guid)
+        {
+            return fileGuids.Contains(guid);
+        }
+
         public void AddEntry(string guid, NoteData entry)
         {
             Validate();

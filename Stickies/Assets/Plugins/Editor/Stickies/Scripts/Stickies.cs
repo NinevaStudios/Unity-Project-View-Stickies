@@ -32,15 +32,25 @@ namespace DeadMosquito.Stickies
             var iconX = rect.x + rect.width - iconSize;
             var iconRect = new Rect(iconX - Offset, rect.y + Offset, iconSize, iconSize);
 
+
+//            if (!NoteStorage.Instance.HasItem(guid))
+//            {
+//                StickiesGUI.DrawRectNote(iconRect, Color.red, Color.green);
+//                return;
+//            }
+
+            DrawNoteButton(iconRect, guid);
+        }
+
+        static void DrawNoteButton(Rect iconRect, string guid)
+        {
             var c = Colors.ColorById(NoteColor.Lemon);
             StickiesGUI.DrawRectNote(iconRect, c.main, c.chooserOutline);
-
             if (GUI.Button(iconRect, GUIContent.none, GUIStyle.none))
             {
                 PopupWindow.Show(iconRect, new StickyNoteContent(guid));
             }
         }
-
 
         static bool IsSelected(string guid)
         {
