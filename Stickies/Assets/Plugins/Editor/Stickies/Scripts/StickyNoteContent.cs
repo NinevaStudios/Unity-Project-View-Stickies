@@ -24,7 +24,6 @@ namespace DeadMosquito.Stickies
 
         public StickyNoteContent(string guid)
         {
-            Debug.Log("GUID: " + guid);
             _guid = guid;
 
             m_MiddleCenterStyle = new GUIStyle(EditorStyles.miniLabel) {alignment = TextAnchor.MiddleCenter};
