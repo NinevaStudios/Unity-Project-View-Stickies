@@ -67,6 +67,17 @@ namespace DeadMosquito.Stickies
         }
 
         #region API
+        public NoteData ItemByGuid(string guid)
+        {
+            if (!fileGuids.Contains(guid))
+            {
+                Debug.LogError("GUID not saved: " + guid);
+            }
+
+            int index = fileGuids.IndexOf(guid);
+            return notes[index];
+        }
+
         public bool HasItem(string guid)
         {
             return fileGuids.Contains(guid);
