@@ -44,8 +44,8 @@ namespace DeadMosquito.Stickies
 
         static void DrawNoteButton(Rect iconRect, string guid)
         {
-            var c = Colors.ColorById(NoteColor.Lemon);
-            StickiesGUI.DrawRectNote(iconRect, c.main, c.chooserOutline);
+            var c = Colors.ColorById(NoteColor.Grass);
+            StickiesGUI.DrawRectNote(iconRect, c.main, Colors.Darken);
             if (GUI.Button(iconRect, GUIContent.none, GUIStyle.none))
             {
                 PopupWindow.Show(iconRect, new StickyNoteContent(guid));

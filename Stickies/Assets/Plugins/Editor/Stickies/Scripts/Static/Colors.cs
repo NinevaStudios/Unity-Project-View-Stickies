@@ -22,42 +22,56 @@ namespace DeadMosquito.Stickies
             }
         }
 
+        public static readonly Color Darken = new Color(0, 0, 0, 0.1f);
+
         public static NoteColor[] Values { get; private set; }
 
         #region yellow
+
         static readonly Color LemonHeader = new Color(0.976f, 0.953f, 0.631f, 1.000f);
         static readonly Color LemonBg = new Color(0.980f, 0.965f, 0.741f, 1.000f);
         static readonly Color LemonOutline = new Color(0.890f, 0.910f, 0.451f, 1.000f);
+
         #endregion
 
         #region green
+
         static readonly Color GrassHeader = new Color(0.722f, 0.875f, 0.663f, 1.000f);
         static readonly Color GrassBg = new Color(0.769f, 0.886f, 0.722f, 1.000f);
         static readonly Color GrassOutline = new Color(0.702f, 0.827f, 0.647f, 1.000f);
+
         #endregion
 
         #region blue
+
         static readonly Color SkyBlueHeader = new Color(0.627f, 0.867f, 0.925f, 1.000f);
         static readonly Color SkyBlueBg = new Color(0.686f, 0.878f, 0.925f, 1.000f);
         static readonly Color SkyBlueOutline = new Color(0.494f, 0.718f, 0.753f, 1.000f);
+
         #endregion
 
         #region purple
+
         static readonly Color AmethystHeader = new Color(0.784f, 0.702f, 0.855f, 1.000f);
         static readonly Color AmethystBg = new Color(0.812f, 0.737f, 0.863f, 1.000f);
         static readonly Color AmethystOutline = new Color(0.682f, 0.624f, 0.714f, 1.000f);
+
         #endregion
 
         #region pink
+
         static readonly Color RoseHeader = new Color(0.953f, 0.722f, 0.773f, 1.000f);
         static readonly Color RoseBg = new Color(0.957f, 0.753f, 0.796f, 1.000f);
         static readonly Color RoseOutline = new Color(0.769f, 0.608f, 0.671f, 1.000f);
+
         #endregion
 
         #region white
+
         static readonly Color CleanHeader = new Color();
         static readonly Color CleanBg = new Color();
         static readonly Color CleanOutline = new Color();
+
         #endregion
 
         static readonly Dictionary<NoteColor, NoteColorCollection> _noteColors;
