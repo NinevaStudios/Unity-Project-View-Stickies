@@ -13,13 +13,11 @@ namespace DeadMosquito.Stickies
             EditorApplication.projectWindowItemOnGUI += AddRevealerIcon;
         }
 
-        static readonly float Offset = 1;
-
         static void AddRevealerIcon(string guid, Rect rect)
         {
-            var isMouseOver = rect.Contains(Event.current.mousePosition);
+            DrawNotesForAllSaved(guid, rect);
 
-            bool isVisible = isMouseOver || IsSelected(guid);
+            bool isVisible = rect.HasMouseInside() || IsSelected(guid);
 
             if (!isVisible)
             {
@@ -28,9 +26,7 @@ namespace DeadMosquito.Stickies
 
             EditorApplication.RepaintProjectWindow();
 
-            float iconSize = EditorGUIUtility.singleLineHeight - 2 * Offset;
-            var iconX = rect.x + rect.width - iconSize;
-            var iconRect = new Rect(iconX - Offset, rect.y + Offset, iconSize, iconSize);
+
 
 
 //            if (!NoteStorage.Instance.HasItem(guid))
@@ -38,8 +34,16 @@ namespace DeadMosquito.Stickies
 //                StickiesGUI.DrawRectNote(iconRect, Color.red, Color.green);
 //                return;
 //            }
-
+            var iconRect = StickiesGUI.GetIconRect(rect);
             DrawNoteButton(iconRect, guid);
+        }
+
+        static void DrawNotesForAllSaved(string guid, Rect rect)
+        {
+            if (!NoteStorage.Instance.HasItem(guid))
+            {
+                return;
+            }
         }
 
         static void DrawNoteButton(Rect iconRect, string guid)

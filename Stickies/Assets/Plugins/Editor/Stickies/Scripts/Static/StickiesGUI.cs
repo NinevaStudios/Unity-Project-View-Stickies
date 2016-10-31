@@ -23,30 +23,30 @@ namespace DeadMosquito.Stickies
             switch (Event.current.GetTypeForControl(controlID))
             {
                 case EventType.Repaint:
-                {
-                    var outlineColor = rect.HasMouseInside() ? outline : fill;
-                    DrawDisc(center, radius, outlineColor);
-                    DrawDisc(center, radius - 2f, fill);
-                    break;
-                }
+                    {
+                        var outlineColor = rect.HasMouseInside() ? outline : fill;
+                        DrawDisc(center, radius, outlineColor);
+                        DrawDisc(center, radius - 2f, fill);
+                        break;
+                    }
                 case EventType.MouseDown:
-                {
-                    if (rect.HasMouseInside()
+                    {
+                        if (rect.HasMouseInside()
                         && Event.current.button == 0
                         && GUIUtility.hotControl == 0)
-                    {
-                        GUIUtility.hotControl = controlID;
+                        {
+                            GUIUtility.hotControl = controlID;
+                        }
+                        break;
                     }
-                    break;
-                }
                 case EventType.MouseUp:
-                {
-                    if (GUIUtility.hotControl == controlID && rect.HasMouseInside())
                     {
-                        return true;
+                        if (GUIUtility.hotControl == controlID && rect.HasMouseInside())
+                        {
+                            return true;
+                        }
+                        break;
                     }
-                    break;
-                }
             }
 
             return false;
@@ -62,12 +62,21 @@ namespace DeadMosquito.Stickies
         static void DrawArc(Vector2 center, float radius, float angle, Color fill)
         {
             var start = new Vector2(
-                -Mathf.Cos(Mathf.Deg2Rad * angle / 2f),
-                Mathf.Sin(Mathf.Deg2Rad * angle / 2f)
-            );
+                            -Mathf.Cos(Mathf.Deg2Rad * angle / 2f),
+                            Mathf.Sin(Mathf.Deg2Rad * angle / 2f)
+                        );
 
             Handles.color = fill;
             Handles.DrawSolidArc(center, Vector3.forward, start, angle, radius);
+        }
+
+        public static Rect GetIconRect(Rect rect)
+        {
+            const float Offset = 1f;
+            float iconSize = EditorGUIUtility.singleLineHeight - 2 * Offset;
+            var iconX = rect.x + rect.width - iconSize;
+            var iconRect = new Rect(iconX - Offset, rect.y + Offset, iconSize, iconSize);
+            return iconRect;
         }
     }
 }
