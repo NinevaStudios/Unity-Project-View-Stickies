@@ -6,6 +6,7 @@ namespace DeadMosquito.Stickies
 {
     public static class StickiesGUI
     {
+        #region gui_elements
         public static void DrawRectNote(Rect rect, Color main, Color header)
         {
             Handles.DrawSolidRectangleWithOutline(rect, main, header);
@@ -69,8 +70,9 @@ namespace DeadMosquito.Stickies
             Handles.color = fill;
             Handles.DrawSolidArc(center, Vector3.forward, start, angle, radius);
         }
+        #endregion
 
-        public static Rect GetIconRect(Rect rect)
+        public static Rect GetProjectViewIconRect(Rect rect)
         {
             const float Offset = 1f;
             float iconSize = EditorGUIUtility.singleLineHeight - 2 * Offset;
