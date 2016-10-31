@@ -15,33 +15,22 @@ namespace DeadMosquito.Stickies
 
         static void AddRevealerIcon(string guid, Rect rect)
         {
-            DrawNotesForAllSaved(guid, rect);
+            EditorApplication.RepaintProjectWindow();
+            var iconRect = StickiesGUI.GetIconRect(rect);
 
-            bool isVisible = rect.HasMouseInside() || IsSelected(guid);
-
-            if (!isVisible)
+            bool hasNoteAttached = NoteStorage.Instance.HasItem(guid);
+            if (hasNoteAttached)
             {
+                // Draw note
+                DrawNoteButton(iconRect, guid);
                 return;
             }
 
-            EditorApplication.RepaintProjectWindow();
-
-
-
-
-//            if (!NoteStorage.Instance.HasItem(guid))
-//            {
-//                StickiesGUI.DrawRectNote(iconRect, Color.red, Color.green);
-//                return;
-//            }
-            var iconRect = StickiesGUI.GetIconRect(rect);
-            DrawNoteButton(iconRect, guid);
-        }
-
-        static void DrawNotesForAllSaved(string guid, Rect rect)
-        {
-            if (!NoteStorage.Instance.HasItem(guid))
+            bool isInFocues = rect.HasMouseInside();
+            if (isInFocues)
             {
+                // Add note
+                DrawNoteButton(iconRect, guid);
                 return;
             }
         }
