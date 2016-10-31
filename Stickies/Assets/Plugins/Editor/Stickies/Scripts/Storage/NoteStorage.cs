@@ -9,8 +9,13 @@ namespace DeadMosquito.Stickies
     public class NoteStorage : ScriptableObject
     {
         public const string AssetExtension = "asset";
-        const string DefaultSettingsPath = "Plugins/Editor/Stickies";
-        const string AssetName = "Settings.asset";
+        // TODO find folder recursively
+        const string DefaultSettingsPath = "Assets/Plugins/Editor/Stickies";
+        const string AssetName = "Database";
+        const string AssetsFolder = "Assets";
+
+        private static readonly string AssetNameWithExt = string.Join(".", new [] { AssetName, AssetExtension });
+        private static readonly string AssetPath = Path.Combine(DefaultSettingsPath, AssetNameWithExt);
 
         // Simulate a dictionary
         public List<string> fileGuids;
@@ -24,21 +29,31 @@ namespace DeadMosquito.Stickies
             {
                 if (_instance == null)
                 {
-                    string assetNameWithExtension = Path.Combine(DefaultSettingsPath, AssetName); // TODO fix
-                    _instance = AssetDatabase.LoadAssetAtPath<NoteStorage>(assetNameWithExtension);
-                    if (_instance == null)
-                    {
-                        if (!Directory.Exists(Path.Combine(Application.dataPath, DefaultSettingsPath)))
-                        {
-                            AssetDatabase.CreateFolder("Assets", DefaultSettingsPath);
-                        }
-//
-                        StickiesEditorUtility.CreateAsset<NoteStorage>(AssetName, Path.Combine("Assets", DefaultSettingsPath));
-                        _instance = AssetDatabase.LoadAssetAtPath<NoteStorage>(assetNameWithExtension);
-                    }
+                    LoadOrCreate();
+                }
+
+                if (_instance == null)
+                {
+                    Debug.LogError("Notes database was not found or couldn't be created. Errors ahead...");
                 }
                 return _instance;
             }
+        }
+
+        static void LoadOrCreate()
+        {
+            _instance = LoadFromAsset();
+            if (_instance == null)
+            {
+                Debug.Log("Creating new notes storage...");
+                StickiesEditorUtility.CreateAsset<NoteStorage>(AssetName, DefaultSettingsPath);
+                _instance = LoadFromAsset();
+            }
+        }
+
+        private static NoteStorage LoadFromAsset()
+        {
+            return AssetDatabase.LoadAssetAtPath<NoteStorage>(AssetPath);
         }
     }
 }

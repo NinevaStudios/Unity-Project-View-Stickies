@@ -37,10 +37,17 @@ public static class StickiesDevUtils
         AssetDatabase.SaveAssets();
     }
 
-    [MenuItem("Stickies/Create Settings")]
-    static void CreateSettings()
+    [MenuItem("Stickies/Create Database")]
+    static void CreateDatabase()
     {
-        var x = NoteStorage.Instance;
+        StickiesEditorUtility.CreateAsset<NoteStorage>("Database", "Assets");
+    }
+
+    [MenuItem("Stickies/Test Database")]
+    static void TestDatabase()
+    {
+        var database = NoteStorage.Instance;
+        Debug.Log(database);
     }
 
     [MenuItem("GameObject/Create Material")]
