@@ -36,8 +36,28 @@ namespace DeadMosquito.Stickies
                 {
                     Debug.LogError("Notes database was not found or couldn't be created. Errors ahead...");
                 }
+
+                _instance.Validate();
                 return _instance;
             }
+        }
+
+        public void AddEntry(string guid, NoteData entry)
+        {
+            Validate();
+
+            var serObj = new SerializedObject(Instance);
+            serObj.Update();
+
+            if (fileGuids.Contains(guid))
+            {
+                Debug.LogWarning(guid + " already there");
+            }
+
+            fileGuids.Add(guid);
+            notes.Add(entry);
+
+            serObj.ApplyModifiedPropertiesWithoutUndo();
         }
 
         static void LoadOrCreate()
@@ -54,6 +74,14 @@ namespace DeadMosquito.Stickies
         private static NoteStorage LoadFromAsset()
         {
             return AssetDatabase.LoadAssetAtPath<NoteStorage>(AssetPath);
+        }
+
+        private void Validate()
+        {
+            if (fileGuids.Count != notes.Count)
+            {
+                Debug.LogError("Database is out of sync. Something wrong happened.");
+            }
         }
     }
 }

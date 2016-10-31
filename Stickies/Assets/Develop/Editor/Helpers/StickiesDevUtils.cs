@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEditor;
 using DeadMosquito.Stickies;
+using System.Collections.Generic;
 
 public static class StickiesDevUtils
 {
@@ -48,6 +49,24 @@ public static class StickiesDevUtils
     {
         var database = NoteStorage.Instance;
         Debug.Log(database);
+
+        var serObj = new SerializedObject(database);
+        serObj.Update();
+        database.AddEntry(Random.value.ToString(), new NoteData());
+        serObj.ApplyModifiedPropertiesWithoutUndo();
+    }
+
+    [MenuItem("Stickies/Clean Database")]
+    static void CleanDatabase()
+    {
+        var database = NoteStorage.Instance;
+        Debug.Log(database);
+
+        var serObj = new SerializedObject(database);
+        serObj.Update();
+        database.fileGuids = new List<string>();
+        database.notes = new List<NoteData>();
+        serObj.ApplyModifiedPropertiesWithoutUndo();
     }
 
     [MenuItem("GameObject/Create Material")]
