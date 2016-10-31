@@ -33,7 +33,6 @@ namespace DeadMosquito.Stickies
             var c = Colors.ColorById(NoteColor.Lemon);
             StickiesGUI.DrawRectNote(rect, c.main, c.header);
 
-//            DrawHeader(rect);
 //            DrawColorPicker(new Rect(rect.x, rect.y, rect.width, ColorPickerHeight));
             DrawNoteText(rect);
             editorWindow.Repaint();
@@ -52,11 +51,6 @@ namespace DeadMosquito.Stickies
 
             EditorGUILayout.EndVertical();
             GUILayout.EndArea();
-        }
-
-        static void DrawHeader(Rect whole)
-        {
-            Handles.DrawSolidRectangleWithOutline(new Rect(whole.x, whole.y, whole.width, HeaderSize), Color.red, Color.clear);
         }
 
         static void DrawColorPicker(Rect rect)
