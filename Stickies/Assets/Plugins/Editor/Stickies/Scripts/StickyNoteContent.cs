@@ -24,6 +24,7 @@ namespace DeadMosquito.Stickies
 
         public StickyNoteContent(string guid)
         {
+            Debug.Log("GUID: " + guid);
             _guid = guid;
 
             m_MiddleCenterStyle = new GUIStyle(EditorStyles.miniLabel) {alignment = TextAnchor.MiddleCenter};
@@ -36,10 +37,11 @@ namespace DeadMosquito.Stickies
 
         public override void OnGUI(Rect rect)
         {
-            Handles.DrawSolidRectangleWithOutline(rect, Color.cyan, Color.clear);
-        
-            DrawHeader(rect);
-            DrawColorPicker(new Rect(rect.x, rect.y, rect.width, ColorPickerHeight));
+            var c = Colors.ColorById(NoteColor.Lemon);
+            StickiesGUI.DrawRectNote(rect, c.main, c.header);
+
+//            DrawHeader(rect);
+//            DrawColorPicker(new Rect(rect.x, rect.y, rect.width, ColorPickerHeight));
             DrawNoteText(rect);
             editorWindow.Repaint();
             GUI.skin = null;

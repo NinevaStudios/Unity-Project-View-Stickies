@@ -6,6 +6,13 @@ namespace DeadMosquito.Stickies
 {
     public static class StickiesGUI
     {
+        public static void DrawRectNote(Rect rect, Color main, Color header)
+        {
+            Handles.DrawSolidRectangleWithOutline(rect, main, header);
+            var headerHeight = rect.height / 10f;
+            Handles.DrawSolidRectangleWithOutline(new Rect(rect.x, rect.y, rect.width, headerHeight), header, Color.clear);
+        }
+
         public static bool ColorButton(Rect rect, Color fill, Color outline)
         {
             int controlID = GUIUtility.GetControlID(FocusType.Passive);
