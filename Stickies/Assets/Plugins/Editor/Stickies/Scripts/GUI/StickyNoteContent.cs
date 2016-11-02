@@ -37,7 +37,6 @@ namespace DeadMosquito.Stickies
             DrawColorPicker(new Rect(rect.x, rect.y, rect.width, ColorPickerHeight));
             DrawNoteText(rect);
             editorWindow.Repaint();
-            GUI.skin = null;
         }
 
         void DrawNoteText(Rect rect)
@@ -45,10 +44,13 @@ namespace DeadMosquito.Stickies
             var textAreaRect = new Rect(rect.x, rect.y + HeaderSize, rect.width, rect.height - HeaderSize);
             GUILayout.BeginArea(textAreaRect);
             EditorGUILayout.BeginVertical();
+            GUI.skin = StickiesStyles.Skin;
 
-            _scroll = EditorGUILayout.BeginScrollView(_scroll, GUIStyle.none, StickiesStyles.VerticalScrollbar);
+            _scroll = EditorGUILayout.BeginScrollView(_scroll);
             _text = EditorGUILayout.TextArea(_text, StickiesStyles.TextArea);
             EditorGUILayout.EndScrollView();
+
+            GUI.skin = null;
 
             EditorGUILayout.EndVertical();
             GUILayout.EndArea();

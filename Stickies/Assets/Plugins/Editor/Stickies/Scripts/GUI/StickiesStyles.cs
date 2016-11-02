@@ -9,6 +9,8 @@ namespace DeadMosquito.Stickies
 {
     public static class StickiesStyles
     {
+        public static readonly GUISkin Skin;
+
         public static readonly GUIStyle TextArea;
         public static readonly GUIStyle VerticalScrollbar;
 
@@ -21,9 +23,10 @@ namespace DeadMosquito.Stickies
                 active = { background = null },
                 focused = { background = null }
             };
-            VerticalScrollbar = new GUIStyle(GUI.skin.verticalScrollbar);
-            GUI.skin = AssetDatabase.LoadAssetAtPath<GUISkin>("Test");
-            Debug.Log(GUI.skin);//
+            Skin = AssetDatabase.LoadAssetAtPath<GUISkin>("Assets/UnityGuiSkinCopy.asset");
+//            VerticalScrollbar = new GUIStyle(customSkin.verticalScrollbar);
+//            Debug.Log(customSkin.verticalScrollbarThumb.normal.background.name);
+            //
         }
     }
 }

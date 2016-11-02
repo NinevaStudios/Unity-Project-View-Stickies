@@ -18,6 +18,11 @@ public static class StickiesDevUtils
         style.textArea = new GUIStyle("textArea");
         style.window = new GUIStyle("window");
 
+        style.horizontalSlider = new GUIStyle("horizontalSlider");
+        style.horizontalSliderThumb = new GUIStyle("horizontalSliderThumb");
+        style.verticalSlider = new GUIStyle("verticalSlider");
+        style.verticalSliderThumb = new GUIStyle("verticalSliderThumb");
+
         style.horizontalScrollbar = new GUIStyle("horizontalScrollbar");
         style.horizontalScrollbarLeftButton = new GUIStyle("horizontalScrollbarLeftButton");
         style.horizontalScrollbarRightButton = new GUIStyle("horizontalScrollbarRightButton");
@@ -30,9 +35,7 @@ public static class StickiesDevUtils
 
         style.scrollView = new GUIStyle("scrollView");
 
-        var newBtnStyle = new GUIStyle(style.button);
-        newBtnStyle.name = "xxx";
-        style.customStyles = new[] { newBtnStyle };
+        style.customStyles = new[] { new GUIStyle("grey_border") };
 
         AssetDatabase.CreateAsset(style, "Assets/Develop/UnityGuiSkinCopy.asset");
         AssetDatabase.SaveAssets();
