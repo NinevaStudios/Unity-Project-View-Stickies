@@ -60,6 +60,11 @@ namespace DeadMosquito.Stickies
 
         private void Validate()
         {
+            ValidateCount();
+        }
+
+        void ValidateCount()
+        {
             if (fileGuids.Count != notes.Count)
             {
                 Debug.LogError("Database is out of sync. Something wrong happened.");
@@ -67,9 +72,10 @@ namespace DeadMosquito.Stickies
         }
 
         #region API
+
         public NoteData ItemByGuid(string guid)
         {
-            if (!fileGuids.Contains(guid))
+            if (!HasItem(guid))
             {
                 Debug.LogError("GUID not saved: " + guid);
             }
@@ -78,10 +84,6 @@ namespace DeadMosquito.Stickies
             return notes[index];
         }
 
-        public bool HasItem(string guid)
-        {
-            return fileGuids.Contains(guid);
-        }
 
         public void AddOrUpdate(string guid, NoteData entry)
         {
@@ -90,22 +92,37 @@ namespace DeadMosquito.Stickies
             var serObj = new SerializedObject(Instance);
             serObj.Update();
 
-            if (fileGuids.Contains(guid))
+            if (HasItem(guid))
             {
-                // update
-                int index = fileGuids.IndexOf(guid);
-                notes[index] = entry;
+                UpdateNote(guid, entry);
             }
             else
             {
-                // create
-                fileGuids.Add(guid);
-                notes.Add(entry);
+                AddNote(guid, entry);
             }
 
-            serObj.ApplyModifiedPropertiesWithoutUndo();
+            serObj.ApplyModifiedProperties();
         }
+
+        public bool HasItem(string guid)
+        {
+            return fileGuids.Contains(guid);
+        }
+
         #endregion
+
+
+        void AddNote(string guid, NoteData entry)
+        {
+            fileGuids.Add(guid);
+            notes.Add(entry);
+        }
+
+        void UpdateNote(string guid, NoteData entry)
+        {
+            int index = fileGuids.IndexOf(guid);
+            notes[index] = entry;
+        }
     }
 }
 #endif

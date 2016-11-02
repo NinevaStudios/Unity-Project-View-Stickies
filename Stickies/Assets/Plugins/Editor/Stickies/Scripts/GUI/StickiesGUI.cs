@@ -7,6 +7,12 @@ namespace DeadMosquito.Stickies
     public static class StickiesGUI
     {
         #region gui_elements
+
+        public static bool EmptyButton(Rect rect)
+        {
+            return GUI.Button(rect, GUIContent.none, GUIStyle.none);
+        }
+
         public static void DrawRectNote(Rect rect, Color main, Color header)
         {
             Handles.DrawSolidRectangleWithOutline(rect, main, header);
@@ -14,8 +20,29 @@ namespace DeadMosquito.Stickies
             Handles.DrawSolidRectangleWithOutline(new Rect(rect.x, rect.y, rect.width, headerHeight), header, Color.clear);
         }
 
-        public static bool ColorButton(Rect rect, Color fill, Color outline)
+        public static NoteColor ColorChooser(Rect rect)
         {
+            var colors = Colors.Values;
+            for (int i = 0; i < colors.Length; i++)
+            {
+                var color = colors[i];
+                if (color == NoteColor.None)
+                    continue;
+                
+                var noteColors = Colors.ColorById(color);
+                if (StickiesGUI.ColorButton(new Rect(15 + i * 32, rect.y, 32, 32), noteColors.main,
+                    noteColors.chooserOutline))
+                {
+                    return color;
+                }
+            }
+
+            return NoteColor.None;
+        }
+
+        public static bool ColorButton(Rect rect, Color fill, Color outline, float outlineRadius = 2f)
+        {
+            bool clicked = false;
             int controlID = GUIUtility.GetControlID(FocusType.Passive);
 
             var center = rect.center;
@@ -27,14 +54,18 @@ namespace DeadMosquito.Stickies
                     {
                         var outlineColor = rect.HasMouseInside() ? outline : fill;
                         DrawDisc(center, radius, outlineColor);
-                        DrawDisc(center, radius - 2f, fill);
+                        DrawDisc(center, radius - outlineRadius, fill);
+                        if (GUIUtility.hotControl == controlID)
+                        {
+                            DrawDisc(center, radius, Colors.Darken);
+                        }
                         break;
                     }
                 case EventType.MouseDown:
                     {
                         if (rect.HasMouseInside()
-                        && Event.current.button == 0
-                        && GUIUtility.hotControl == 0)
+                            && Event.current.button == 0
+                            && GUIUtility.hotControl == 0)
                         {
                             GUIUtility.hotControl = controlID;
                         }
@@ -44,13 +75,24 @@ namespace DeadMosquito.Stickies
                     {
                         if (GUIUtility.hotControl == controlID && rect.HasMouseInside())
                         {
-                            return true;
+                            clicked = true;
+                            GUIUtility.hotControl = 0;
                         }
                         break;
                     }
             }
 
-            return false;
+            if (Event.current.isMouse && GUIUtility.hotControl == controlID)
+            {
+                // Report that the data in the GUI has changed
+                GUI.changed = true;
+
+                // Mark event as 'used' so other controls don't respond to it, and to
+                // trigger an automatic repaint.
+                Event.current.Use();
+            }
+
+            return clicked;
         }
 
         static void DrawDisc(Vector2 center, float radius, Color fill)
@@ -70,6 +112,7 @@ namespace DeadMosquito.Stickies
             Handles.color = fill;
             Handles.DrawSolidArc(center, Vector3.forward, start, angle, radius);
         }
+
         #endregion
 
         public static Rect GetProjectViewIconRect(Rect rect)

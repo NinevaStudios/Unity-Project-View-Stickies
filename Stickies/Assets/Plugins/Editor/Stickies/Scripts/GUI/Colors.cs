@@ -68,9 +68,9 @@ namespace DeadMosquito.Stickies
 
         #region white
 
-        static readonly Color CleanHeader = new Color();
-        static readonly Color CleanBg = new Color();
-        static readonly Color CleanOutline = new Color();
+        static readonly Color CleanHeader = new Color(0.957f, 0.957f, 0.957f, 1.000f);
+        static readonly Color CleanBg = new Color(0.980f, 0.980f, 0.980f, 1.000f);
+        static readonly Color CleanOutline = new Color(0.804f, 0.804f, 0.804f, 1.000f);
 
         #endregion
 

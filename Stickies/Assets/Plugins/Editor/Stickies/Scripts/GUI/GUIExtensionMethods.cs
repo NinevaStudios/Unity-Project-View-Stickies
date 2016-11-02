@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace DeadMosquito.Stickies
 {
-    public static class EditorExtensionMethods
+    public static class GUIExtensionMethods
     {
         public static bool HasMouseInside(this Rect rect)
         {

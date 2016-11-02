@@ -17,6 +17,7 @@ namespace DeadMosquito.Stickies
         readonly string _guid;
 
         string _text = string.Empty;
+        NoteColor _color = NoteColor.Lemon;
 
         public StickyNoteContent(string guid)
         {
@@ -30,10 +31,10 @@ namespace DeadMosquito.Stickies
 
         public override void OnGUI(Rect rect)
         {
-            var c = Colors.ColorById(NoteColor.Lemon);
+            var c = Colors.ColorById(_color);
             StickiesGUI.DrawRectNote(rect, c.main, c.header);
 
-//            DrawColorPicker(new Rect(rect.x, rect.y, rect.width, ColorPickerHeight));
+            DrawColorPicker(new Rect(rect.x, rect.y, rect.width, ColorPickerHeight));
             DrawNoteText(rect);
             editorWindow.Repaint();
             GUI.skin = null;
@@ -53,17 +54,13 @@ namespace DeadMosquito.Stickies
             GUILayout.EndArea();
         }
 
-        static void DrawColorPicker(Rect rect)
+        void DrawColorPicker(Rect rect)
         {
-            var colors = Colors.Values;
-            for (int i = 0; i < colors.Length; i++)
+            var color = StickiesGUI.ColorChooser(rect);
+            if (color != NoteColor.None)
             {
-                var noteColors = Colors.ColorById(colors[i]);
-                if (StickiesGUI.ColorButton(new Rect(15 + i * 32, rect.y, 32, 32), noteColors.main,
-                        noteColors.chooserOutline))
-                {
-                    Debug.Log("Color click");
-                }
+                _color = color;
+                Debug.Log(color);
             }
         }
 
@@ -73,7 +70,9 @@ namespace DeadMosquito.Stickies
         {
             if (NoteStorage.Instance.HasItem(_guid))
             {
-                _text = NoteStorage.Instance.ItemByGuid(_guid).text;
+                var fromSaved = NoteStorage.Instance.ItemByGuid(_guid);
+                _text = fromSaved.text;
+                _color = fromSaved.color;
             }
         }
 
@@ -86,7 +85,8 @@ namespace DeadMosquito.Stickies
 
             NoteStorage.Instance.AddOrUpdate(_guid, new NoteData
                 {
-                    text = _text
+                    text = _text,
+                    color = _color
                 });
         }
 

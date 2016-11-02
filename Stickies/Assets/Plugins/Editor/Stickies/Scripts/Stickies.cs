@@ -15,7 +15,6 @@ namespace DeadMosquito.Stickies
 
         static void AddRevealerIcon(string guid, Rect rect)
         {
-            EditorApplication.RepaintProjectWindow();
             var iconRect = StickiesGUI.GetProjectViewIconRect(rect);
 
             bool hasNoteAttached = NoteStorage.Instance.HasItem(guid);
@@ -30,19 +29,36 @@ namespace DeadMosquito.Stickies
             if (isInFocues)
             {
                 // Add note
-                DrawNoteButton(iconRect, guid);
+                DrawAddNoteButton(iconRect, guid);
                 return;
             }
+
+            EditorApplication.RepaintProjectWindow();
         }
 
         static void DrawNoteButton(Rect iconRect, string guid)
         {
-            var c = Colors.ColorById(NoteColor.Grass);
+            var noteData = NoteStorage.Instance.ItemByGuid(guid);
+            var c = Colors.ColorById(noteData.color);
             StickiesGUI.DrawRectNote(iconRect, c.main, Colors.Darken);
-            if (GUI.Button(iconRect, GUIContent.none, GUIStyle.none))
+            if (StickiesGUI.EmptyButton(iconRect))
             {
-                PopupWindow.Show(iconRect, new StickyNoteContent(guid));
+                ShowNote(iconRect, guid);
             }
+        }
+
+        static void DrawAddNoteButton(Rect iconRect, string guid)
+        {
+            StickiesGUI.DrawRectNote(iconRect, Color.magenta, Colors.Darken);
+            if (StickiesGUI.EmptyButton(iconRect))
+            {
+                ShowNote(iconRect, guid);
+            }
+        }
+
+        static void ShowNote(Rect iconRect, string guid)
+        {
+            PopupWindow.Show(iconRect, new StickyNoteContent(guid));
         }
 
         static bool IsSelected(string guid)
