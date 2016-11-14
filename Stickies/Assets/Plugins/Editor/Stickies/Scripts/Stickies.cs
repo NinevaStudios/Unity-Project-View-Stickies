@@ -17,7 +17,7 @@ namespace DeadMosquito.Stickies
         {
             var iconRect = StickiesGUI.GetProjectViewIconRect(rect);
 
-            bool hasNoteAttached = NoteStorage.Instance.HasItem(guid);
+            var hasNoteAttached = NoteStorage.Instance.HasItem(guid);
             if (hasNoteAttached)
             {
                 // Draw note
@@ -25,8 +25,8 @@ namespace DeadMosquito.Stickies
                 return;
             }
 
-            bool isInFocues = rect.HasMouseInside();
-            if (isInFocues)
+            var isInFocus = rect.HasMouseInside();
+            if (isInFocus)
             {
                 // Add note
                 DrawAddNoteButton(iconRect, guid);

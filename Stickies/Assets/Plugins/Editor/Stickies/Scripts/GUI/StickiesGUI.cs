@@ -7,7 +7,6 @@ namespace DeadMosquito.Stickies
     public static class StickiesGUI
     {
         #region gui_elements
-
         public static bool EmptyButton(Rect rect)
         {
             return GUI.Button(rect, GUIContent.none, GUIStyle.none);
@@ -17,7 +16,8 @@ namespace DeadMosquito.Stickies
         {
             Handles.DrawSolidRectangleWithOutline(rect, main, header);
             var headerHeight = rect.height / 10f;
-            Handles.DrawSolidRectangleWithOutline(new Rect(rect.x, rect.y, rect.width, headerHeight), header, Color.clear);
+            Handles.DrawSolidRectangleWithOutline(new Rect(rect.x, rect.y, rect.width, headerHeight), header,
+                Color.clear);
         }
 
         public static NoteColor ColorChooser(Rect rect)
@@ -28,7 +28,7 @@ namespace DeadMosquito.Stickies
                 var color = colors[i];
                 if (color == NoteColor.None)
                     continue;
-                
+
                 var noteColors = Colors.ColorById(color);
                 if (StickiesGUI.ColorButton(new Rect(15 + i * 32, rect.y, 32, 32), noteColors.main,
                     noteColors.chooserOutline))
@@ -51,35 +51,35 @@ namespace DeadMosquito.Stickies
             switch (Event.current.GetTypeForControl(controlID))
             {
                 case EventType.Repaint:
+                {
+                    var outlineColor = rect.HasMouseInside() ? outline : fill;
+                    DrawDisc(center, radius, outlineColor);
+                    DrawDisc(center, radius - outlineRadius, fill);
+                    if (GUIUtility.hotControl == controlID)
                     {
-                        var outlineColor = rect.HasMouseInside() ? outline : fill;
-                        DrawDisc(center, radius, outlineColor);
-                        DrawDisc(center, radius - outlineRadius, fill);
-                        if (GUIUtility.hotControl == controlID)
-                        {
-                            DrawDisc(center, radius, Colors.Darken);
-                        }
-                        break;
+                        DrawDisc(center, radius, Colors.Darken);
                     }
+                    break;
+                }
                 case EventType.MouseDown:
+                {
+                    if (rect.HasMouseInside()
+                        && Event.current.button == 0
+                        && GUIUtility.hotControl == 0)
                     {
-                        if (rect.HasMouseInside()
-                            && Event.current.button == 0
-                            && GUIUtility.hotControl == 0)
-                        {
-                            GUIUtility.hotControl = controlID;
-                        }
-                        break;
+                        GUIUtility.hotControl = controlID;
                     }
+                    break;
+                }
                 case EventType.MouseUp:
+                {
+                    if (GUIUtility.hotControl == controlID && rect.HasMouseInside())
                     {
-                        if (GUIUtility.hotControl == controlID && rect.HasMouseInside())
-                        {
-                            clicked = true;
-                            GUIUtility.hotControl = 0;
-                        }
-                        break;
+                        clicked = true;
+                        GUIUtility.hotControl = 0;
                     }
+                    break;
+                }
             }
 
             if (Event.current.isMouse && GUIUtility.hotControl == controlID)
@@ -105,22 +105,21 @@ namespace DeadMosquito.Stickies
         static void DrawArc(Vector2 center, float radius, float angle, Color fill)
         {
             var start = new Vector2(
-                            -Mathf.Cos(Mathf.Deg2Rad * angle / 2f),
-                            Mathf.Sin(Mathf.Deg2Rad * angle / 2f)
-                        );
+                -Mathf.Cos(Mathf.Deg2Rad * angle / 2f),
+                Mathf.Sin(Mathf.Deg2Rad * angle / 2f)
+            );
 
             Handles.color = fill;
             Handles.DrawSolidArc(center, Vector3.forward, start, angle, radius);
         }
-
         #endregion
 
         public static Rect GetProjectViewIconRect(Rect rect)
         {
-            const float Offset = 1f;
-            float iconSize = EditorGUIUtility.singleLineHeight - 2 * Offset;
+            const float offset = 1f;
+            float iconSize = EditorGUIUtility.singleLineHeight - 2 * offset;
             var iconX = rect.x + rect.width - iconSize;
-            var iconRect = new Rect(iconX - Offset, rect.y + Offset, iconSize, iconSize);
+            var iconRect = new Rect(iconX - offset, rect.y + offset, iconSize, iconSize);
             return iconRect;
         }
     }
