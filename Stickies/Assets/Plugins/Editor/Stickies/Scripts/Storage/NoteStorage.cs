@@ -101,7 +101,14 @@ namespace DeadMosquito.Stickies
                 AddNote(guid, entry);
             }
 
+            Persist(serObj);
+        }
+
+        static void Persist(SerializedObject serObj)
+        {
             serObj.ApplyModifiedProperties();
+            EditorUtility.SetDirty(Instance);
+            EditorApplication.SaveAssets();
         }
 
         public bool HasItem(string guid)
