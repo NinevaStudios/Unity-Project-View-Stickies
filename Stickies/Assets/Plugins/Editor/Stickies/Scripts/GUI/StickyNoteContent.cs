@@ -51,9 +51,14 @@ namespace DeadMosquito.Stickies
 
             StickiesGUI.ColorRect(headerRect, headerColor, Color.clear);
 
-
-            var deleteBtnRect = new Rect(headerRect.x, headerRect.y, headerRect.height, headerRect.height);
+            // TODO extract
+            var deleteBtnRect = new Rect(headerRect.width - headerRect.height, headerRect.y, headerRect.height, headerRect.height);
             StickiesGUI.TextureButton(deleteBtnRect, Texture2D.whiteTexture);
+        }
+
+        void DeleteButton()
+        {
+            
         }
 
         void DrawNoteText(Rect rect)

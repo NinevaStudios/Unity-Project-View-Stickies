@@ -36,7 +36,7 @@ namespace DeadMosquito.Stickies
                     continue;
 
                 var noteColors = Colors.ColorById(color);
-                if (ColorButton(new Rect(15 + i * 32, rect.y, 32, 32), noteColors.main,
+                if (ColorButton(new Rect(15 + i * 36, rect.y, 32, 32), noteColors.main,
                     noteColors.chooserOutline))
                 {
                     return color;
@@ -46,24 +46,28 @@ namespace DeadMosquito.Stickies
             return NoteColor.None;
         }
 
-        public static bool ColorButton(Rect rect, Color fill, Color outline, float outlineRadius = 2f)
+        public static bool ColorButton(Rect rect, Color fill, Color outline, float outlineSize = 2f)
         {
-            bool clicked = false;
-            int controlId = GUIUtility.GetControlID(FocusType.Passive);
+            const float outlineSizeIdle = 1f;
 
             var center = rect.center;
-            var radius = rect.width / 2f;
+            var innerFillRadius = rect.width / 2f;
 
+            var outlineRadiusIdle = innerFillRadius + outlineSizeIdle;
+            var outlineRadiusHover = innerFillRadius + outlineSize;
+
+            bool clicked = false;
+            int controlId = GUIUtility.GetControlID(FocusType.Passive);
             switch (Event.current.GetTypeForControl(controlId))
             {
                 case EventType.Repaint:
                 {
-                    var outlineColor = rect.HasMouseInside() ? outline : fill;
-                    DrawDisc(center, radius, outlineColor);
-                    DrawDisc(center, radius - outlineRadius, fill);
+                    var outerRadius = rect.HasMouseInside() ? outlineRadiusHover : outlineRadiusIdle;
+                    DrawDisc(center, outerRadius, outline);
+                    DrawDisc(center, innerFillRadius, fill);
                     if (GUIUtility.hotControl == controlId)
                     {
-                        DrawDisc(center, radius, Colors.Darken);
+                        DrawDisc(center, innerFillRadius, Colors.Darken);
                     }
                     break;
                 }
