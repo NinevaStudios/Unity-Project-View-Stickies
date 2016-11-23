@@ -12,12 +12,18 @@ namespace DeadMosquito.Stickies
             return GUI.Button(rect, GUIContent.none, GUIStyle.none);
         }
 
+        public static void ColorRect(Rect rect, Color color, Color outline)
+        {
+            Handles.DrawSolidRectangleWithOutline(rect, color, outline);
+        }
+
         public static void DrawRectNote(Rect rect, Color main, Color header)
         {
             Handles.DrawSolidRectangleWithOutline(rect, main, header);
+
             var headerHeight = rect.height / 10f;
-            Handles.DrawSolidRectangleWithOutline(new Rect(rect.x, rect.y, rect.width, headerHeight), header,
-                Color.clear);
+            var headerRect = new Rect(rect.x, rect.y, rect.width, headerHeight);
+            Handles.DrawSolidRectangleWithOutline(headerRect, header, Color.clear);
         }
 
         public static NoteColor ColorChooser(Rect rect)
@@ -30,7 +36,7 @@ namespace DeadMosquito.Stickies
                     continue;
 
                 var noteColors = Colors.ColorById(color);
-                if (StickiesGUI.ColorButton(new Rect(15 + i * 32, rect.y, 32, 32), noteColors.main,
+                if (ColorButton(new Rect(15 + i * 32, rect.y, 32, 32), noteColors.main,
                     noteColors.chooserOutline))
                 {
                     return color;
@@ -43,19 +49,19 @@ namespace DeadMosquito.Stickies
         public static bool ColorButton(Rect rect, Color fill, Color outline, float outlineRadius = 2f)
         {
             bool clicked = false;
-            int controlID = GUIUtility.GetControlID(FocusType.Passive);
+            int controlId = GUIUtility.GetControlID(FocusType.Passive);
 
             var center = rect.center;
             var radius = rect.width / 2f;
 
-            switch (Event.current.GetTypeForControl(controlID))
+            switch (Event.current.GetTypeForControl(controlId))
             {
                 case EventType.Repaint:
                 {
                     var outlineColor = rect.HasMouseInside() ? outline : fill;
                     DrawDisc(center, radius, outlineColor);
                     DrawDisc(center, radius - outlineRadius, fill);
-                    if (GUIUtility.hotControl == controlID)
+                    if (GUIUtility.hotControl == controlId)
                     {
                         DrawDisc(center, radius, Colors.Darken);
                     }
@@ -67,22 +73,80 @@ namespace DeadMosquito.Stickies
                         && Event.current.button == 0
                         && GUIUtility.hotControl == 0)
                     {
-                        GUIUtility.hotControl = controlID;
+                        GUIUtility.hotControl = controlId;
                     }
                     break;
                 }
                 case EventType.MouseUp:
                 {
-                    if (GUIUtility.hotControl == controlID && rect.HasMouseInside())
+                    if (GUIUtility.hotControl == controlId)
                     {
-                        clicked = true;
+                        if (rect.HasMouseInside())
+                        {
+                            clicked = true;
+                        }
+
                         GUIUtility.hotControl = 0;
                     }
                     break;
                 }
             }
 
-            if (Event.current.isMouse && GUIUtility.hotControl == controlID)
+            if (Event.current.isMouse && GUIUtility.hotControl == controlId)
+            {
+                // Report that the data in the GUI has changed
+                GUI.changed = true;
+
+                // Mark event as 'used' so other controls don't respond to it, and to
+                // trigger an automatic repaint.
+                Event.current.Use();
+            }
+
+            return clicked;
+        }
+
+        public static bool TextureButton(Rect rect, Texture2D tex)
+        {
+            bool clicked = false;
+            int controlId = GUIUtility.GetControlID(FocusType.Passive);
+
+            switch (Event.current.GetTypeForControl(controlId))
+            {
+                case EventType.Repaint:
+                {
+                    GUI.DrawTexture(rect, tex);
+                    if (GUIUtility.hotControl == controlId)
+                    {
+                        Handles.DrawSolidRectangleWithOutline(rect, Colors.Darken, Colors.Darken);
+                    }
+                    break;
+                }
+                case EventType.MouseDown:
+                {
+                    if (rect.HasMouseInside()
+                        && Event.current.button == 0
+                        && GUIUtility.hotControl == 0)
+                    {
+                        GUIUtility.hotControl = controlId;
+                    }
+                    break;
+                }
+                case EventType.MouseUp:
+                {
+                    if (GUIUtility.hotControl == controlId)
+                    {
+                        if (rect.HasMouseInside())
+                        {
+                            clicked = true;
+                        }
+
+                        GUIUtility.hotControl = 0;
+                    }
+                    break;
+                }
+            }
+
+            if (Event.current.isMouse && GUIUtility.hotControl == controlId)
             {
                 // Report that the data in the GUI has changed
                 GUI.changed = true;

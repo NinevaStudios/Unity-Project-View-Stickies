@@ -32,17 +32,33 @@ namespace DeadMosquito.Stickies
         public override void OnGUI(Rect rect)
         {
             var c = Colors.ColorById(_color);
-            StickiesGUI.DrawRectNote(rect, c.main, c.header);
+            DrawNoteBackground(rect, c.main);
+            DrawNoteHeader(rect, c.header);
 
             DrawColorPicker(new Rect(rect.x, rect.y, rect.width, ColorPickerHeight));
             DrawNoteText(rect);
             editorWindow.Repaint();
         }
 
+        static void DrawNoteBackground(Rect rect, Color backgroundColor)
+        {
+            StickiesGUI.ColorRect(rect, backgroundColor, Color.clear);
+        }
+
+        static void DrawNoteHeader(Rect rect, Color headerColor)
+        {
+            var headerRect = GetHeaderRect(rect);
+
+            StickiesGUI.ColorRect(headerRect, headerColor, Color.clear);
+
+
+            var deleteBtnRect = new Rect(headerRect.x, headerRect.y, headerRect.height, headerRect.height);
+            StickiesGUI.TextureButton(deleteBtnRect, Texture2D.whiteTexture);
+        }
+
         void DrawNoteText(Rect rect)
         {
-            var textAreaRect = new Rect(rect.x, rect.y + HeaderSize, rect.width, rect.height - HeaderSize);
-            GUILayout.BeginArea(textAreaRect);
+            GUILayout.BeginArea(GetTextAreaRect(rect));
             EditorGUILayout.BeginVertical();
             GUI.skin = StickiesStyles.Skin;
 
@@ -67,7 +83,6 @@ namespace DeadMosquito.Stickies
         }
 
         #region callbacks
-
         public override void OnOpen()
         {
             if (NoteStorage.Instance.HasItem(_guid))
@@ -86,13 +101,27 @@ namespace DeadMosquito.Stickies
             }
 
             NoteStorage.Instance.AddOrUpdate(_guid, new NoteData
-                {
-                    text = _text,
-                    color = _color
-                });
+            {
+                text = _text,
+                color = _color
+            });
+        }
+        #endregion
+
+        #region rects
+        static Rect GetHeaderRect(Rect noteRect)
+        {
+            var headerHeight = noteRect.height / 10f;
+            var headerRect = new Rect(noteRect.x, noteRect.y, noteRect.width, headerHeight);
+            return headerRect;
         }
 
+        static Rect GetTextAreaRect(Rect noteRect)
+        {
+            return new Rect(noteRect.x, noteRect.y + HeaderSize, noteRect.width, noteRect.height - HeaderSize);
+        }
         #endregion
     }
 }
+
 #endif
