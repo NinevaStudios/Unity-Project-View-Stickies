@@ -53,6 +53,23 @@ namespace DeadMosquito.Stickies
             }
         }
 
+        public class EditorPrefsIntSlider : EditorPrefsInt
+        {
+            readonly int _leftValue;
+            readonly int _rightValue;
+
+            public EditorPrefsIntSlider(string key, string label, int defaultValue, int leftValue, int rightValue) : base(key, label, defaultValue)
+            {
+                _leftValue = leftValue;
+                _rightValue = rightValue;
+            }
+
+            public override void Draw()
+            {
+                Value = EditorGUILayout.IntSlider(Label, Value, _leftValue, _rightValue);
+            }
+        }
+
         public class EditorPrefsString : EditorPrefsItem<string>
         {
             public EditorPrefsString(string key, string label, string defaultValue)
@@ -149,6 +166,7 @@ namespace DeadMosquito.Stickies
             StickiesHomeFolder.Draw();
             EditorGUILayout.Space();
             ConfirmDeleting.Draw();
+            OffsetInProjectView.Draw();
             GUILayout.FlexibleSpace();
             EditorGUILayout.LabelField("Version 1.0", EditorStyles.centeredGreyMiniLabel);
         }
@@ -169,6 +187,9 @@ namespace DeadMosquito.Stickies
 
         public static EditorPrefsBool ConfirmDeleting =
             new EditorPrefsBool("DeadMosquito.Stickies.ConfirmDeleting." + ProjectName, "Confirm before deleting", true);
+
+        public static EditorPrefsIntSlider OffsetInProjectView =
+            new EditorPrefsIntSlider("DeadMosquito.Stickies.OffsetInProjectView." + ProjectName, "Offset in Project View", 0, 0, 100);
     }
 }
 

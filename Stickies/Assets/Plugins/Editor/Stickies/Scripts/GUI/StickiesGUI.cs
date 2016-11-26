@@ -119,9 +119,13 @@ namespace DeadMosquito.Stickies
                 case EventType.Repaint:
                 {
                     GUI.DrawTexture(rect, tex);
+                    if (rect.HasMouseInside())
+                    {
+                        ColorRect(rect, Colors.DarkenABit, Color.clear);
+                    }
                     if (GUIUtility.hotControl == controlId)
                     {
-                        Handles.DrawSolidRectangleWithOutline(rect, Colors.Darken, Color.clear);
+                        ColorRect(rect, Colors.Darken, Color.clear);
                     }
                     break;
                 }
@@ -186,7 +190,7 @@ namespace DeadMosquito.Stickies
         {
             const float offset = 1f;
             float iconSize = EditorGUIUtility.singleLineHeight - 2 * offset;
-            var iconX = rect.x + rect.width - iconSize;
+            var iconX = rect.x + rect.width - iconSize - StickiesEditorSettings.OffsetInProjectView;
             var iconRect = new Rect(iconX - offset, rect.y + offset, iconSize, iconSize);
             return iconRect;
         }

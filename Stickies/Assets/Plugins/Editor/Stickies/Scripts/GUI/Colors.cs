@@ -23,6 +23,7 @@ namespace DeadMosquito.Stickies
         }
 
         public static readonly Color Darken = new Color(0, 0, 0, 0.1f);
+        public static readonly Color DarkenABit = new Color(0, 0, 0, 0.04f);
 
         public static NoteColor[] Values { get; private set; }
 

@@ -9,14 +9,7 @@ namespace DeadMosquito.Stickies
 {
     public class NoteStorage : ScriptableObject
     {
-        public const string AssetExtension = "asset";
-        // TODO switch to preferences path
-        const string DefaultSettingsPath = "Assets/Plugins/Editor/Stickies";
-        const string AssetName = "Database";
-        const string AssetsFolder = "Assets";
-
-        static readonly string AssetNameWithExt = string.Join(".", new [] { AssetName, AssetExtension });
-        static readonly string AssetPath = Path.Combine(DefaultSettingsPath, AssetNameWithExt);
+        static string _assetPath;
 
         // Simulate a dictionary
         public List<string> fileGuids;
@@ -34,18 +27,25 @@ namespace DeadMosquito.Stickies
             }
         }
 
+        void OnEnable()
+        {
+            _assetPath = Path.Combine(StickiesEditorSettings.StickiesHomeFolder, "Database.asset");
+        }
+
         public static NoteStorage Instance
         {
             get
             {
                 if (_instance == null)
                 {
-                    LoadOrCreate();
+                    _instance = LoadFromAsset();
                 }
 
                 if (_instance == null)
                 {
-                    Debug.LogError("Notes database was not found or couldn't be created. Errors ahead...");
+                    Debug.LogError(
+                        string.Format("Notes database was not found at {0} or couldn't be created. " +
+                                      "Check Preferences -> Stickies folder path if it points to Stickies location in project...\nErrors ahead...", _assetPath));
                 }
 
                 _instance.Validate();
@@ -53,20 +53,9 @@ namespace DeadMosquito.Stickies
             }
         }
 
-        static void LoadOrCreate()
-        {
-            _instance = LoadFromAsset();
-            if (_instance == null)
-            {
-                Debug.Log("Creating new notes storage...");
-                StickiesEditorUtility.CreateAsset<NoteStorage>(AssetName, DefaultSettingsPath);
-                _instance = LoadFromAsset();
-            }
-        }
-
         static NoteStorage LoadFromAsset()
         {
-            return AssetDatabase.LoadAssetAtPath<NoteStorage>(AssetPath);
+            return AssetDatabase.LoadAssetAtPath<NoteStorage>(_assetPath);
         }
 
         void Validate()
@@ -83,7 +72,6 @@ namespace DeadMosquito.Stickies
         }
 
         #region API
-
         public NoteData ItemByGuid(string guid)
         {
             if (!HasItem(guid))
@@ -170,4 +158,5 @@ namespace DeadMosquito.Stickies
         }
     }
 }
+
 #endif
