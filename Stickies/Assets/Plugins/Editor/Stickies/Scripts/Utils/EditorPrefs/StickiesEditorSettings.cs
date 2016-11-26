@@ -147,6 +147,7 @@ namespace DeadMosquito.Stickies
                 "Change this setting to new location of Stickies if you move the folder around in your project.",
                 MessageType.Warning);
             StickiesHomeFolder.Draw();
+            ConfirmDeleting.Draw();
             GUILayout.FlexibleSpace();
             EditorGUILayout.LabelField("Version 1.0", EditorStyles.centeredGreyMiniLabel);
         }
@@ -161,8 +162,12 @@ namespace DeadMosquito.Stickies
             }
         }
 
-        public static EditorPrefsString StickiesHomeFolder = new EditorPrefsString("DeadMosquito.Stickies'" +
-                                                                             ".StickiesHomeFolder." + ProjectName, "Location Folder", "Assets/Plugins/Editor/Stickies");
+        public static EditorPrefsString StickiesHomeFolder =
+            new EditorPrefsString("DeadMosquito.Stickies.StickiesHomeFolder." + ProjectName, "Location Folder",
+                "Assets/Plugins/Editor/Stickies");
+
+        public static EditorPrefsBool ConfirmDeleting =
+            new EditorPrefsBool("DeadMosquito.Stickies.ConfirmDeleting." + ProjectName, "Confirm before deleting", true);
     }
 }
 

@@ -50,17 +50,21 @@ namespace DeadMosquito.Stickies
             var headerRect = GetHeaderRect(rect);
 
             StickiesGUI.ColorRect(headerRect, headerColor, Color.clear);
-            DrawDeleteBtn(headerRect);
+            if (DrawDeleteBtn(headerRect))
+            {
+                // TODO Delete not + dialog
+                EditorUtility.DisplayDialog("Delete Note", "Do you want to delete this note?", "Keep", "Delete");
+            }
         }
 
-        static void DrawDeleteBtn(Rect headerRect)
+        static bool DrawDeleteBtn(Rect headerRect)
         {
-            StickiesGUI.TextureButton(GetDeleteBtnRect(headerRect), Assets.Textures.DeleteTexture);
+            return StickiesGUI.TextureButton(GetDeleteBtnRect(headerRect), Assets.Textures.DeleteTexture);
         }
 
-        void DeleteButton()
+        static void ShowColorPickerButton()
         {
-            
+
         }
 
         void DrawNoteText(Rect rect)
