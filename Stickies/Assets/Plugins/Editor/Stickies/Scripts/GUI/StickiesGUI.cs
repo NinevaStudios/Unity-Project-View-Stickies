@@ -121,7 +121,7 @@ namespace DeadMosquito.Stickies
                     GUI.DrawTexture(rect, tex);
                     if (GUIUtility.hotControl == controlId)
                     {
-                        Handles.DrawSolidRectangleWithOutline(rect, Colors.Darken, Colors.Darken);
+                        Handles.DrawSolidRectangleWithOutline(rect, Colors.Darken, Color.clear);
                     }
                     break;
                 }

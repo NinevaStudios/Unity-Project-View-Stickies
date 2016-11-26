@@ -55,7 +55,7 @@ namespace DeadMosquito.Stickies
 
         static void DrawDeleteBtn(Rect headerRect)
         {
-            StickiesGUI.TextureButton(GetDeleteBtnRect(headerRect), Texture2D.whiteTexture);
+            StickiesGUI.TextureButton(GetDeleteBtnRect(headerRect), Assets.Textures.DeleteTexture);
         }
 
         void DeleteButton()
