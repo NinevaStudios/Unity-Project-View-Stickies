@@ -118,6 +118,7 @@ namespace DeadMosquito.Stickies
         {
             return fileGuids.Contains(guid);
         }
+
         public void DeleteNote(string guid)
         {
             Validate();

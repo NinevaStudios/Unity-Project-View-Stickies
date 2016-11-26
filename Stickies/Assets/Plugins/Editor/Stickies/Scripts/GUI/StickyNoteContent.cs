@@ -16,16 +16,40 @@ namespace DeadMosquito.Stickies
 
         #region note_persisted_properties
         readonly string _guid;
-        string _text = string.Empty;
-        NoteColor _color = NoteColor.Lemon;
+        NoteData _noteData;
         #endregion
 
         bool _deleted;
 
+        #region init
         public StickyNoteContent(string guid)
         {
             _guid = guid;
+            Init();
         }
+
+        void Init()
+        {
+            if (NoteStorage.Instance.HasItem(_guid))
+            {
+                LoadData();
+            }
+            else
+            {
+                _noteData = new NoteData();
+            }
+        }
+
+        void LoadData()
+        {
+            var fromSaved = NoteStorage.Instance.ItemByGuid(_guid);
+            _noteData = new NoteData
+            {
+                text = fromSaved.text,
+                color = fromSaved.color
+            };
+        }
+        #endregion
 
         public override Vector2 GetWindowSize()
         {
@@ -34,7 +58,7 @@ namespace DeadMosquito.Stickies
 
         public override void OnGUI(Rect rect)
         {
-            var c = Colors.ColorById(_color);
+            var c = Colors.ColorById(_noteData.color);
             DrawNoteBackground(rect, c.main);
             DrawNoteHeader(rect, c.header);
 
@@ -56,7 +80,8 @@ namespace DeadMosquito.Stickies
             if (DeleteButton(headerRect))
             {
                 // TODO read preference if show confirmation
-                bool confirmed = EditorUtility.DisplayDialog("Delete Note", "Do you want to delete this note?", "Delete", "Keep");
+                bool confirmed = EditorUtility.DisplayDialog("Delete Note", "Do you want to delete this note?", "Delete",
+                    "Keep");
                 if (confirmed)
                 {
                     DeleteNote();
@@ -77,7 +102,6 @@ namespace DeadMosquito.Stickies
 
         static void ShowColorPickerButton()
         {
-
         }
 
         void DrawNoteText(Rect rect)
@@ -87,7 +111,7 @@ namespace DeadMosquito.Stickies
             GUI.skin = Assets.Styles.Skin;
 
             _scroll = EditorGUILayout.BeginScrollView(_scroll);
-            _text = EditorGUILayout.TextArea(_text, Assets.Styles.TextArea);
+            _noteData.text = EditorGUILayout.TextArea(_noteData.text, Assets.Styles.TextArea);
             EditorGUILayout.EndScrollView();
 
             GUI.skin = null;
@@ -98,36 +122,37 @@ namespace DeadMosquito.Stickies
 
         void DrawColorPicker(Rect rect)
         {
-            var color = StickiesGUI.ColorChooser(rect);
-            if (color != NoteColor.None)
+            var newColor = StickiesGUI.ColorChooser(rect);
+            if (newColor != NoteColor.None)
             {
-                _color = color;
+                _noteData.color = newColor;
+                Persist();
             }
         }
 
         #region callbacks
         public override void OnOpen()
         {
-            if (NoteStorage.Instance.HasItem(_guid))
+            // Persist empty note if it doesn't exist
+            if (!NoteStorage.Instance.HasItem(_guid))
             {
-                var fromSaved = NoteStorage.Instance.ItemByGuid(_guid);
-                _text = fromSaved.text;
-                _color = fromSaved.color;
+                NoteStorage.Instance.AddOrUpdate(_guid, new NoteData());
             }
         }
 
         public override void OnClose()
         {
-            if (string.IsNullOrEmpty(_text) || _deleted)
+            if (string.IsNullOrEmpty(_noteData.text) || _deleted)
             {
                 return;
             }
 
-            NoteStorage.Instance.AddOrUpdate(_guid, new NoteData
-            {
-                text = _text,
-                color = _color
-            });
+            Persist();
+        }
+
+        void Persist()
+        {
+            NoteStorage.Instance.AddOrUpdate(_guid, new NoteData(_noteData));
         }
         #endregion
 
