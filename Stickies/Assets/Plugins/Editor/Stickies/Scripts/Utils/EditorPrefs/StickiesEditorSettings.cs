@@ -1,8 +1,7 @@
-﻿using System;
+﻿#if UNITY_EDITOR
+using System;
 using UnityEditor;
 using UnityEngine;
-
-#if UNITY_EDITOR
 
 namespace DeadMosquito.Stickies
 {
@@ -144,9 +143,26 @@ namespace DeadMosquito.Stickies
         [PreferenceItem("Stickies")]
         public static void EditorPreferences()
         {
+            EditorGUILayout.HelpBox(
+                "Change this setting to new location of Stickies if you move the folder around in your project.",
+                MessageType.Warning);
+            StickiesHomeFolder.Draw();
             GUILayout.FlexibleSpace();
             EditorGUILayout.LabelField("Version 1.0", EditorStyles.centeredGreyMiniLabel);
         }
+
+        static string ProjectName
+        {
+            get
+            {
+                var s = Application.dataPath.Split('/');
+                var p = s[s.Length - 2];
+                return p;
+            }
+        }
+
+        public static EditorPrefsString StickiesHomeFolder = new EditorPrefsString("DeadMosquito.Stickies'" +
+                                                                             ".StickiesHomeFolder." + ProjectName, "Location Folder", "Assets/Plugins/Editor/Stickies");
     }
 }
 

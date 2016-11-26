@@ -67,10 +67,10 @@ namespace DeadMosquito.Stickies
         {
             GUILayout.BeginArea(GetTextAreaRect(rect));
             EditorGUILayout.BeginVertical();
-            GUI.skin = StickiesStyles.Skin;
+            GUI.skin = Assets.Styles.Skin;
 
             _scroll = EditorGUILayout.BeginScrollView(_scroll);
-            _text = EditorGUILayout.TextArea(_text, StickiesStyles.TextArea);
+            _text = EditorGUILayout.TextArea(_text, Assets.Styles.TextArea);
             EditorGUILayout.EndScrollView();
 
             GUI.skin = null;
@@ -85,7 +85,6 @@ namespace DeadMosquito.Stickies
             if (color != NoteColor.None)
             {
                 _color = color;
-                Debug.Log(color);
             }
         }
 
