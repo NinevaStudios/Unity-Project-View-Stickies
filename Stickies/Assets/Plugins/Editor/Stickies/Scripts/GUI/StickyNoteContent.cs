@@ -75,15 +75,27 @@ namespace DeadMosquito.Stickies
         void DrawNoteHeader(Rect rect, Color headerColor)
         {
             var headerRect = GetHeaderRect(rect);
-
             StickiesGUI.ColorRect(headerRect, headerColor, Color.clear);
+
+            DrawDeleteButton(headerRect);
+        }
+
+        void DrawDeleteButton(Rect headerRect)
+        {
             if (DeleteButton(headerRect))
             {
-                // TODO read preference if show confirmation
-                bool confirmed = EditorUtility.DisplayDialog("Delete Note", "Do you want to delete this note?", "Delete",
-                    "Keep");
-                if (confirmed)
+                if (StickiesEditorSettings.ConfirmDeleting)
                 {
+                    bool confirmed = EditorUtility.DisplayDialog("Delete Note", "Do you want to delete this note?",
+                        "Delete", "Keep");
+                    if (confirmed)
+                    {
+                        DeleteNote();
+                    }
+                }
+                else
+                {
+                    // Delete immediately
                     DeleteNote();
                 }
             }
@@ -93,6 +105,7 @@ namespace DeadMosquito.Stickies
         {
             NoteStorage.Instance.DeleteNote(_guid);
             _deleted = true;
+            editorWindow.Close();
         }
 
         static bool DeleteButton(Rect headerRect)
@@ -142,12 +155,10 @@ namespace DeadMosquito.Stickies
 
         public override void OnClose()
         {
-            if (string.IsNullOrEmpty(_noteData.text) || _deleted)
+            if (!_deleted)
             {
-                return;
+                Persist();
             }
-
-            Persist();
         }
 
         void Persist()

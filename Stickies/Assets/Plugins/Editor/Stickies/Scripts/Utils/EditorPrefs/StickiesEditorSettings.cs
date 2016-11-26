@@ -147,6 +147,7 @@ namespace DeadMosquito.Stickies
                 "Change this setting to new location of Stickies if you move the folder around in your project.",
                 MessageType.Warning);
             StickiesHomeFolder.Draw();
+            EditorGUILayout.Space();
             ConfirmDeleting.Draw();
             GUILayout.FlexibleSpace();
             EditorGUILayout.LabelField("Version 1.0", EditorStyles.centeredGreyMiniLabel);
