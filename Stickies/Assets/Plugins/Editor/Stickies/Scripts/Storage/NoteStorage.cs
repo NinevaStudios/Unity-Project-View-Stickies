@@ -1,4 +1,5 @@
 ﻿#if UNITY_EDITOR
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -9,19 +10,29 @@ namespace DeadMosquito.Stickies
     public class NoteStorage : ScriptableObject
     {
         public const string AssetExtension = "asset";
-        // TODO find folder recursively
+        // TODO switch to preferences path
         const string DefaultSettingsPath = "Assets/Plugins/Editor/Stickies";
         const string AssetName = "Database";
         const string AssetsFolder = "Assets";
 
-        private static readonly string AssetNameWithExt = string.Join(".", new [] { AssetName, AssetExtension });
-        private static readonly string AssetPath = Path.Combine(DefaultSettingsPath, AssetNameWithExt);
+        static readonly string AssetNameWithExt = string.Join(".", new [] { AssetName, AssetExtension });
+        static readonly string AssetPath = Path.Combine(DefaultSettingsPath, AssetNameWithExt);
 
         // Simulate a dictionary
         public List<string> fileGuids;
         public List<NoteData> notes;
 
-        private static NoteStorage _instance;
+        static NoteStorage _instance;
+
+        static SerializedObject AsSerializedObj
+        {
+            get
+            {
+                var serObj = new SerializedObject(Instance);
+                serObj.Update();
+                return serObj;
+            }
+        }
 
         public static NoteStorage Instance
         {
@@ -53,12 +64,12 @@ namespace DeadMosquito.Stickies
             }
         }
 
-        private static NoteStorage LoadFromAsset()
+        static NoteStorage LoadFromAsset()
         {
             return AssetDatabase.LoadAssetAtPath<NoteStorage>(AssetPath);
         }
 
-        private void Validate()
+        void Validate()
         {
             ValidateCount();
         }
@@ -89,8 +100,7 @@ namespace DeadMosquito.Stickies
         {
             Validate();
 
-            var serObj = new SerializedObject(Instance);
-            serObj.Update();
+            var serObj = AsSerializedObj;
 
             if (HasItem(guid))
             {
@@ -104,20 +114,26 @@ namespace DeadMosquito.Stickies
             Persist(serObj);
         }
 
-        static void Persist(SerializedObject serObj)
-        {
-            serObj.ApplyModifiedProperties();
-            EditorUtility.SetDirty(Instance);
-            EditorApplication.SaveAssets();
-        }
-
         public bool HasItem(string guid)
         {
             return fileGuids.Contains(guid);
         }
+        public void DeleteNote(string guid)
+        {
+            Validate();
 
+            if (!HasItem(guid))
+            {
+                throw new InvalidOperationException("Cannot delete note as it does not exist with GUID: " + guid);
+            }
+
+            var serObj = AsSerializedObj;
+
+            DeleteNoteByGuid(guid);
+
+            Persist(serObj, false);
+        }
         #endregion
-
 
         void AddNote(string guid, NoteData entry)
         {
@@ -129,6 +145,27 @@ namespace DeadMosquito.Stickies
         {
             int index = fileGuids.IndexOf(guid);
             notes[index] = entry;
+        }
+
+        void DeleteNoteByGuid(string guid)
+        {
+            int index = fileGuids.IndexOf(guid);
+            fileGuids.RemoveAt(index);
+            notes.RemoveAt(index);
+        }
+
+        static void Persist(SerializedObject serObj, bool withUndo = true)
+        {
+            if (withUndo)
+            {
+                serObj.ApplyModifiedProperties();
+            }
+            else
+            {
+                serObj.ApplyModifiedPropertiesWithoutUndo();
+            }
+            EditorUtility.SetDirty(Instance);
+            EditorApplication.SaveAssets();
         }
     }
 }

@@ -14,10 +14,13 @@ namespace DeadMosquito.Stickies
 
         const float ColorPickerHeight = 48f;
 
+        #region note_persisted_properties
         readonly string _guid;
-
         string _text = string.Empty;
         NoteColor _color = NoteColor.Lemon;
+        #endregion
+
+        bool _deleted;
 
         public StickyNoteContent(string guid)
         {
@@ -40,24 +43,34 @@ namespace DeadMosquito.Stickies
             editorWindow.Repaint();
         }
 
-        static void DrawNoteBackground(Rect rect, Color backgroundColor)
+        void DrawNoteBackground(Rect rect, Color backgroundColor)
         {
             StickiesGUI.ColorRect(rect, backgroundColor, Color.clear);
         }
 
-        static void DrawNoteHeader(Rect rect, Color headerColor)
+        void DrawNoteHeader(Rect rect, Color headerColor)
         {
             var headerRect = GetHeaderRect(rect);
 
             StickiesGUI.ColorRect(headerRect, headerColor, Color.clear);
-            if (DrawDeleteBtn(headerRect))
+            if (DeleteButton(headerRect))
             {
-                // TODO Delete not + dialog
-                EditorUtility.DisplayDialog("Delete Note", "Do you want to delete this note?", "Keep", "Delete");
+                // TODO read preference if show confirmation
+                bool confirmed = EditorUtility.DisplayDialog("Delete Note", "Do you want to delete this note?", "Delete", "Keep");
+                if (confirmed)
+                {
+                    DeleteNote();
+                }
             }
         }
 
-        static bool DrawDeleteBtn(Rect headerRect)
+        void DeleteNote()
+        {
+            NoteStorage.Instance.DeleteNote(_guid);
+            _deleted = true;
+        }
+
+        static bool DeleteButton(Rect headerRect)
         {
             return StickiesGUI.TextureButton(GetDeleteBtnRect(headerRect), Assets.Textures.DeleteTexture);
         }
@@ -105,7 +118,7 @@ namespace DeadMosquito.Stickies
 
         public override void OnClose()
         {
-            if (string.IsNullOrEmpty(_text))
+            if (string.IsNullOrEmpty(_text) || _deleted)
             {
                 return;
             }
