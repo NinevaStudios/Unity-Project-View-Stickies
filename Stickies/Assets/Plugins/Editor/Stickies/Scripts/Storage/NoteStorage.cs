@@ -27,11 +27,6 @@ namespace DeadMosquito.Stickies
             }
         }
 
-        void OnEnable()
-        {
-            _assetPath = Path.Combine(StickiesEditorSettings.StickiesHomeFolder, "Database.asset");
-        }
-
         public static NoteStorage Instance
         {
             get
@@ -55,6 +50,7 @@ namespace DeadMosquito.Stickies
 
         static NoteStorage LoadFromAsset()
         {
+            _assetPath = Path.Combine(StickiesEditorSettings.StickiesHomeFolder, "Database.asset");
             return AssetDatabase.LoadAssetAtPath<NoteStorage>(_assetPath);
         }
 
