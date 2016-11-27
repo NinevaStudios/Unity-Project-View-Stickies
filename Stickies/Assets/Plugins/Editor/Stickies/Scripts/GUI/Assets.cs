@@ -38,10 +38,17 @@ namespace DeadMosquito.Stickies
         public static class Textures
         {
             public static readonly Texture2D DeleteTexture;
+            public static readonly Texture2D MoreOptionsTexture;
 
             static Textures()
             {
-                DeleteTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(GetTexturePath("ic_delete"));
+                DeleteTexture = GetTexture("ic_delete");
+                MoreOptionsTexture = GetTexture("ic_color_picker");
+            }
+
+            static Texture2D GetTexture(string name)
+            {
+                return AssetDatabase.LoadAssetAtPath<Texture2D>(GetTexturePath(name));
             }
 
             static string GetTexturePath(string name)

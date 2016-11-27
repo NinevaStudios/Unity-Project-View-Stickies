@@ -20,6 +20,7 @@ namespace DeadMosquito.Stickies
         #endregion
 
         bool _deleted;
+        bool _isChoosingColor;
 
         #region init
         public StickyNoteContent(string guid)
@@ -78,7 +79,7 @@ namespace DeadMosquito.Stickies
             StickiesGUI.ColorRect(headerRect, headerColor, Color.clear);
 
             DrawDeleteButton(headerRect);
-            ColorPickerButton(headerRect);
+            DrawColorPickerButton(headerRect);
         }
 
         void DrawDeleteButton(Rect headerRect)
@@ -102,6 +103,14 @@ namespace DeadMosquito.Stickies
             }
         }
 
+        void DrawColorPickerButton(Rect headerRect)
+        {
+            if (ColorPickerButton(headerRect))
+            {
+                _isChoosingColor = true;
+            }
+        }
+
         void DeleteNote()
         {
             NoteStorage.Instance.DeleteNote(_guid);
@@ -116,8 +125,7 @@ namespace DeadMosquito.Stickies
 
         static bool ColorPickerButton(Rect headerRect)
         {
-            // TODO Texture
-            return StickiesGUI.TextureButton(GetPickColorBtnRect(headerRect), Assets.Textures.DeleteTexture);
+            return StickiesGUI.TextureButton(GetPickColorBtnRect(headerRect), Assets.Textures.MoreOptionsTexture);
         }
 
         void DrawNoteText(Rect rect)
@@ -138,6 +146,8 @@ namespace DeadMosquito.Stickies
 
         void DrawColorPicker(Rect rect)
         {
+            if (!_isChoosingColor) { return; }
+
             var newColor = StickiesGUI.ColorChooser(rect);
             if (newColor != NoteColor.None)
             {
