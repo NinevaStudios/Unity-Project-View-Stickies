@@ -7,12 +7,17 @@ namespace DeadMosquito.Stickies
 {
     public class StickyNoteContent : PopupWindowContent
     {
+        enum Mode
+        {
+            Default = 0,
+            ColorPicker = 1
+        }
+
         const float DefaultSize = 320f;
         const float HeaderSize = 32f;
+        const float ColorPickerHeaderHeight = 85f;
 
         Vector2 _scroll = Vector2.zero;
-
-        const float ColorPickerHeight = 48f;
 
         #region note_persisted_properties
         readonly string _guid;
@@ -20,7 +25,7 @@ namespace DeadMosquito.Stickies
         #endregion
 
         bool _deleted;
-        bool _isChoosingColor;
+        Mode _mode = Mode.Default;
 
         #region init
         public StickyNoteContent(string guid)
@@ -63,7 +68,7 @@ namespace DeadMosquito.Stickies
             DrawNoteBackground(rect, c.main);
             DrawNoteHeader(rect, c.header);
 
-            DrawColorPicker(new Rect(rect.x, rect.y, rect.width, ColorPickerHeight));
+            DrawColorPicker(rect, c.header);
             DrawNoteText(rect);
             editorWindow.Repaint();
         }
@@ -75,6 +80,8 @@ namespace DeadMosquito.Stickies
 
         void DrawNoteHeader(Rect rect, Color headerColor)
         {
+            if (_mode != Mode.Default) { return; }
+
             var headerRect = GetHeaderRect(rect);
             StickiesGUI.ColorRect(headerRect, headerColor, Color.clear);
 
@@ -107,7 +114,7 @@ namespace DeadMosquito.Stickies
         {
             if (ColorPickerButton(headerRect))
             {
-                _isChoosingColor = true;
+                _mode = Mode.ColorPicker;
             }
         }
 
@@ -144,15 +151,19 @@ namespace DeadMosquito.Stickies
             GUILayout.EndArea();
         }
 
-        void DrawColorPicker(Rect rect)
+        void DrawColorPicker(Rect rect, Color headerColor)
         {
-            if (!_isChoosingColor) { return; }
+            if (_mode != Mode.ColorPicker) { return; }
 
-            var newColor = StickiesGUI.ColorChooser(rect);
+            var colorPickerRect = new Rect(rect.x, rect.y, rect.width, ColorPickerHeaderHeight);
+            StickiesGUI.ColorRect(colorPickerRect, headerColor, Color.clear);
+
+            var newColor = StickiesGUI.ColorChooser(colorPickerRect);
             if (newColor != NoteColor.None)
             {
                 _noteData.color = newColor;
                 Persist();
+                _mode = Mode.Default;
             }
         }
 
