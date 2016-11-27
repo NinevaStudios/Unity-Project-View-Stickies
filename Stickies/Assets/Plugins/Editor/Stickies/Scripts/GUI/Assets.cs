@@ -21,9 +21,9 @@ namespace DeadMosquito.Stickies
                 TextArea = new GUIStyle(EditorStyles.textArea)
                 {
                     stretchHeight = true,
-                    normal = {background = null},
-                    active = {background = null},
-                    focused = {background = null}
+                    normal = { background = null, textColor = Color.black },
+                    active = { background = null },
+                    focused = { background = null },
                 };
 
                 var skinPath = Path.Combine(StickiesEditorSettings.StickiesHomeFolder, "Assets/ScrollGUISkin.asset");
