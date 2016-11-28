@@ -58,7 +58,8 @@ namespace DeadMosquito.Stickies
             readonly int _leftValue;
             readonly int _rightValue;
 
-            public EditorPrefsIntSlider(string key, string label, int defaultValue, int leftValue, int rightValue) : base(key, label, defaultValue)
+            public EditorPrefsIntSlider(string key, string label, int defaultValue, int leftValue, int rightValue)
+                : base(key, label, defaultValue)
             {
                 _leftValue = leftValue;
                 _rightValue = rightValue;
@@ -167,6 +168,7 @@ namespace DeadMosquito.Stickies
             EditorGUILayout.Space();
             ConfirmDeleting.Draw();
             OffsetInProjectView.Draw();
+            FontSize.Draw();
             GUILayout.FlexibleSpace();
             EditorGUILayout.LabelField("Version 1.0", EditorStyles.centeredGreyMiniLabel);
         }
@@ -189,7 +191,12 @@ namespace DeadMosquito.Stickies
             new EditorPrefsBool("DeadMosquito.Stickies.ConfirmDeleting." + ProjectName, "Confirm before deleting", true);
 
         public static EditorPrefsIntSlider OffsetInProjectView =
-            new EditorPrefsIntSlider("DeadMosquito.Stickies.OffsetInProjectView." + ProjectName, "Offset in Project View", 0, 0, 100);
+            new EditorPrefsIntSlider("DeadMosquito.Stickies.OffsetInProjectView." + ProjectName,
+                "Offset in Project View", 0, 0, 100);
+
+        public static EditorPrefsIntSlider FontSize =
+            new EditorPrefsIntSlider("DeadMosquito.Stickies.FontSize." + ProjectName,
+                "Note Font Size", 10, 8, 32);
     }
 }
 
