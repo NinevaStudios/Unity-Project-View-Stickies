@@ -19,6 +19,10 @@ namespace DeadMosquito.Stickies
 
         Vector2 _scroll = Vector2.zero;
 
+        #region gui_elements
+        INoteGUIElement _headerGUI;
+        #endregion
+
         #region note_persisted_properties
         readonly string _guid;
         NoteData _noteData;
@@ -31,6 +35,7 @@ namespace DeadMosquito.Stickies
         public StickyNoteContent(string guid)
         {
             _guid = guid;
+            _headerGUI = new NoteHeader(OnPickColor, OnDelete);
             Init();
         }
 
@@ -66,10 +71,14 @@ namespace DeadMosquito.Stickies
         {
             var c = Colors.ColorById(_noteData.color);
             DrawNoteBackground(rect, c.main);
-            DrawNoteHeader(rect, c.header);
+            DrawNoteText(rect);
+
+            if (_mode == Mode.Default)
+            {
+                _headerGUI.Draw(rect, c);
+            }
 
             DrawColorPicker(rect, c.header);
-            DrawNoteText(rect);
             editorWindow.Repaint();
         }
 
@@ -78,61 +87,16 @@ namespace DeadMosquito.Stickies
             StickiesGUI.ColorRect(rect, backgroundColor, Color.clear);
         }
 
-        void DrawNoteHeader(Rect rect, Color headerColor)
+        void OnPickColor()
         {
-            if (_mode != Mode.Default) { return; }
-
-            var headerRect = GetHeaderRect(rect);
-            StickiesGUI.ColorRect(headerRect, headerColor, Color.clear);
-
-            DrawDeleteButton(headerRect);
-            DrawColorPickerButton(headerRect);
+             _mode = Mode.ColorPicker;
         }
 
-        void DrawDeleteButton(Rect headerRect)
-        {
-            if (DeleteButton(headerRect))
-            {
-                if (StickiesEditorSettings.ConfirmDeleting)
-                {
-                    bool confirmed = EditorUtility.DisplayDialog("Delete Note", "Do you want to delete this note?",
-                        "Delete", "Keep");
-                    if (confirmed)
-                    {
-                        DeleteNote();
-                    }
-                }
-                else
-                {
-                    // Delete immediately
-                    DeleteNote();
-                }
-            }
-        }
-
-        void DrawColorPickerButton(Rect headerRect)
-        {
-            if (ColorPickerButton(headerRect))
-            {
-                _mode = Mode.ColorPicker;
-            }
-        }
-
-        void DeleteNote()
+        void OnDelete()
         {
             NoteStorage.Instance.DeleteNote(_guid);
             _deleted = true;
             editorWindow.Close();
-        }
-
-        static bool DeleteButton(Rect headerRect)
-        {
-            return StickiesGUI.TextureButton(GetDeleteBtnRect(headerRect), Assets.Textures.DeleteTexture);
-        }
-
-        static bool ColorPickerButton(Rect headerRect)
-        {
-            return StickiesGUI.TextureButton(GetPickColorBtnRect(headerRect), Assets.Textures.MoreOptionsTexture);
         }
 
         void DrawNoteText(Rect rect)
