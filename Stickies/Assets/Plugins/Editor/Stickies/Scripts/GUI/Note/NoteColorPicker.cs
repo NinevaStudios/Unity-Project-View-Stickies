@@ -15,7 +15,7 @@ namespace DeadMosquito.Stickies
             _onColorSelected = onColorSelected;
         }
 
-        public void Draw(Rect rect, Colors.NoteColorCollection colors)
+        public void OnGUI(Rect rect, Colors.NoteColorCollection colors)
         {
             var colorPickerRect = new Rect(rect.x, rect.y, rect.width, ColorPickerHeaderHeight);
             StickiesGUI.ColorRect(colorPickerRect, colors.header, Color.clear);

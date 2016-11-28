@@ -5,7 +5,7 @@ namespace DeadMosquito.Stickies
 {
     public interface INoteGUIElement
     {
-        void Draw(Rect rect, Colors.NoteColorCollection colors);
+        void OnGUI(Rect rect, Colors.NoteColorCollection colors);
     }
 }
 #endif

@@ -20,7 +20,7 @@ namespace DeadMosquito.Stickies
             var hasNoteAttached = NoteStorage.Instance.HasItem(guid);
             if (hasNoteAttached)
             {
-                // Draw note
+                // OnGUI note
                 DrawNoteButton(iconRect, guid);
                 return;
             }

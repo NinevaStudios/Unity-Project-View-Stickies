@@ -173,7 +173,7 @@ namespace DeadMosquito.Stickies
             Handles.DrawSolidDisc(center, Vector3.forward, radius);
         }
 
-        // Draw an arc in the graph rect.
+        // OnGUI an arc in the graph rect.
         static void DrawArc(Vector2 center, float radius, float angle, Color fill)
         {
             var start = new Vector2(

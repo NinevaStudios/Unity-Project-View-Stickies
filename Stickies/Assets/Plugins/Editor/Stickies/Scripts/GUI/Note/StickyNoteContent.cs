@@ -14,14 +14,11 @@ namespace DeadMosquito.Stickies
         }
 
         const float DefaultSize = 320f;
-        const float HeaderSize = 32f;
-        const float ColorPickerHeaderHeight = 85f;
-
-        Vector2 _scroll = Vector2.zero;
 
         #region gui_elements
-        readonly INoteGUIElement _headerGui;
-        readonly INoteGUIElement _colorPicker;
+        INoteGUIElement _headerGui;
+        INoteGUIElement _colorPicker;
+        INoteGUIElement _textArea;
         #endregion
 
         #region note_persisted_properties
@@ -36,9 +33,15 @@ namespace DeadMosquito.Stickies
         public StickyNoteContent(string guid)
         {
             _guid = guid;
+            Init();
+            InitGui();
+        }
+
+        void InitGui()
+        {
             _headerGui = new NoteHeader(OnPickColor, OnDelete);
             _colorPicker = new NoteColorPicker(OnColorSelected);
-            Init();
+            _textArea = new NoteTextArea(_noteData.text, OnTextUpdated);
         }
 
         void Init()
@@ -72,40 +75,19 @@ namespace DeadMosquito.Stickies
         public override void OnGUI(Rect rect)
         {
             var c = Colors.ColorById(_noteData.color);
-            DrawNoteBackground(rect, c.main);
-            DrawNoteText(rect);
+            _textArea.OnGUI(rect, c);
 
             if (_mode == Mode.Default)
-            {
-                _headerGui.Draw(rect, c);
-            }
-
+                _headerGui.OnGUI(rect, c);
             if (_mode == Mode.ColorPicker)
-            {
-                _colorPicker.Draw(rect, c);
-            }
+                _colorPicker.OnGUI(rect, c);
+
             editorWindow.Repaint();
         }
 
-        void DrawNoteText(Rect rect)
+        void OnTextUpdated(string text)
         {
-            GUILayout.BeginArea(GetTextAreaRect(rect));
-            EditorGUILayout.BeginVertical();
-            GUI.skin = Assets.Styles.Skin;
-
-            _scroll = EditorGUILayout.BeginScrollView(_scroll);
-            _noteData.text = EditorGUILayout.TextArea(_noteData.text, Assets.Styles.TextArea);
-            EditorGUILayout.EndScrollView();
-
-            GUI.skin = null;
-
-            EditorGUILayout.EndVertical();
-            GUILayout.EndArea();
-        }
-
-        void DrawNoteBackground(Rect rect, Color backgroundColor)
-        {
-            StickiesGUI.ColorRect(rect, backgroundColor, Color.clear);
+            _noteData.text = text;
         }
 
         void OnPickColor()
@@ -148,13 +130,6 @@ namespace DeadMosquito.Stickies
         void Persist()
         {
             NoteStorage.Instance.AddOrUpdate(_guid, new NoteData(_noteData));
-        }
-        #endregion
-
-        #region rects
-        static Rect GetTextAreaRect(Rect noteRect)
-        {
-            return new Rect(noteRect.x, noteRect.y + HeaderSize, noteRect.width, noteRect.height - HeaderSize);
         }
         #endregion
     }

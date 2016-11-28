@@ -7,7 +7,7 @@ namespace DeadMosquito.Stickies
 {
     public sealed class NoteHeader : INoteGUIElement
     {
-        const float HeaderHeight = 32f;
+        public const float Height = 32f;
 
         readonly Action _onPickColorBtnClick;
         readonly Action _onDeleteBtnClick;
@@ -18,7 +18,7 @@ namespace DeadMosquito.Stickies
             _onDeleteBtnClick = onDelete;
         }
 
-        public void Draw(Rect rect, Colors.NoteColorCollection colors)
+        public void OnGUI(Rect rect, Colors.NoteColorCollection colors)
         {
             var headerRect = GetHeaderRect(rect);
             StickiesGUI.ColorRect(headerRect, colors.header, Color.clear);
@@ -69,7 +69,7 @@ namespace DeadMosquito.Stickies
         #region rects
         static Rect GetHeaderRect(Rect noteRect)
         {
-            var headerRect = new Rect(noteRect.x, noteRect.y, noteRect.width, HeaderHeight);
+            var headerRect = new Rect(noteRect.x, noteRect.y, noteRect.width, Height);
             return headerRect;
         }
 
