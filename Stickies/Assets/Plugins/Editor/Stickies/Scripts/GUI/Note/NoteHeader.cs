@@ -5,7 +5,7 @@ using UnityEditor;
 
 namespace DeadMosquito.Stickies
 {
-    public class NoteHeader : INoteGUIElement
+    public sealed class NoteHeader : INoteGUIElement
     {
         const float HeaderHeight = 32f;
 

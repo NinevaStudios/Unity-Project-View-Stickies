@@ -20,7 +20,8 @@ namespace DeadMosquito.Stickies
         Vector2 _scroll = Vector2.zero;
 
         #region gui_elements
-        INoteGUIElement _headerGUI;
+        readonly INoteGUIElement _headerGui;
+        readonly INoteGUIElement _colorPicker;
         #endregion
 
         #region note_persisted_properties
@@ -35,7 +36,8 @@ namespace DeadMosquito.Stickies
         public StickyNoteContent(string guid)
         {
             _guid = guid;
-            _headerGUI = new NoteHeader(OnPickColor, OnDelete);
+            _headerGui = new NoteHeader(OnPickColor, OnDelete);
+            _colorPicker = new NoteColorPicker(OnColorSelected);
             Init();
         }
 
@@ -75,11 +77,30 @@ namespace DeadMosquito.Stickies
 
             if (_mode == Mode.Default)
             {
-                _headerGUI.Draw(rect, c);
+                _headerGui.Draw(rect, c);
             }
 
-            DrawColorPicker(rect, c.header);
+            if (_mode == Mode.ColorPicker)
+            {
+                _colorPicker.Draw(rect, c);
+            }
             editorWindow.Repaint();
+        }
+
+        void DrawNoteText(Rect rect)
+        {
+            GUILayout.BeginArea(GetTextAreaRect(rect));
+            EditorGUILayout.BeginVertical();
+            GUI.skin = Assets.Styles.Skin;
+
+            _scroll = EditorGUILayout.BeginScrollView(_scroll);
+            _noteData.text = EditorGUILayout.TextArea(_noteData.text, Assets.Styles.TextArea);
+            EditorGUILayout.EndScrollView();
+
+            GUI.skin = null;
+
+            EditorGUILayout.EndVertical();
+            GUILayout.EndArea();
         }
 
         void DrawNoteBackground(Rect rect, Color backgroundColor)
@@ -99,36 +120,11 @@ namespace DeadMosquito.Stickies
             editorWindow.Close();
         }
 
-        void DrawNoteText(Rect rect)
+        void OnColorSelected(NoteColor color)
         {
-            GUILayout.BeginArea(GetTextAreaRect(rect));
-            EditorGUILayout.BeginVertical();
-            GUI.skin = Assets.Styles.Skin;
-
-            _scroll = EditorGUILayout.BeginScrollView(_scroll);
-            _noteData.text = EditorGUILayout.TextArea(_noteData.text, Assets.Styles.TextArea);
-            EditorGUILayout.EndScrollView();
-
-            GUI.skin = null;
-
-            EditorGUILayout.EndVertical();
-            GUILayout.EndArea();
-        }
-
-        void DrawColorPicker(Rect rect, Color headerColor)
-        {
-            if (_mode != Mode.ColorPicker) { return; }
-
-            var colorPickerRect = new Rect(rect.x, rect.y, rect.width, ColorPickerHeaderHeight);
-            StickiesGUI.ColorRect(colorPickerRect, headerColor, Color.clear);
-
-            var newColor = StickiesGUI.ColorChooser(colorPickerRect);
-            if (newColor != NoteColor.None)
-            {
-                _noteData.color = newColor;
-                Persist();
-                _mode = Mode.Default;
-            }
+            _noteData.color = color;
+            Persist();
+            _mode = Mode.Default;
         }
 
         #region callbacks
@@ -156,26 +152,9 @@ namespace DeadMosquito.Stickies
         #endregion
 
         #region rects
-        static Rect GetHeaderRect(Rect noteRect)
-        {
-            var headerHeight = noteRect.height / 10f;
-            var headerRect = new Rect(noteRect.x, noteRect.y, noteRect.width, headerHeight);
-            return headerRect;
-        }
-
         static Rect GetTextAreaRect(Rect noteRect)
         {
             return new Rect(noteRect.x, noteRect.y + HeaderSize, noteRect.width, noteRect.height - HeaderSize);
-        }
-
-        static Rect GetDeleteBtnRect(Rect headerRect)
-        {
-            return new Rect(headerRect.width - headerRect.height, headerRect.y, headerRect.height, headerRect.height);
-        }
-
-        static Rect GetPickColorBtnRect(Rect headerRect)
-        {
-            return new Rect(headerRect.width - headerRect.height * 2, headerRect.y, headerRect.height, headerRect.height);
         }
         #endregion
     }
