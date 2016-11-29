@@ -9,18 +9,25 @@ namespace DeadMosquito.Stickies
     public sealed class NoteTextArea : INoteGUIElement
     {
         readonly Action<string> _onTextUpdated;
+        readonly Func<bool> _isEnabledFunc;
 
         Vector2 _scroll = Vector2.zero;
         string _text = String.Empty;
 
-        public NoteTextArea(string initialText, Action<string> onTextUpdated)
+        public NoteTextArea(string initialText, Action<string> onTextUpdated, Func<bool> isEnabledFunc)
         {
             _text = initialText;
             _onTextUpdated = onTextUpdated;
+            _isEnabledFunc = isEnabledFunc;
         }
 
         public void OnGUI(Rect rect, Colors.NoteColorCollection colors)
         {
+            if (!_isEnabledFunc())
+            {
+                GUI.enabled = false;
+            }
+
             DrawNoteBackground(rect, colors.main);
 
             GUILayout.BeginArea(GetTextAreaRect(rect));
@@ -41,6 +48,8 @@ namespace DeadMosquito.Stickies
 
             EditorGUILayout.EndVertical();
             GUILayout.EndArea();
+
+            GUI.enabled = true;
         }
 
         void DrawNoteBackground(Rect rect, Color backgroundColor)

@@ -41,7 +41,12 @@ namespace DeadMosquito.Stickies
         {
             _headerGui = new NoteHeader(OnPickColor, OnDelete);
             _colorPicker = new NoteColorPicker(OnColorSelected);
-            _textArea = new NoteTextArea(_noteData.text, OnTextUpdated);
+            _textArea = new NoteTextArea(_noteData.text, OnTextUpdated, IsInDefaultMode);
+        }
+
+        bool IsInDefaultMode()
+        {
+           return _mode == Mode.Default;
         }
 
         void Init()
@@ -77,7 +82,7 @@ namespace DeadMosquito.Stickies
             var c = Colors.ColorById(_noteData.color);
             _textArea.OnGUI(rect, c);
 
-            if (_mode == Mode.Default)
+            if (IsInDefaultMode())
                 _headerGui.OnGUI(rect, c);
             if (_mode == Mode.ColorPicker)
                 _colorPicker.OnGUI(rect, c);
