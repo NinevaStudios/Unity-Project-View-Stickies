@@ -1,6 +1,5 @@
 ﻿#if UNITY_EDITOR
 using UnityEngine;
-using System.Linq;
 using UnityEditor;
 
 namespace DeadMosquito.Stickies
