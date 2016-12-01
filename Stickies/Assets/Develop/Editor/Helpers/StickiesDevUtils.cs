@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEditor;
+﻿using System.Collections.Generic;
 using DeadMosquito.Stickies;
-using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
 
 public static class StickiesDevUtils
 {
@@ -35,7 +34,7 @@ public static class StickiesDevUtils
 
         style.scrollView = new GUIStyle("scrollView");
 
-        style.customStyles = new[] { new GUIStyle("grey_border") };
+        style.customStyles = new[] {new GUIStyle("grey_border")};
 
         AssetDatabase.CreateAsset(style, "Assets/Develop/UnityGuiSkinCopy.asset");
         AssetDatabase.SaveAssets();
@@ -72,24 +71,55 @@ public static class StickiesDevUtils
         serObj.ApplyModifiedPropertiesWithoutUndo();
     }
 
+    const string ReleaseNoteText = @"Thank you for using Stickies!
+
+Here are some tips to get started:
+- Go to Preferences -> Stickies to find more configuration options like font size, offset in project view and more
+- When updating the package, do not delete Database.asset file in Stickies folder - this is where your notes live!
+
+Hope you will enjoy using Stickies!";
+    const string DatabaseNoteText = @"Backup this file when updating the package! All your notes are stored here!";
+
+    [MenuItem("Stickies/Prepare for release")]
+    static void PrepareForRelease()
+    {
+        CleanDatabase();
+        AddTutorialNote();
+        AddDatabaseWarningNote();
+    }
+
+    static void AddTutorialNote()
+    {
+        var stickiesFolderGuid = AssetDatabase.AssetPathToGUID(StickiesEditorSettings.StickiesHomeFolder);
+        NoteStorage.Instance.AddOrUpdate(stickiesFolderGuid,
+            new NoteData {color = NoteColor.Lemon, text = ReleaseNoteText});
+    }
+
+    static void AddDatabaseWarningNote()
+    {
+        var dbFileGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(NoteStorage.Instance));
+        NoteStorage.Instance.AddOrUpdate(dbFileGuid,
+            new NoteData {color = NoteColor.Rose, text = DatabaseNoteText});
+    }
+
     [MenuItem("GameObject/Create Material")]
-    static void CreateMaterial( )
+    static void CreateMaterial()
     {
         // Create a simple material asset
 
-        Material material = new Material( Shader.Find( "Specular" ) );
-        AssetDatabase.CreateAsset( material, "Assets/MyMaterial.mat" );
+        var material = new Material(Shader.Find("Specular"));
+        AssetDatabase.CreateAsset(material, "Assets/MyMaterial.mat");
 
         // Add an animation clip to it
-        AnimationClip animationClip = new AnimationClip( );
+        var animationClip = new AnimationClip();
         animationClip.name = "My Clip";
-        AssetDatabase.AddObjectToAsset( animationClip, material );
+        AssetDatabase.AddObjectToAsset(animationClip, material);
 
         // Reimport the asset after adding an object.
         // Otherwise the change only shows up when saving the project
-        AssetDatabase.ImportAsset( AssetDatabase.GetAssetPath( animationClip ) );
+        AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(animationClip));
 
         // Print the path of the created asset
-        Debug.Log( AssetDatabase.GetAssetPath( material ) );
+        Debug.Log(AssetDatabase.GetAssetPath(material));
     }
 }
