@@ -48,13 +48,13 @@ namespace DeadMosquito.Stickies
         {
             public static readonly Texture2D DeleteTexture;
             public static readonly Texture2D MoreOptionsTexture;
-            public static readonly Texture2D AddNoteTexture;
+            public static readonly Texture2D YellowNoteTexture;
 
             static Textures()
             {
                 DeleteTexture = GetTexture("ic_delete");
                 MoreOptionsTexture = GetTexture("ic_color_picker");
-                AddNoteTexture = GetTexture("add_note");
+                YellowNoteTexture = GetTexture("yellow");
             }
 
             static Texture2D GetTexture(string name)
