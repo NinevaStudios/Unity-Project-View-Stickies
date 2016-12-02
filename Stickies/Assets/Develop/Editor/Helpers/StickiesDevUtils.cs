@@ -76,8 +76,11 @@ public static class StickiesDevUtils
 Here are some tips to get started:
 - Go to Preferences -> Stickies to find more configuration options like font size, offset in project view and more
 - When updating the package, do not delete Database.asset file in Stickies folder - this is where your notes live!
+- To change note color just click '...' button in the note header
 
-Hope you will enjoy using Stickies!";
+Hope you will enjoy using Stickies!
+
+Support: For any questions or suggestions reach me out at leskiv.taras at gmail.com";
     const string DatabaseNoteText = @"Backup this file when updating the package! All your notes are stored here!";
 
     [MenuItem("Stickies/Prepare for release")]
@@ -100,26 +103,5 @@ Hope you will enjoy using Stickies!";
         var dbFileGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(NoteStorage.Instance));
         NoteStorage.Instance.AddOrUpdate(dbFileGuid,
             new NoteData {color = NoteColor.Rose, text = DatabaseNoteText});
-    }
-
-    [MenuItem("GameObject/Create Material")]
-    static void CreateMaterial()
-    {
-        // Create a simple material asset
-
-        var material = new Material(Shader.Find("Specular"));
-        AssetDatabase.CreateAsset(material, "Assets/MyMaterial.mat");
-
-        // Add an animation clip to it
-        var animationClip = new AnimationClip();
-        animationClip.name = "My Clip";
-        AssetDatabase.AddObjectToAsset(animationClip, material);
-
-        // Reimport the asset after adding an object.
-        // Otherwise the change only shows up when saving the project
-        AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(animationClip));
-
-        // Print the path of the created asset
-        Debug.Log(AssetDatabase.GetAssetPath(material));
     }
 }
