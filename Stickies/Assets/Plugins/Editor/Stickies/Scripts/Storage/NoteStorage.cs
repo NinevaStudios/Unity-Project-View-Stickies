@@ -150,7 +150,7 @@ namespace DeadMosquito.Stickies
                 serObj.ApplyModifiedPropertiesWithoutUndo();
             }
             EditorUtility.SetDirty(Instance);
-            EditorApplication.SaveAssets();
+            AssetDatabase.SaveAssets();
         }
     }
 }
