@@ -9,28 +9,37 @@ namespace DeadMosquito.Stickies
     {
         public static class Styles
         {
+            public static readonly GUIStyle TextArea;
+            public static readonly GUIStyle PlusLabel;
+
             public static readonly GUISkin Skin;
 
-            public static readonly GUIStyle TextArea;
-            public static readonly GUIStyle VerticalScrollbar;
-
-            public static readonly Texture2D DeleteIcon;
 
             static Styles()
             {
                 TextArea = new GUIStyle(EditorStyles.textArea)
                 {
                     stretchHeight = true,
-                    normal = { background = null, textColor = Color.black },
-                    active = { background = null },
-                    focused = { background = null },
+                    normal = {background = null, textColor = Color.black},
+                    active = {background = null},
+                    focused = {background = null},
+                };
+                PlusLabel = new GUIStyle(EditorStyles.boldLabel)
+                {
+                    padding = new RectOffset(0, 1, 0, 2),
+                    margin = new RectOffset(),
+                    alignment = TextAnchor.MiddleCenter,
+                    stretchHeight = true,
+                    stretchWidth = true
                 };
 
                 var skinPath = Path.Combine(StickiesEditorSettings.StickiesHomeFolder, "Assets/ScrollGUISkin.asset");
                 Skin = AssetDatabase.LoadAssetAtPath<GUISkin>(skinPath);
-                //            VerticalScrollbar = new GUIStyle(customSkin.verticalScrollbar);
-                //            Debug.Log(customSkin.verticalScrollbarThumb.normal.background.name);
-                //
+                if (Skin == null)
+                {
+                    Debug.LogError(
+                        "Could not load GUI skin. Did you move Stickies folder around in your project? Go to Preferences -> Stickies and update the location of Stickies folder");
+                }
             }
         }
 

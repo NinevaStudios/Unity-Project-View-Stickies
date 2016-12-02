@@ -1,6 +1,5 @@
 ﻿#if UNITY_EDITOR
 using UnityEngine;
-using System.Linq;
 using UnityEditor;
 
 namespace DeadMosquito.Stickies
@@ -49,27 +48,16 @@ namespace DeadMosquito.Stickies
 
         static void DrawAddNoteButton(Rect iconRect, string guid)
         {
-            var labelSt = EditorStyles.boldLabel;
-            labelSt.padding = new RectOffset(0, 1, 0, 2);
-            labelSt.margin = new RectOffset();
-            labelSt.alignment = TextAnchor.MiddleCenter;
-            labelSt.stretchHeight = true;
-            labelSt.stretchWidth = true;
             if (GUI.Button(iconRect, string.Empty, GUI.skin.button))
             {
                 ShowNote(iconRect, guid);
             }
-            GUI.Label(iconRect, "+", labelSt);
+            GUI.Label(iconRect, "+", Assets.Styles.PlusLabel);
         }
 
         static void ShowNote(Rect iconRect, string guid)
         {
             PopupWindow.Show(iconRect, new StickyNoteContent(guid));
-        }
-
-        static bool IsSelected(string guid)
-        {
-            return Selection.assetGUIDs.Any(guid.Contains);
         }
     }
 }
