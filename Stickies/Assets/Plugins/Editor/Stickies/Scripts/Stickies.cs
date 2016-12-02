@@ -16,6 +16,7 @@ namespace DeadMosquito.Stickies
         static void AddRevealerIcon(string guid, Rect rect)
         {
             var iconRect = StickiesGUI.GetProjectViewIconRect(rect);
+            Debug.Log(iconRect.width + " " + iconRect.height);
 
             var hasNoteAttached = NoteStorage.Instance.HasItem(guid);
             if (hasNoteAttached)
@@ -49,7 +50,22 @@ namespace DeadMosquito.Stickies
 
         static void DrawAddNoteButton(Rect iconRect, string guid)
         {
-            StickiesGUI.DrawRectNote(iconRect, Color.magenta, Colors.Darken);
+            /// StickiesGUI.DrawRectNote(iconRect, Color.magenta, Colors.Darken);
+//            var st = EditorStyles.helpBox;
+//            st.alignment = TextAnchor.MiddleCenter;
+//            st.stretchHeight = true;
+//            st.stretchWidth = true;
+//
+//            GUI.Button(iconRect, "", st);
+
+            var labelSt = EditorStyles.boldLabel;
+            labelSt.padding = new RectOffset(0,1,0,0);
+            labelSt.margin = new RectOffset();
+            labelSt.alignment = TextAnchor.MiddleCenter;
+            labelSt.stretchHeight = true;
+            labelSt.stretchWidth = true;
+            GUI.Label(iconRect, "+", labelSt);
+            GUI.DrawTexture(iconRect, Assets.Textures.AddNoteTexture);
             if (StickiesGUI.EmptyButton(iconRect))
             {
                 ShowNote(iconRect, guid);
