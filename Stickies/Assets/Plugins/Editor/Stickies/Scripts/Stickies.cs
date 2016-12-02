@@ -16,7 +16,6 @@ namespace DeadMosquito.Stickies
         static void AddRevealerIcon(string guid, Rect rect)
         {
             var iconRect = StickiesGUI.GetProjectViewIconRect(rect);
-            Debug.Log(iconRect.width + " " + iconRect.height);
 
             var hasNoteAttached = NoteStorage.Instance.HasItem(guid);
             if (hasNoteAttached)
