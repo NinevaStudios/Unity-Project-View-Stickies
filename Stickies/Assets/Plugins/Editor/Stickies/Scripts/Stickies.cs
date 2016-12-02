@@ -49,26 +49,17 @@ namespace DeadMosquito.Stickies
 
         static void DrawAddNoteButton(Rect iconRect, string guid)
         {
-            /// StickiesGUI.DrawRectNote(iconRect, Color.magenta, Colors.Darken);
-//            var st = EditorStyles.helpBox;
-//            st.alignment = TextAnchor.MiddleCenter;
-//            st.stretchHeight = true;
-//            st.stretchWidth = true;
-//
-//            GUI.Button(iconRect, "", st);
-
             var labelSt = EditorStyles.boldLabel;
-            labelSt.padding = new RectOffset(0,1,0,0);
+            labelSt.padding = new RectOffset(0, 1, 0, 2);
             labelSt.margin = new RectOffset();
             labelSt.alignment = TextAnchor.MiddleCenter;
             labelSt.stretchHeight = true;
             labelSt.stretchWidth = true;
-            GUI.Label(iconRect, "+", labelSt);
-            GUI.DrawTexture(iconRect, Assets.Textures.AddNoteTexture);
-            if (StickiesGUI.EmptyButton(iconRect))
+            if (GUI.Button(iconRect, string.Empty, GUI.skin.button))
             {
                 ShowNote(iconRect, guid);
             }
+            GUI.Label(iconRect, "+", labelSt);
         }
 
         static void ShowNote(Rect iconRect, string guid)
