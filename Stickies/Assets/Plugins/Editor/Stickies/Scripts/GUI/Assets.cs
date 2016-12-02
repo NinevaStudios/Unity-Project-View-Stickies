@@ -49,12 +49,14 @@ namespace DeadMosquito.Stickies
             public static readonly Texture2D DeleteTexture;
             public static readonly Texture2D MoreOptionsTexture;
             public static readonly Texture2D YellowNoteTexture;
+            public static readonly Texture2D GreenNoteTexture;
 
             static Textures()
             {
                 DeleteTexture = GetTexture("ic_delete");
                 MoreOptionsTexture = GetTexture("ic_color_picker");
                 YellowNoteTexture = GetTexture("yellow");
+                GreenNoteTexture = GetTexture("green");
             }
 
             static Texture2D GetTexture(string name)
