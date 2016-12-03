@@ -38,12 +38,11 @@ namespace DeadMosquito.Stickies
 
                 if (_instance == null)
                 {
-                    Debug.LogError(
+                    Debug.LogWarning(
                         string.Format("Notes database was not found at {0} or couldn't be created. " +
                                       "Check Preferences -> Stickies folder path if it points to Stickies location in project...\nErrors ahead...", _assetPath));
                 }
 
-                _instance.Validate();
                 return _instance;
             }
         }
