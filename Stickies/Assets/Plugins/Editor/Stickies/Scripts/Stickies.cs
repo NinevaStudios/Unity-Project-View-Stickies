@@ -38,9 +38,8 @@ namespace DeadMosquito.Stickies
         static void DrawNoteButton(Rect iconRect, string guid)
         {
             var noteData = NoteStorage.Instance.ItemByGuid(guid);
-            var c = Colors.ColorById(noteData.color);
-            StickiesGUI.DrawRectNote(iconRect, c.main, c.header);
-            //GUI.DrawTexture(iconRect, Assets.Textures.GreenNoteTexture, ScaleMode.ScaleToFit);
+            var iconTex = Assets.Textures.NoteByColor(noteData.color);
+            GUI.DrawTexture(iconRect, iconTex, ScaleMode.ScaleToFit);
             if (StickiesGUI.EmptyButton(iconRect))
             {
                 ShowNote(iconRect, guid);

@@ -1,4 +1,5 @@
 ﻿#if UNITY_EDITOR
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEditor;
@@ -48,15 +49,36 @@ namespace DeadMosquito.Stickies
         {
             public static readonly Texture2D DeleteTexture;
             public static readonly Texture2D MoreOptionsTexture;
-            public static readonly Texture2D YellowNoteTexture;
-            public static readonly Texture2D GreenNoteTexture;
+
+            public static readonly Texture2D LemonNoteTexture;
+            public static readonly Texture2D SkyBlueNoteTexture;
+            public static readonly Texture2D RoseNoteTexture;
+
+            static Dictionary<NoteColor, Texture2D> _notes;
 
             static Textures()
             {
                 DeleteTexture = GetTexture("ic_delete");
                 MoreOptionsTexture = GetTexture("ic_color_picker");
-                YellowNoteTexture = GetTexture("yellow");
-                GreenNoteTexture = GetTexture("green");
+
+                LemonNoteTexture = GetTexture("1x/lemon");
+                RoseNoteTexture = GetTexture("1x/rose");
+                SkyBlueNoteTexture = GetTexture("1x/sky_blue");
+
+                InitNotesDic();
+            }
+
+            static void InitNotesDic()
+            {
+                _notes = new Dictionary<NoteColor, Texture2D>()
+                {
+                    { NoteColor.Lemon, LemonNoteTexture }
+                };
+            }
+
+            public static Texture2D NoteByColor(NoteColor color)
+            {
+                return SkyBlueNoteTexture;
             }
 
             static Texture2D GetTexture(string name)
