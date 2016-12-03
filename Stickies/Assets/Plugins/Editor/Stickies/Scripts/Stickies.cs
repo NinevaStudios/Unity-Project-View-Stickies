@@ -45,7 +45,11 @@ namespace DeadMosquito.Stickies
         {
             var noteData = NoteStorage.Instance.ItemByGuid(guid);
             var iconTex = Assets.Textures.NoteByColor(noteData.color);
-            GUI.DrawTexture(iconRect, iconTex, ScaleMode.ScaleToFit);
+            GUI.DrawTexture(iconRect, iconTex);
+            if (!string.IsNullOrEmpty(noteData.text))
+            {
+                GUI.DrawTexture(iconRect, Assets.Textures.HasText);
+            }
             if (StickiesGUI.EmptyButton(iconRect))
             {
                 ShowNote(iconRect, guid);

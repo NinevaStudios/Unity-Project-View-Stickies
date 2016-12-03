@@ -57,6 +57,8 @@ namespace DeadMosquito.Stickies
             public static readonly Texture2D RoseNoteTexture;
             public static readonly Texture2D CleanNoteTexture;
 
+            public static readonly Texture HasText;
+
             static Dictionary<NoteColor, Texture2D> _notes;
 
             static Textures()
@@ -71,8 +73,11 @@ namespace DeadMosquito.Stickies
                 RoseNoteTexture = GetTexture("1x/rose");
                 CleanNoteTexture = GetTexture("1x/clean");
 
+                HasText = GetTexture("has_text");
+
                 InitNotesDic();
             }
+
 
             static void InitNotesDic()
             {
