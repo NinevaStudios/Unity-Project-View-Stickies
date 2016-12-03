@@ -51,8 +51,11 @@ namespace DeadMosquito.Stickies
             public static readonly Texture2D MoreOptionsTexture;
 
             public static readonly Texture2D LemonNoteTexture;
+            public static readonly Texture2D GrassNoteTexture;
             public static readonly Texture2D SkyBlueNoteTexture;
+            public static readonly Texture2D AmethystNoteTexture;
             public static readonly Texture2D RoseNoteTexture;
+            public static readonly Texture2D CleanNoteTexture;
 
             static Dictionary<NoteColor, Texture2D> _notes;
 
@@ -62,8 +65,11 @@ namespace DeadMosquito.Stickies
                 MoreOptionsTexture = GetTexture("ic_color_picker");
 
                 LemonNoteTexture = GetTexture("1x/lemon");
-                RoseNoteTexture = GetTexture("1x/rose");
+                GrassNoteTexture = GetTexture("1x/grass");
                 SkyBlueNoteTexture = GetTexture("1x/sky_blue");
+                AmethystNoteTexture = GetTexture("1x/amethyst");
+                RoseNoteTexture = GetTexture("1x/rose");
+                CleanNoteTexture = GetTexture("1x/clean");
 
                 InitNotesDic();
             }
@@ -72,13 +78,19 @@ namespace DeadMosquito.Stickies
             {
                 _notes = new Dictionary<NoteColor, Texture2D>()
                 {
-                    { NoteColor.Lemon, LemonNoteTexture }
+                    { NoteColor.None, LemonNoteTexture },
+                    { NoteColor.Lemon, LemonNoteTexture },
+                    { NoteColor.Grass, GrassNoteTexture },
+                    { NoteColor.SkyBlue, SkyBlueNoteTexture },
+                    { NoteColor.Amethyst, AmethystNoteTexture },
+                    { NoteColor.Rose, RoseNoteTexture },
+                    { NoteColor.Clean, CleanNoteTexture },
                 };
             }
 
             public static Texture2D NoteByColor(NoteColor color)
             {
-                return SkyBlueNoteTexture;
+                return !_notes.ContainsKey(color) ? LemonNoteTexture : _notes[color];
             }
 
             static Texture2D GetTexture(string name)
