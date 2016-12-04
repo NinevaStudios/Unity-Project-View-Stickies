@@ -33,7 +33,7 @@ namespace DeadMosquito.Stickies
             {
                 if (StickiesEditorSettings.ConfirmDeleting)
                 {
-                    bool confirmed = EditorUtility.DisplayDialog("Delete Note", "Do you want to delete this note?",
+                    bool confirmed = EditorUtility.DisplayDialog("Delete Note", "Do you really want to delete this note?\n\nThis action cannot be undone.",
                         "Delete", "Keep");
                     if (confirmed)
                     {
