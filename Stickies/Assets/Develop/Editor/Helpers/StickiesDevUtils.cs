@@ -71,7 +71,10 @@ public static class StickiesDevUtils
         serObj.ApplyModifiedPropertiesWithoutUndo();
     }
 
-    const string ReleaseNoteText = @"Thank you for using Stickies!
+    const string ReleaseNoteText =
+        @"Thank you for using Stickies!
+
+Please write a review on Asset Store if you enjoy the plugin!
 
 Here are some tips to get started:
 - Go to Preferences -> Stickies to find more configuration options like font size, offset in project view and more
@@ -81,6 +84,7 @@ Here are some tips to get started:
 Hope you will enjoy using Stickies!
 
 Support: For any questions or suggestions reach me out at leskiv.taras at gmail.com";
+
     const string DatabaseNoteText = @"Backup this file when updating the package! All your notes are stored here!";
 
     [MenuItem("Stickies/Prepare for release")]
