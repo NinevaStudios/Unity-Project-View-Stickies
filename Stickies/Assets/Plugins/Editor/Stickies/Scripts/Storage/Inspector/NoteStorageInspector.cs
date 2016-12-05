@@ -14,7 +14,7 @@ namespace DeadMosquito.Stickies
         ReorderableList _list;
         NoteStorage _target;
 
-        static readonly float ListItemHeight = EditorGUIUtility.singleLineHeight * 5;
+        static readonly float ListItemHeight = 22f;
 
         void OnEnable()
         {
@@ -27,15 +27,10 @@ namespace DeadMosquito.Stickies
                 displayRemove = false,
                 draggable = false
             };
-            _list.elementHeightCallback += HeightCallback;
             _list.drawElementCallback += DrawCallback;
             _list.drawHeaderCallback += DrawListHeaderCallback;
             _list.drawElementBackgroundCallback += DrawBackgroundCallback;
-        }
-
-        float HeightCallback(int index)
-        {
-            return ListItemHeight;
+            _list.elementHeight = ListItemHeight;
         }
 
         void DrawCallback(Rect rect, int index, bool isActive, bool isFocused)
@@ -45,9 +40,6 @@ namespace DeadMosquito.Stickies
             var labelText = GetFileDescription(_target.fileGuids[index]);
 
             GUI.Label(headerLabelRect, labelText, EditorStyles.boldLabel);
-
-            newRect.y += EditorGUIUtility.singleLineHeight;
-            EditorGUI.LabelField(newRect, GetNote(index).text);
         }
 
         void DrawBackgroundCallback(Rect rect, int index, bool isActive, bool isFocused)
@@ -59,10 +51,6 @@ namespace DeadMosquito.Stickies
         static void DrawRectNote(Rect rect, Color main, Color header)
         {
             Handles.DrawSolidRectangleWithOutline(rect, main, Color.gray);
-
-            var headerHeight = EditorGUIUtility.singleLineHeight;
-            var headerRect = new Rect(rect.x, rect.y, rect.width, headerHeight);
-            Handles.DrawSolidRectangleWithOutline(headerRect, header, Color.clear);
         }
 
         void DrawListHeaderCallback(Rect rect)
@@ -85,7 +73,7 @@ namespace DeadMosquito.Stickies
             return NoteStorage.Instance.ItemByGuid(_target.fileGuids[index]);
         }
 
-        string GetFileDescription(string guid)
+        static string GetFileDescription(string guid)
         {
             var path = AssetDatabase.GUIDToAssetPath(guid);
             // Remove /Assets from start
