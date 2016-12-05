@@ -17,15 +17,6 @@ namespace DeadMosquito.Stickies
             Handles.DrawSolidRectangleWithOutline(rect, color, outline);
         }
 
-        public static void DrawRectNote(Rect rect, Color main, Color header)
-        {
-            Handles.DrawSolidRectangleWithOutline(rect, main, header);
-
-            var headerHeight = rect.height / 10f;
-            var headerRect = new Rect(rect.x, rect.y, rect.width, headerHeight);
-            Handles.DrawSolidRectangleWithOutline(headerRect, header, Color.clear);
-        }
-
         public static bool ColorButton(Rect rect, Color fill, Color outline, float outlineSize = 2f)
         {
             const float outlineSizeIdle = 1f;
