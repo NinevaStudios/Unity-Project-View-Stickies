@@ -29,8 +29,8 @@ namespace DeadMosquito.Stickies
             };
             _list.elementHeightCallback += HeightCallback;
             _list.drawElementCallback += DrawCallback;
-            _list.drawHeaderCallback += DrawListHeader;
-            _list.drawElementBackgroundCallback += DrawBackground;
+            _list.drawHeaderCallback += DrawListHeaderCallback;
+            _list.drawElementBackgroundCallback += DrawBackgroundCallback;
         }
 
         float HeightCallback(int index)
@@ -41,18 +41,31 @@ namespace DeadMosquito.Stickies
         void DrawCallback(Rect rect, int index, bool isActive, bool isFocused)
         {
             var newRect = GetRealRect(rect);
-            var noteText = GetNote(index).text;
-            EditorGUI.LabelField(newRect, noteText);
+            var headerLabelRect = new Rect(newRect.x, newRect.y, newRect.width, EditorGUIUtility.singleLineHeight);
+            var labelText = GetFileDescription(_target.fileGuids[index]);
+
+            GUI.Label(headerLabelRect, labelText, EditorStyles.boldLabel);
+
+            newRect.y += EditorGUIUtility.singleLineHeight;
+            EditorGUI.LabelField(newRect, GetNote(index).text);
         }
 
-        void DrawBackground(Rect rect, int index, bool isActive, bool isFocused)
+        void DrawBackgroundCallback(Rect rect, int index, bool isActive, bool isFocused)
         {
-            //GUI.Box(GetRealRect(rect), string.Empty, "Box");
             var c = Colors.ColorById(GetNote(index).color);
             DrawRectNote(GetRealRect(rect), c.main, Colors.Darken);
         }
 
-        void DrawListHeader(Rect rect)
+        static void DrawRectNote(Rect rect, Color main, Color header)
+        {
+            Handles.DrawSolidRectangleWithOutline(rect, main, Color.gray);
+
+            var headerHeight = EditorGUIUtility.singleLineHeight;
+            var headerRect = new Rect(rect.x, rect.y, rect.width, headerHeight);
+            Handles.DrawSolidRectangleWithOutline(headerRect, header, Color.clear);
+        }
+
+        void DrawListHeaderCallback(Rect rect)
         {
             EditorGUI.LabelField(rect, "Stickies for Project View");
         }
@@ -72,20 +85,20 @@ namespace DeadMosquito.Stickies
             return NoteStorage.Instance.ItemByGuid(_target.fileGuids[index]);
         }
 
-        static void DrawRectNote(Rect rect, Color main, Color header)
+        string GetFileDescription(string guid)
         {
-            Handles.DrawSolidRectangleWithOutline(rect, main, Color.gray);
-
-            var headerHeight = EditorGUIUtility.singleLineHeight;
-            var headerRect = new Rect(rect.x, rect.y, rect.width, headerHeight);
-            Handles.DrawSolidRectangleWithOutline(headerRect, header, Color.clear);
+            var path = AssetDatabase.GUIDToAssetPath(guid);
+            // Remove /Assets from start
+            var length = "Assets/".Length;
+            var trimmedPath = path.Substring(length, path.Length - length);
+            return string.Format("{0}, (GUID: {1})", trimmedPath, guid);
         }
 
         static Rect GetRealRect(Rect rect)
         {
             var realRect = new Rect(rect);
             realRect.x += Padding;
-            realRect.height = ListItemHeight - DoublePadding;
+            realRect.height = ListItemHeight - Padding;
             realRect.width -= DoublePadding;
             return realRect;
         }
