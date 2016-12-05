@@ -8,20 +8,25 @@ namespace DeadMosquito.Stickies
     [CustomEditor(typeof(NoteStorage))]
     public class NoteStorageInspector : Editor
     {
-        private ReorderableList _list;
-        private NoteStorage _target;
+        const float Padding = 4f;
+        const float DoublePadding = Padding * 2;
+
+        ReorderableList _list;
+        NoteStorage _target;
 
         static readonly float ListItemHeight = EditorGUIUtility.singleLineHeight * 3;
 
-        private void OnEnable()
+        void OnEnable()
         {
             _target = (NoteStorage) target;
-            _list = new ReorderableList(serializedObject, 
-                serializedObject.FindProperty("fileGuids"), 
-                true, true, true, true);
-            _list.displayAdd = false;
-            _list.displayRemove = false;
-            _list.draggable = false;
+            _list = new ReorderableList(serializedObject,
+                serializedObject.FindProperty("fileGuids"),
+                true, true, true, true)
+            {
+                displayAdd = false,
+                displayRemove = false,
+                draggable = false
+            };
             _list.elementHeightCallback += HeightCallback;
             _list.drawElementCallback += DrawCallback;
             _list.drawHeaderCallback += DrawListHeader;
@@ -35,10 +40,12 @@ namespace DeadMosquito.Stickies
 
         void DrawCallback(Rect rect, int index, bool isActive, bool isFocused)
         {
+            DrawNoteTexture(rect, index);
+
             GUI.enabled = false;
 
             var newRect = GetRealRect(rect);
-            var noteText = NoteStorage.Instance.ItemByGuid(_target.fileGuids[index]).text;
+            var noteText = GetNote(index).text;
             EditorGUI.LabelField(newRect, noteText);
 
             GUI.enabled = true;
@@ -46,8 +53,15 @@ namespace DeadMosquito.Stickies
 
         void DrawBackground(Rect rect, int index, bool isActive, bool isFocused)
         {
-//            var tex = 
             GUI.Box(GetRealRect(rect), string.Empty, "Box");
+        }
+
+        void DrawNoteTexture(Rect rect, int index)
+        {
+            const float noteIconSize = 16;
+            var color = GetNote(index).color;
+            var tex = Assets.Textures.NoteByColor(color);
+            GUI.DrawTexture(new Rect(rect.x, rect.y, noteIconSize, noteIconSize), tex);
         }
 
         void DrawListHeader(Rect rect)
@@ -57,11 +71,10 @@ namespace DeadMosquito.Stickies
 
         static Rect GetRealRect(Rect rect)
         {
-            const float padding = 4;
             var realRect = new Rect(rect);
-            realRect.x += padding;
-            realRect.height = ListItemHeight - padding * 2;
-            realRect.width -= padding * 2;
+            realRect.x += Padding;
+            realRect.height = ListItemHeight - DoublePadding;
+            realRect.width -= DoublePadding;
             return realRect;
         }
 
@@ -77,8 +90,9 @@ namespace DeadMosquito.Stickies
 
         NoteData GetNote(int index)
         {
-            return null;
+            return NoteStorage.Instance.ItemByGuid(_target.fileGuids[index]);
         }
     }
 }
+
 #endif
