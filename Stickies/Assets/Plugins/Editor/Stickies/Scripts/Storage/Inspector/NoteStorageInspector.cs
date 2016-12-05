@@ -11,6 +11,8 @@ namespace DeadMosquito.Stickies
         private ReorderableList _list;
         private NoteStorage _target;
 
+        static readonly float ListItemHeight = EditorGUIUtility.singleLineHeight * 3;
+
         private void OnEnable()
         {
             _target = (NoteStorage) target;
@@ -28,22 +30,23 @@ namespace DeadMosquito.Stickies
 
         float HeightCallback(int index)
         {
-            return EditorGUIUtility.singleLineHeight * 3;
+            return ListItemHeight;
         }
 
         void DrawCallback(Rect rect, int index, bool isActive, bool isFocused)
         {
             GUI.enabled = false;
 
-            var newRect = new Rect(rect);
-            EditorGUI.LabelField(newRect, NoteStorage.Instance.ItemByGuid(_target.fileGuids[index]).text);
+            var newRect = GetRealRect(rect);
+            var noteText = NoteStorage.Instance.ItemByGuid(_target.fileGuids[index]).text;
+            EditorGUI.LabelField(newRect, noteText);
 
             GUI.enabled = true;
         }
 
         void DrawBackground(Rect rect, int index, bool isActive, bool isFocused)
         {
-            
+//            var tex = 
             GUI.Box(GetRealRect(rect), string.Empty, "Box");
         }
 
@@ -57,7 +60,7 @@ namespace DeadMosquito.Stickies
             const float padding = 4;
             var realRect = new Rect(rect);
             realRect.x += padding;
-            realRect.height = EditorGUIUtility.singleLineHeight * 3 - padding * 2;
+            realRect.height = ListItemHeight - padding * 2;
             realRect.width -= padding * 2;
             return realRect;
         }
@@ -70,6 +73,11 @@ namespace DeadMosquito.Stickies
             EditorGUILayout.Space();
 
             _list.DoLayoutList();
+        }
+
+        NoteData GetNote(int index)
+        {
+            return null;
         }
     }
 }
