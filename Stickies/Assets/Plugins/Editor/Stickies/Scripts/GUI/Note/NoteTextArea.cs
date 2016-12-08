@@ -37,6 +37,7 @@ namespace DeadMosquito.Stickies
             _scroll = EditorGUILayout.BeginScrollView(_scroll);
             EditorGUI.BeginChangeCheck();
             Assets.Styles.TextArea.fontSize = StickiesEditorSettings.FontSize;
+            Assets.Styles.TextArea.richText = true;
             _text = EditorGUILayout.TextArea(_text, Assets.Styles.TextArea);
             if (EditorGUI.EndChangeCheck())
             {
