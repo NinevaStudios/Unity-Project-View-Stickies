@@ -60,6 +60,8 @@ namespace DeadMosquito.Stickies
 
         public override void OnInspectorGUI()
         {
+            serializedObject.Update();
+
             EditorGUILayout.HelpBox(
                 "This is file that stores all the stickies data! Do not remove this file or move it around!",
                 MessageType.Warning);
