@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _notes:
   - guid: 957fa864b465443e2be505153638a3ed
-    color: 2
+    color: 0
     text: "Thank you for using <b><size=14>Stickies!</size></b>\r\n\r\n<b>Please write
       a review on Asset Store if you enjoy the plugin!</b>\r\n\r\nHere are some tips
       to get started:\r\n- Go to Preferences -> Stickies to find more configuration
@@ -25,15 +25,3 @@ MonoBehaviour:
   - guid: 0d3a9edc7391d094e8b202e83e0ca212
     color: 4
     text: Backup this file when updating the package! All your notes are stored here!
-  - guid: 1085829a66802e241b6bbdbbc81c5331
-    color: 0
-    text: 
-  - guid: b95455ef7847b49e2b300f5e40f7aaa7
-    color: 0
-    text: aaa
-  - guid: 72c89840a588e41679ce0e22486d32be
-    color: 0
-    text: 
-  - guid: 7d53ce546f5f1f04ba495fa54b26ec31
-    color: 0
-    text: 
