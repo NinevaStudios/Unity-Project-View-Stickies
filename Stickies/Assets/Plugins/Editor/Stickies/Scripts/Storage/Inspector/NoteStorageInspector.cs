@@ -35,16 +35,29 @@ namespace DeadMosquito.Stickies
 
         void DrawCallback(Rect rect, int index, bool isActive, bool isFocused)
         {
+            if (index == -1)
+            {
+                return;
+            }
+            serializedObject.Update();
+
             var newRect = GetRealRect(rect);
             var headerLabelRect = new Rect(newRect.x, newRect.y, newRect.width, EditorGUIUtility.singleLineHeight);
-            var labelText = GetFileDescription(_target._notes[index].guid);
+            var guid = _target._notes[index].guid;
+            var labelText = GetFileDescription(guid);
 
             GUI.Label(headerLabelRect, labelText, EditorStyles.boldLabel);
         }
 
         void DrawBackgroundCallback(Rect rect, int index, bool isActive, bool isFocused)
         {
-            var c = Colors.ColorById(GetNote(index).color);
+            if (index == -1)
+            {
+                return;
+            }
+            serializedObject.Update();
+
+            var c = Colors.ColorById(_target._notes[index].color);
             DrawRectNote(GetRealRect(rect), c.main, Colors.Darken);
         }
 
@@ -68,12 +81,6 @@ namespace DeadMosquito.Stickies
             EditorGUILayout.Space();
 
             _list.DoLayoutList();
-        }
-
-        NoteData GetNote(int index)
-        {
-            var guid = _target._notes[index].guid;
-            return NoteStorage.Instance.ItemByGuid(guid);
         }
 
         static string GetFileDescription(string guid)
