@@ -68,6 +68,8 @@ public static class StickiesDevUtils
         serObj.Update();
         database._notes = new List<NoteData>();
         serObj.ApplyModifiedPropertiesWithoutUndo();
+
+        AssetDatabase.SaveAssets();
     }
 
     const string ReleaseNoteText =
