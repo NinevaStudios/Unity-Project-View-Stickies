@@ -71,18 +71,18 @@ public static class StickiesDevUtils
     }
 
     const string ReleaseNoteText =
-        @"Thank you for using Stickies!
+        @"Thank you for using <b><size=14>Stickies!</size></b>
 
-Please write a review on Asset Store if you enjoy the plugin!
+<b>Please write a review on Asset Store if you enjoy the plugin!</b>
 
 Here are some tips to get started:
 - Go to Preferences -> Stickies to find more configuration options like font size, offset in project view and more
-- When updating the package, do not delete Database.asset file in Stickies folder - this is where your notes live!
+<color=red>- When updating the package, do not delete Database.asset file in Stickies folder - this is where your notes live!</color>
 - To change note color just click '...' button in the note header
 
 Hope you will enjoy using Stickies!
 
-Support: For any questions or suggestions reach me out at leskiv.taras at gmail.com";
+<i>Support: For any questions or suggestions reach me out at leskiv.taras at gmail.com</i>";
 
     const string DatabaseNoteText = @"Backup this file when updating the package! All your notes are stored here!";
 
