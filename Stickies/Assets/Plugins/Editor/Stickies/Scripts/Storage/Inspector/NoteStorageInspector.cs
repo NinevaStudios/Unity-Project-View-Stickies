@@ -20,7 +20,7 @@ namespace DeadMosquito.Stickies
         {
             _target = (NoteStorage) target;
             _list = new ReorderableList(serializedObject,
-                serializedObject.FindProperty("fileGuids"),
+                serializedObject.FindProperty("_notes"),
                 true, true, true, true)
             {
                 displayAdd = false,
@@ -37,7 +37,7 @@ namespace DeadMosquito.Stickies
         {
             var newRect = GetRealRect(rect);
             var headerLabelRect = new Rect(newRect.x, newRect.y, newRect.width, EditorGUIUtility.singleLineHeight);
-            var labelText = GetFileDescription(_target.fileGuids[index]);
+            var labelText = GetFileDescription(_target._notes[index].guid);
 
             GUI.Label(headerLabelRect, labelText, EditorStyles.boldLabel);
         }
@@ -70,7 +70,8 @@ namespace DeadMosquito.Stickies
 
         NoteData GetNote(int index)
         {
-            return NoteStorage.Instance.ItemByGuid(_target.fileGuids[index]);
+            var guid = _target._notes[index].guid;
+            return NoteStorage.Instance.ItemByGuid(guid);
         }
 
         static string GetFileDescription(string guid)

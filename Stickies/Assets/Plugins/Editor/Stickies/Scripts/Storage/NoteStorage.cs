@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System.IO;
+using System.Linq;
 
 namespace DeadMosquito.Stickies
 {
@@ -11,9 +12,8 @@ namespace DeadMosquito.Stickies
     {
         static string _assetPath;
 
-        // Simulate a dictionary
-        public List<string> fileGuids;
-        public List<NoteData> notes;
+        [SerializeField]
+        public List<NoteData> _notes;
 
         static NoteStorage _instance;
 
@@ -49,22 +49,8 @@ namespace DeadMosquito.Stickies
 
         static NoteStorage LoadFromAsset()
         {
-            //
             _assetPath = Path.Combine(StickiesEditorSettings.StickiesHomeFolder, "Database.asset");
             return AssetDatabase.LoadAssetAtPath<NoteStorage>(_assetPath);
-        }
-
-        void Validate()
-        {
-            ValidateCount();
-        }
-
-        void ValidateCount()
-        {
-            if (fileGuids.Count != notes.Count)
-            {
-                Debug.LogError("Database is out of sync. Something wrong happened.");
-            }
         }
 
         #region API
@@ -75,24 +61,21 @@ namespace DeadMosquito.Stickies
                 Debug.LogError("GUID not saved: " + guid);
             }
 
-            int index = fileGuids.IndexOf(guid);
-            return notes[index];
+            return _notes.SingleOrDefault(note => note.guid == guid);
         }
 
 
-        public void AddOrUpdate(string guid, NoteData entry)
+        public void AddOrUpdate(NoteData entry)
         {
-            Validate();
-
             var serObj = AsSerializedObj;
 
-            if (HasItem(guid))
+            if (HasItem(entry.guid))
             {
-                UpdateNote(guid, entry);
+                UpdateNote(entry);
             }
             else
             {
-                AddNote(guid, entry);
+                AddNote(entry);
             }
 
             Persist(serObj);
@@ -100,13 +83,11 @@ namespace DeadMosquito.Stickies
 
         public bool HasItem(string guid)
         {
-            return fileGuids.Contains(guid);
+            return _notes.Any(note => note.guid == guid);
         }
 
         public void DeleteNote(string guid)
         {
-            Validate();
-
             if (!HasItem(guid))
             {
                 throw new InvalidOperationException("Cannot delete note as it does not exist with GUID: " + guid);
@@ -120,23 +101,21 @@ namespace DeadMosquito.Stickies
         }
         #endregion
 
-        void AddNote(string guid, NoteData entry)
+        void AddNote(NoteData entry)
         {
-            fileGuids.Add(guid);
-            notes.Add(entry);
+            _notes.Add(entry);
         }
 
-        void UpdateNote(string guid, NoteData entry)
+        void UpdateNote(NoteData entry)
         {
-            int index = fileGuids.IndexOf(guid);
-            notes[index] = entry;
+            var note = ItemByGuid(entry.guid);
+            int index = _notes.IndexOf(note);
+            _notes[index] = entry;
         }
 
         void DeleteNoteByGuid(string guid)
         {
-            int index = fileGuids.IndexOf(guid);
-            fileGuids.RemoveAt(index);
-            notes.RemoveAt(index);
+            _notes.RemoveAll(note => note.guid == guid);
         }
 
         static void Persist(SerializedObject serObj, bool withUndo = true)

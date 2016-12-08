@@ -54,7 +54,7 @@ public static class StickiesDevUtils
 
         var serObj = new SerializedObject(database);
         serObj.Update();
-        database.AddOrUpdate(Random.value.ToString(), new NoteData());
+        database.AddOrUpdate(new NoteData(Random.value.ToString()));
         serObj.ApplyModifiedPropertiesWithoutUndo();
     }
 
@@ -66,8 +66,7 @@ public static class StickiesDevUtils
 
         var serObj = new SerializedObject(database);
         serObj.Update();
-        database.fileGuids = new List<string>();
-        database.notes = new List<NoteData>();
+        database._notes = new List<NoteData>();
         serObj.ApplyModifiedPropertiesWithoutUndo();
     }
 
@@ -98,14 +97,20 @@ Support: For any questions or suggestions reach me out at leskiv.taras at gmail.
     static void AddTutorialNote()
     {
         var stickiesFolderGuid = AssetDatabase.AssetPathToGUID(StickiesEditorSettings.StickiesHomeFolder);
-        NoteStorage.Instance.AddOrUpdate(stickiesFolderGuid,
-            new NoteData {color = NoteColor.Lemon, text = ReleaseNoteText});
+        NoteStorage.Instance.AddOrUpdate(new NoteData(stickiesFolderGuid)
+        {
+            color = NoteColor.Lemon,
+            text = ReleaseNoteText
+        });
     }
 
     static void AddDatabaseWarningNote()
     {
         var dbFileGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(NoteStorage.Instance));
-        NoteStorage.Instance.AddOrUpdate(dbFileGuid,
-            new NoteData {color = NoteColor.Rose, text = DatabaseNoteText});
+        NoteStorage.Instance.AddOrUpdate(new NoteData(dbFileGuid)
+        {
+            color = NoteColor.Rose,
+            text = DatabaseNoteText
+        });
     }
 }

@@ -57,14 +57,14 @@ namespace DeadMosquito.Stickies
             }
             else
             {
-                _noteData = new NoteData();
+                _noteData = new NoteData(_guid);
             }
         }
 
         void LoadData()
         {
             var fromSaved = NoteStorage.Instance.ItemByGuid(_guid);
-            _noteData = new NoteData
+            _noteData = new NoteData(_guid)
             {
                 text = fromSaved.text,
                 color = fromSaved.color
@@ -120,7 +120,7 @@ namespace DeadMosquito.Stickies
             // Persist empty note if it doesn't exist
             if (!NoteStorage.Instance.HasItem(_guid))
             {
-                NoteStorage.Instance.AddOrUpdate(_guid, new NoteData());
+                NoteStorage.Instance.AddOrUpdate(_noteData);
             }
         }
 
@@ -134,7 +134,7 @@ namespace DeadMosquito.Stickies
 
         void Persist()
         {
-            NoteStorage.Instance.AddOrUpdate(_guid, new NoteData(_noteData));
+            NoteStorage.Instance.AddOrUpdate(_noteData);
         }
         #endregion
     }
