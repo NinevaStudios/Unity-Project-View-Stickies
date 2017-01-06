@@ -41,7 +41,6 @@ namespace DeadMosquito.Stickies
             var guid = _target._notes[index].guid;
 
             // TODO - Display more meaningful title
-            GUI.color = Color.black;
             var labelText = "Id: " + guid;
 
             GUI.Label(headerLabelRect, labelText, Assets.Styles.BlackBoldText);
