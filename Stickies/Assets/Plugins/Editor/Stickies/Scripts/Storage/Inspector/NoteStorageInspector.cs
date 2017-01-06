@@ -34,16 +34,17 @@ namespace DeadMosquito.Stickies
             {
                 return;
             }
-            serializedObject.Update();
+//            serializedObject.Update();
 
             var newRect = GetRealRect(rect);
             var headerLabelRect = new Rect(newRect.x, newRect.y, newRect.width, EditorGUIUtility.singleLineHeight);
             var guid = _target._notes[index].guid;
 
             // TODO - Display more meaningful title
+            GUI.color = Color.black;
             var labelText = "Id: " + guid;
 
-            GUI.Label(headerLabelRect, labelText, EditorStyles.boldLabel);
+            GUI.Label(headerLabelRect, labelText, Assets.Styles.BlackBoldText);
         }
 
         void DrawBackgroundCallback(Rect rect, int index, bool isActive, bool isFocused)
@@ -52,7 +53,7 @@ namespace DeadMosquito.Stickies
             {
                 return;
             }
-            serializedObject.Update();
+//            serializedObject.Update();
 
             var c = Colors.ColorById(_target._notes[index].color);
             DrawRectNote(GetRealRect(rect), c.main, Colors.Darken);

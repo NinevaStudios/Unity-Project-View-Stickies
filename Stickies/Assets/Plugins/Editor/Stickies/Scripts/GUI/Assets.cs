@@ -12,6 +12,7 @@ namespace DeadMosquito.Stickies
         {
             public static readonly GUIStyle TextArea;
             public static readonly GUIStyle PlusLabel;
+            public static readonly GUIStyle BlackBoldText;
 
             public static readonly GUISkin Skin;
 
@@ -33,6 +34,8 @@ namespace DeadMosquito.Stickies
                     stretchHeight = true,
                     stretchWidth = true
                 };
+                BlackBoldText = EditorStyles.boldLabel;
+                BlackBoldText.normal.textColor = Color.black;
 
                 var skinPath = Path.Combine(StickiesEditorSettings.StickiesHomeFolder, "Assets/ScrollGUISkin.asset");
                 Skin = AssetDatabase.LoadAssetAtPath<GUISkin>(skinPath);
