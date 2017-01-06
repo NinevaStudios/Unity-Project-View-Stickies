@@ -21,7 +21,7 @@ namespace DeadMosquito.Stickies
             _target = (NoteStorage) target;
             _list = new ReorderableList(serializedObject,
                 serializedObject.FindProperty("_notes"),
-                true, true, true, true);
+                true, true, false, false);
             _list.drawElementCallback += DrawCallback;
             _list.drawHeaderCallback += DrawListHeaderCallback;
             _list.drawElementBackgroundCallback += DrawBackgroundCallback;
