@@ -29,6 +29,11 @@ namespace DeadMosquito.Stickies
 
         static void AddRevealerIconHieararchy(int instanceID, Rect selectionRect)
         {
+            if (!StickiesEditorSettings.EnableHierarchyStickies)
+            {
+                return;
+            }
+
             var obj = EditorUtility.InstanceIDToObject(instanceID);
             if (obj == null)
             {
