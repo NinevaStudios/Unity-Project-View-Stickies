@@ -157,11 +157,12 @@ namespace DeadMosquito.Stickies
         }
         #endregion
 
-        public static Rect GetProjectViewIconRect(Rect rect)
+        public static Rect GetProjectViewIconRect(Rect rect, Stickies.ViewType viewType)
         {
             const float offset = 1f;
             float iconSize = EditorGUIUtility.singleLineHeight - 2 * offset;
-            var iconX = rect.x + rect.width - iconSize - StickiesEditorSettings.OffsetInProjectView;
+            var offsetSetting = viewType == Stickies.ViewType.Project ? StickiesEditorSettings.OffsetInProjectView : StickiesEditorSettings.OffsetInHierarchyView;
+            var iconX = rect.x + rect.width - iconSize - offsetSetting;
             var iconRect = new Rect(iconX - offset, rect.y + offset, iconSize, iconSize);
             return iconRect;
         }

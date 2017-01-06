@@ -16,11 +16,37 @@ namespace DeadMosquito.Stickies
 
         static Stickies()
         {
-            EditorApplication.projectWindowItemOnGUI += AddRevealerIcon;
+            EditorApplication.projectWindowItemOnGUI += AddRevealerIconToProjectView;
             EditorApplication.hierarchyWindowItemOnGUI += AddRevealerIconHieararchy;
         }
 
-        static void AddRevealerIcon(string guid, Rect rect)
+        static void AddRevealerIconToProjectView(string guid, Rect selectionRect)
+        {
+            AddRevealerIcon(guid, selectionRect, ViewType.Project);
+            EditorApplication.RepaintProjectWindow();
+        }
+
+
+        static void AddRevealerIconHieararchy(int instanceID, Rect selectionRect)
+        {
+            var obj = EditorUtility.InstanceIDToObject(instanceID);
+            if (obj == null)
+            {
+                return;
+            }
+
+            long id = ObjectTools.GetLocalIdentifierInFileForObject(obj);
+
+            if (id == 0)
+            {
+                return;
+            }
+
+            AddRevealerIcon(id.ToString(), selectionRect, ViewType.Hierarchy);
+            EditorApplication.RepaintHierarchyWindow();
+        }
+
+        static void AddRevealerIcon(string guid, Rect rect, ViewType viewType)
         {
             // Just return if couldn't load saved
             if (NoteStorage.Instance == null)
@@ -28,7 +54,7 @@ namespace DeadMosquito.Stickies
                 return;
             }
 
-            var iconRect = StickiesGUI.GetProjectViewIconRect(rect);
+            var iconRect = StickiesGUI.GetProjectViewIconRect(rect, viewType);
 
             var hasNoteAttached = NoteStorage.Instance.HasItem(guid);
             if (hasNoteAttached)
@@ -45,9 +71,6 @@ namespace DeadMosquito.Stickies
                 DrawAddNoteButton(iconRect, guid);
                 return;
             }
-
-            EditorApplication.RepaintProjectWindow();
-            EditorApplication.RepaintHierarchyWindow();
         }
 
         static void DrawNoteButton(Rect iconRect, string guid)
@@ -81,23 +104,6 @@ namespace DeadMosquito.Stickies
 
         #region hierarchy
 
-        static void AddRevealerIconHieararchy(int instanceID, Rect selectionRect)
-        {
-            var obj = EditorUtility.InstanceIDToObject(instanceID);
-            if (obj == null)
-            {
-                return;
-            }
-
-            long id = ObjectTools.GetLocalIdentifierInFileForObject(obj);
-
-            if (id == 0)
-            {
-                return;
-            }
-
-            AddRevealerIcon(id.ToString(), selectionRect);
-        }
 
         #endregion
     }
