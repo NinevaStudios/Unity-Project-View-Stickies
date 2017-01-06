@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace DeadMosquito.Stickies
 {
-    public class StickiesEditorSettings
+    public static class StickiesEditorSettings
     {
         public abstract class EditorPrefsItem<T>
         {

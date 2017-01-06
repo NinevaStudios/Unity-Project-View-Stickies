@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System.IO;
-using System.Linq;
+using DeadMosquito.Stickies.BitStrap;
 
 namespace DeadMosquito.Stickies
 {
@@ -16,6 +16,9 @@ namespace DeadMosquito.Stickies
         public List<NoteData> _notes;
 
         static NoteStorage _instance;
+
+        [NonSerialized]
+        static StickiesCache _cache;
 
         static SerializedObject AsSerializedObj
         {
@@ -34,13 +37,14 @@ namespace DeadMosquito.Stickies
                 if (_instance == null)
                 {
                     _instance = LoadFromAsset();
+                    _cache = new StickiesCache(_instance._notes);
                 }
 
                 if (_instance == null)
                 {
                     Debug.LogWarning(
                         string.Format("Notes database was not found at {0} or couldn't be created. " +
-                                      "Check Preferences -> Stickies folder path if it points to Stickies location in project...\nErrors ahead...", _assetPath));
+                            "Check Preferences -> Stickies folder path if it points to Stickies location in project...\nErrors ahead...", _assetPath));
                 }
 
                 return _instance;
@@ -54,16 +58,11 @@ namespace DeadMosquito.Stickies
         }
 
         #region API
+
         public NoteData ItemByGuid(string guid)
         {
-            if (!HasItem(guid))
-            {
-                Debug.LogError("GUID not saved: " + guid);
-            }
-
-            return _notes.SingleOrDefault(note => note.guid == guid);
+            return _cache.ContainsKey(guid) ? _cache[guid] : _notes.FirstOrDefault(note => note.guid == guid);
         }
-
 
         public void AddOrUpdate(NoteData entry)
         {
@@ -83,6 +82,8 @@ namespace DeadMosquito.Stickies
 
         public bool HasItem(string guid)
         {
+            return _cache.ContainsKey(guid);
+            
             return _notes.Any(note => note.guid == guid);
         }
 
@@ -99,22 +100,27 @@ namespace DeadMosquito.Stickies
 
             Persist(serObj, false);
         }
+
         #endregion
 
         void AddNote(NoteData entry)
         {
+            _cache.Add(entry.guid, entry);
             _notes.Add(entry);
         }
 
         void UpdateNote(NoteData entry)
         {
-            var note = ItemByGuid(entry.guid);
+            _cache.UpdateNote(entry);
+
+            var note = _notes.FirstOrDefault(x => x.guid == entry.guid);
             int index = _notes.IndexOf(note);
             _notes[index] = entry;
         }
 
         void DeleteNoteByGuid(string guid)
         {
+            _cache.Remove(guid);
             _notes.RemoveAll(note => note.guid == guid);
         }
 
