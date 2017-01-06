@@ -1,6 +1,7 @@
 ﻿#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
+using System.Reflection;
 
 namespace DeadMosquito.Stickies
 {
@@ -10,6 +11,7 @@ namespace DeadMosquito.Stickies
         static Stickies()
         {
             EditorApplication.projectWindowItemOnGUI += AddRevealerIcon;
+            EditorApplication.hierarchyWindowItemOnGUI += AddRevealerIconHieararchy;
         }
 
         static void AddRevealerIcon(string guid, Rect rect)
@@ -39,6 +41,7 @@ namespace DeadMosquito.Stickies
             }
 
             EditorApplication.RepaintProjectWindow();
+            EditorApplication.RepaintHierarchyWindow();
         }
 
         static void DrawNoteButton(Rect iconRect, string guid)
@@ -69,6 +72,43 @@ namespace DeadMosquito.Stickies
         {
             PopupWindow.Show(iconRect, new StickyNoteContent(guid));
         }
+
+        #region hierarchy
+
+        static void AddRevealerIconHieararchy(int instanceID, Rect selectionRect)
+        {
+            var guid = InstanceIdToGuid(instanceID);
+            if (string.IsNullOrEmpty(guid))
+            {
+                // Don't process not persisted objects
+                return;
+            }
+            Debug.Log(InstanceIdToGuid(instanceID));
+            AddRevealerIcon(guid, selectionRect);
+        }
+
+        static string InstanceIdToGuid(int instanceID)
+        {
+            var obj = EditorUtility.InstanceIDToObject(instanceID);
+            if (obj == null)
+            {
+                return null;
+            }
+
+            PropertyInfo inspectorModeInfo =
+                typeof(SerializedObject).GetProperty("inspectorMode", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            SerializedObject serializedObject = new SerializedObject(obj);
+            inspectorModeInfo.SetValue(serializedObject, InspectorMode.Debug, null);
+
+            SerializedProperty localIdProp =
+                serializedObject.FindProperty("m_LocalIdentfierInFile");   //note the misspelling!
+
+            int localId = localIdProp.intValue;
+            return localId == 0 ? null : localId.ToString();
+        }
+
+        #endregion
     }
 }
 #endif
