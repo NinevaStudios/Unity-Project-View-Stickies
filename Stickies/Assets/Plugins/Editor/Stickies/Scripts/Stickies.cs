@@ -1,18 +1,57 @@
 ﻿#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
+using System.Reflection;
 
 namespace DeadMosquito.Stickies
 {
     [InitializeOnLoad]
     public static class Stickies
     {
-        static Stickies()
+        public enum ViewType
         {
-            EditorApplication.projectWindowItemOnGUI += AddRevealerIcon;
+            Project,
+            Hierarchy
         }
 
-        static void AddRevealerIcon(string guid, Rect rect)
+        static Stickies()
+        {
+            EditorApplication.projectWindowItemOnGUI += AddRevealerIconToProjectView;
+            EditorApplication.hierarchyWindowItemOnGUI += AddRevealerIconHieararchy;
+        }
+
+        static void AddRevealerIconToProjectView(string guid, Rect selectionRect)
+        {
+            AddRevealerIcon(guid, selectionRect, ViewType.Project);
+            EditorApplication.RepaintProjectWindow();
+        }
+
+
+        static void AddRevealerIconHieararchy(int instanceID, Rect selectionRect)
+        {
+            if (!StickiesEditorSettings.EnableHierarchyStickies)
+            {
+                return;
+            }
+
+            var obj = EditorUtility.InstanceIDToObject(instanceID);
+            if (obj == null)
+            {
+                return;
+            }
+
+            long id = ObjectTools.GetLocalIdentifierInFileForObject(obj);
+
+            if (id == 0)
+            {
+                return;
+            }
+
+            AddRevealerIcon(id.ToString(), selectionRect, ViewType.Hierarchy);
+            EditorApplication.RepaintHierarchyWindow();
+        }
+
+        static void AddRevealerIcon(string guid, Rect rect, ViewType viewType)
         {
             // Just return if couldn't load saved
             if (NoteStorage.Instance == null)
@@ -20,7 +59,7 @@ namespace DeadMosquito.Stickies
                 return;
             }
 
-            var iconRect = StickiesGUI.GetProjectViewIconRect(rect);
+            var iconRect = StickiesGUI.GetProjectViewIconRect(rect, viewType);
 
             var hasNoteAttached = NoteStorage.Instance.HasItem(guid);
             if (hasNoteAttached)
@@ -37,8 +76,6 @@ namespace DeadMosquito.Stickies
                 DrawAddNoteButton(iconRect, guid);
                 return;
             }
-
-            EditorApplication.RepaintProjectWindow();
         }
 
         static void DrawNoteButton(Rect iconRect, string guid)
@@ -69,6 +106,11 @@ namespace DeadMosquito.Stickies
         {
             PopupWindow.Show(iconRect, new StickyNoteContent(guid));
         }
+
+        #region hierarchy
+
+
+        #endregion
     }
 }
 #endif

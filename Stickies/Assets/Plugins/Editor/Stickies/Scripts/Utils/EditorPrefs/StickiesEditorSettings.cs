@@ -169,6 +169,18 @@ namespace DeadMosquito.Stickies
             ConfirmDeleting.Draw();
             OffsetInProjectView.Draw();
             FontSize.Draw();
+
+            // hierarchy
+            GUILayout.Space(15f);
+            EditorGUILayout.LabelField("Experimental", EditorStyles.boldLabel);
+            EditorGUILayout.HelpBox(
+                "This feature is experimental, relies on reflection and therefore might slow down editor performance.",
+                MessageType.Warning);
+            EnableHierarchyStickies.Draw();
+            GUI.enabled = EnableHierarchyStickies;
+            OffsetInHierarchyView.Draw();
+            GUI.enabled = true;
+
             GUILayout.FlexibleSpace();
             EditorGUILayout.LabelField("Version 1.0", EditorStyles.centeredGreyMiniLabel);
         }
@@ -197,6 +209,15 @@ namespace DeadMosquito.Stickies
         public static EditorPrefsIntSlider FontSize =
             new EditorPrefsIntSlider("DeadMosquito.Stickies.FontSize." + ProjectName,
                 "Note Font Size", 10, 8, 32);
+
+        #region hierarchy
+        public static EditorPrefsBool EnableHierarchyStickies =
+            new EditorPrefsBool("DeadMosquito.Stickies.EnableHierarchyStickies." + ProjectName, "Enable Stickies for Hierarchy", false);
+
+        public static EditorPrefsIntSlider OffsetInHierarchyView =
+            new EditorPrefsIntSlider("DeadMosquito.Stickies.OffsetInHierarchyView." + ProjectName,
+                "Offset in Hierarchy View", 0, 0, 100);
+        #endregion
     }
 }
 
