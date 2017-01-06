@@ -168,6 +168,7 @@ namespace DeadMosquito.Stickies
             EditorGUILayout.Space();
             ConfirmDeleting.Draw();
             OffsetInProjectView.Draw();
+            OffsetInHierarchyView.Draw();
             FontSize.Draw();
             GUILayout.FlexibleSpace();
             EditorGUILayout.LabelField("Version 1.0", EditorStyles.centeredGreyMiniLabel);
@@ -192,6 +193,10 @@ namespace DeadMosquito.Stickies
 
         public static EditorPrefsIntSlider OffsetInProjectView =
             new EditorPrefsIntSlider("DeadMosquito.Stickies.OffsetInProjectView." + ProjectName,
+                "Offset in Project View", 0, 0, 100);
+
+        public static EditorPrefsIntSlider OffsetInHierarchyView =
+            new EditorPrefsIntSlider("DeadMosquito.Stickies.OffsetInHierarchyView." + ProjectName,
                 "Offset in Project View", 0, 0, 100);
 
         public static EditorPrefsIntSlider FontSize =

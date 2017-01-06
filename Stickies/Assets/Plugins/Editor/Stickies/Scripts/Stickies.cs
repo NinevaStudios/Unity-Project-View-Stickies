@@ -8,6 +8,12 @@ namespace DeadMosquito.Stickies
     [InitializeOnLoad]
     public static class Stickies
     {
+        public enum ViewType
+        {
+            Project,
+            Hierarchy
+        }
+
         static Stickies()
         {
             EditorApplication.projectWindowItemOnGUI += AddRevealerIcon;
@@ -77,34 +83,20 @@ namespace DeadMosquito.Stickies
 
         static void AddRevealerIconHieararchy(int instanceID, Rect selectionRect)
         {
-            var guid = InstanceIdToGuid(instanceID);
-            if (string.IsNullOrEmpty(guid))
-            {
-                // Don't process not persisted objects
-                return;
-            }
-            AddRevealerIcon(guid, selectionRect);
-        }
-
-        static string InstanceIdToGuid(int instanceID)
-        {
             var obj = EditorUtility.InstanceIDToObject(instanceID);
             if (obj == null)
             {
-                return null;
+                return;
             }
 
-            PropertyInfo inspectorModeInfo =
-                typeof(SerializedObject).GetProperty("inspectorMode", BindingFlags.NonPublic | BindingFlags.Instance);
+            long id = ObjectTools.GetLocalIdentifierInFileForObject(obj);
 
-            SerializedObject serializedObject = new SerializedObject(obj);
-            inspectorModeInfo.SetValue(serializedObject, InspectorMode.Debug, null);
+            if (id == 0)
+            {
+                return;
+            }
 
-            SerializedProperty localIdProp =
-                serializedObject.FindProperty("m_LocalIdentfierInFile");   //note the misspelling!
-
-            int localId = localIdProp.intValue;
-            return localId == 0 ? null : localId.ToString();
+            AddRevealerIcon(id.ToString(), selectionRect);
         }
 
         #endregion
