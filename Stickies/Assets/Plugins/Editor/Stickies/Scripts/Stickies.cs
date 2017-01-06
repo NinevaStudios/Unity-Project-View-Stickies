@@ -83,7 +83,6 @@ namespace DeadMosquito.Stickies
                 // Don't process not persisted objects
                 return;
             }
-            Debug.Log(InstanceIdToGuid(instanceID));
             AddRevealerIcon(guid, selectionRect);
         }
 
