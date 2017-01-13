@@ -21,12 +21,7 @@ namespace DeadMosquito.Stickies
             _target = (NoteStorage) target;
             _list = new ReorderableList(serializedObject,
                 serializedObject.FindProperty("_notes"),
-                true, true, true, true)
-            {
-                displayAdd = false,
-                displayRemove = false,
-                draggable = false
-            };
+                true, true, false, false);
             _list.drawElementCallback += DrawCallback;
             _list.drawHeaderCallback += DrawListHeaderCallback;
             _list.drawElementBackgroundCallback += DrawBackgroundCallback;
@@ -39,14 +34,16 @@ namespace DeadMosquito.Stickies
             {
                 return;
             }
-            serializedObject.Update();
+//            serializedObject.Update();
 
             var newRect = GetRealRect(rect);
             var headerLabelRect = new Rect(newRect.x, newRect.y, newRect.width, EditorGUIUtility.singleLineHeight);
             var guid = _target._notes[index].guid;
-            var labelText = GetFileDescription(guid);
 
-            GUI.Label(headerLabelRect, labelText, EditorStyles.boldLabel);
+            // TODO - Display more meaningful title
+            var labelText = "Id: " + guid;
+
+            GUI.Label(headerLabelRect, labelText, Assets.Styles.BlackBoldText);
         }
 
         void DrawBackgroundCallback(Rect rect, int index, bool isActive, bool isFocused)
@@ -55,7 +52,7 @@ namespace DeadMosquito.Stickies
             {
                 return;
             }
-            serializedObject.Update();
+//            serializedObject.Update();
 
             var c = Colors.ColorById(_target._notes[index].color);
             DrawRectNote(GetRealRect(rect), c.main, Colors.Darken);
@@ -63,7 +60,7 @@ namespace DeadMosquito.Stickies
 
         static void DrawRectNote(Rect rect, Color main, Color header)
         {
-            Handles.DrawSolidRectangleWithOutline(rect, main, Color.gray);
+            Handles.DrawSolidRectangleWithOutline(rect, main, header);
         }
 
         void DrawListHeaderCallback(Rect rect)

@@ -2,6 +2,7 @@
 using DeadMosquito.Stickies;
 using UnityEditor;
 using UnityEngine;
+using System.IO;
 
 public static class StickiesDevUtils
 {
@@ -34,7 +35,7 @@ public static class StickiesDevUtils
 
         style.scrollView = new GUIStyle("scrollView");
 
-        style.customStyles = new[] {new GUIStyle("grey_border")};
+        style.customStyles = new[] { new GUIStyle("grey_border") };
 
         AssetDatabase.CreateAsset(style, "Assets/Develop/UnityGuiSkinCopy.asset");
         AssetDatabase.SaveAssets();
@@ -100,19 +101,44 @@ Hope you will enjoy using Stickies!
     {
         var stickiesFolderGuid = AssetDatabase.AssetPathToGUID(StickiesEditorSettings.StickiesHomeFolder);
         NoteStorage.Instance.AddOrUpdate(new NoteData(stickiesFolderGuid)
-        {
-            color = NoteColor.Lemon,
-            text = ReleaseNoteText
-        });
+            {
+                color = NoteColor.Lemon,
+                text = ReleaseNoteText
+            });
     }
 
     static void AddDatabaseWarningNote()
     {
         var dbFileGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(NoteStorage.Instance));
         NoteStorage.Instance.AddOrUpdate(new NoteData(dbFileGuid)
+            {
+                color = NoteColor.Rose,
+                text = DatabaseNoteText
+            });
+    }
+
+    [MenuItem("Stickies/Create Trash For Performance")]
+    static void CreateTrashForPerformance()
+    {
+        var files = new List<string>();
+
+        for (int i = 0; i <= 100; i++)
         {
-            color = NoteColor.Rose,
-            text = DatabaseNoteText
-        });
+            var fileName = "Assets/X/file" + i + ".txt";
+            System.IO.File.WriteAllText(fileName, "text" + i);
+            files.Add(fileName);
+        }
+        EditorApplication.SaveAssets();
+        AssetDatabase.Refresh();
+
+        foreach (var fname in files)
+        {
+            var guid = AssetDatabase.AssetPathToGUID(fname);
+            NoteStorage.Instance.AddOrUpdate(new NoteData(guid)
+                {
+                    color = NoteColor.Rose,
+                    text = "XXX"
+                });
+        }
     }
 }
