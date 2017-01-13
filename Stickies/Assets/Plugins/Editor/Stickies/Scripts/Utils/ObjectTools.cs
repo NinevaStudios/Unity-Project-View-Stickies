@@ -39,7 +39,10 @@ namespace DeadMosquito.Stickies
                 if (prefabType != PrefabType.None)
                 {
                     // Only show at top object
-                    if ((unityObject as GameObject).transform.parent == null)
+                    var go = unityObject as GameObject;
+                    var goParent = go.transform.parent;
+
+                    if (goParent == null || PrefabUtility.FindPrefabRoot(go) == go)
                     {
                         id = GetLocalIdentifierInFileForObject(PrefabUtility.GetPrefabObject(unityObject));
                     }
