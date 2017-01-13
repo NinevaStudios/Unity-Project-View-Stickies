@@ -59,6 +59,11 @@ namespace DeadMosquito.Stickies
 
         #region API
 
+        public bool HasItem(string guid)
+        {
+            return _cache.ContainsKey(guid);
+        }
+
         public NoteData ItemByGuid(string guid)
         {
             return _cache.ContainsKey(guid) ? _cache[guid] : _notes.FirstOrDefault(note => note.guid == guid);
@@ -78,13 +83,6 @@ namespace DeadMosquito.Stickies
             }
 
             Persist(serObj);
-        }
-
-        public bool HasItem(string guid)
-        {
-            return _cache.ContainsKey(guid);
-            
-            return _notes.Any(note => note.guid == guid);
         }
 
         public void DeleteNote(string guid)
