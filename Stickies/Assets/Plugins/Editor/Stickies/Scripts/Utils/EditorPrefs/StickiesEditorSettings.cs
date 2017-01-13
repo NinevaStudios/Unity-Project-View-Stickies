@@ -212,7 +212,7 @@ namespace DeadMosquito.Stickies
 
         #region hierarchy
         public static EditorPrefsBool EnableHierarchyStickies =
-            new EditorPrefsBool("DeadMosquito.Stickies.EnableHierarchyStickies." + ProjectName, "Enable Stickies for Hierarchy", false);
+            new EditorPrefsBool("DeadMosquito.Stickies.EnableHierarchyStickies." + ProjectName, "Enable Stickies for Hierarchy", true);
 
         public static EditorPrefsIntSlider OffsetInHierarchyView =
             new EditorPrefsIntSlider("DeadMosquito.Stickies.OffsetInHierarchyView." + ProjectName,
