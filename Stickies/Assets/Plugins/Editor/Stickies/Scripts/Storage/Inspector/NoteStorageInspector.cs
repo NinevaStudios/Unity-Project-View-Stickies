@@ -60,7 +60,7 @@ namespace DeadMosquito.Stickies
 
         static void DrawRectNote(Rect rect, Color main, Color header)
         {
-            Handles.DrawSolidRectangleWithOutline(rect, main, header);
+            StickiesGUI.DrawSolidRectangleWithOutline(rect, main, header);
         }
 
         void DrawListHeaderCallback(Rect rect)

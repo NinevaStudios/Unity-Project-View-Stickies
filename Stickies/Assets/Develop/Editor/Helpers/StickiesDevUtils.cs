@@ -56,7 +56,7 @@ public static class StickiesDevUtils
         var serObj = new SerializedObject(database);
         serObj.Update();
         database.AddOrUpdate(new NoteData(Random.value.ToString()));
-        serObj.ApplyModifiedPropertiesWithoutUndo();
+        serObj.ApplyModifiedProperties();
     }
 
     [MenuItem("Stickies/Clean Database")]
@@ -68,7 +68,7 @@ public static class StickiesDevUtils
         var serObj = new SerializedObject(database);
         serObj.Update();
         database._notes = new List<NoteData>();
-        serObj.ApplyModifiedPropertiesWithoutUndo();
+        serObj.ApplyModifiedProperties();
 
         AssetDatabase.SaveAssets();
     }
