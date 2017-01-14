@@ -182,7 +182,7 @@ namespace DeadMosquito.Stickies
             GUI.enabled = true;
 
             GUILayout.FlexibleSpace();
-            EditorGUILayout.LabelField("Version 1.0", EditorStyles.centeredGreyMiniLabel);
+            EditorGUILayout.LabelField("Version 1.1.1", EditorStyles.centeredGreyMiniLabel);
         }
 
         static string ProjectName
