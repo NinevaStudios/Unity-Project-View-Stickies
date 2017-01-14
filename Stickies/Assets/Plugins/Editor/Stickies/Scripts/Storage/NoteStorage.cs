@@ -12,13 +12,11 @@ namespace DeadMosquito.Stickies
     {
         static string _assetPath;
 
-        [SerializeField]
-        public List<NoteData> _notes;
+        [SerializeField] public List<NoteData> _notes;
 
         static NoteStorage _instance;
 
-        [NonSerialized]
-        static StickiesCache _cache;
+        [NonSerialized] static StickiesCache _cache;
 
         static SerializedObject AsSerializedObj
         {
@@ -44,7 +42,8 @@ namespace DeadMosquito.Stickies
                 {
                     Debug.LogWarning(
                         string.Format("Notes database was not found at {0} or couldn't be created. " +
-                            "Check Preferences -> Stickies folder path if it points to Stickies location in project...\nErrors ahead...", _assetPath));
+                                      "Check Preferences -> Stickies folder path if it points to Stickies location in project...\nErrors ahead...",
+                            _assetPath));
                 }
 
                 return _instance;
@@ -96,7 +95,7 @@ namespace DeadMosquito.Stickies
 
             DeleteNoteByGuid(guid);
 
-            Persist(serObj, false);
+            Persist(serObj);
         }
 
         #endregion
@@ -122,16 +121,9 @@ namespace DeadMosquito.Stickies
             _notes.RemoveAll(note => note.guid == guid);
         }
 
-        static void Persist(SerializedObject serObj, bool withUndo = true)
+        static void Persist(SerializedObject serObj)
         {
-            if (withUndo)
-            {
-                serObj.ApplyModifiedProperties();
-            }
-            else
-            {
-                serObj.ApplyModifiedPropertiesWithoutUndo();
-            }
+            serObj.ApplyModifiedProperties();
             EditorUtility.SetDirty(Instance);
             AssetDatabase.SaveAssets();
         }
