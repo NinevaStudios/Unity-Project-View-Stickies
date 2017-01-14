@@ -14,7 +14,7 @@ namespace DeadMosquito.Stickies
 
         public static void ColorRect(Rect rect, Color color, Color outline)
         {
-            Handles.DrawSolidRectangleWithOutline(rect, color, outline);
+            DrawSolidRectangleWithOutline(rect, color, outline);
         }
 
         public static bool ColorButton(Rect rect, Color fill, Color outline, float outlineSize = 2f)
@@ -165,6 +165,17 @@ namespace DeadMosquito.Stickies
             var iconX = rect.x + rect.width - iconSize - offsetSetting;
             var iconRect = new Rect(iconX - offset, rect.y + offset, iconSize, iconSize);
             return iconRect;
+        }
+
+        public static void DrawSolidRectangleWithOutline(Rect rectangle, Color faceColor, Color outlineColor)
+        {
+            Handles.DrawSolidRectangleWithOutline(new Vector3[4]
+            {
+                new Vector3(rectangle.xMin, rectangle.yMin, 0.0f),
+                new Vector3(rectangle.xMax, rectangle.yMin, 0.0f),
+                new Vector3(rectangle.xMax, rectangle.yMax, 0.0f),
+                new Vector3(rectangle.xMin, rectangle.yMax, 0.0f)
+            }, faceColor, outlineColor);
         }
     }
 }
