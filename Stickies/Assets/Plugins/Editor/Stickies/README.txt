@@ -1,3 +1,7 @@
+Support: leskiv.taras@gmail.com
+
+---
+
 **CHANGELOG**
 
 v1.1.2
