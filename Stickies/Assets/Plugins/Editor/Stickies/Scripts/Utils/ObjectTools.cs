@@ -9,7 +9,7 @@ namespace DeadMosquito.Stickies
     {
         private static PropertyInfo cachedInspectorModeInfo;
 
-        private static Dictionary<int, long> _cache = new Dictionary<int, long>();
+        private static readonly Dictionary<int, long> _cache = new Dictionary<int, long>();
 
         public static long GetIdForHierarchyObject(int instanceId)
         {
