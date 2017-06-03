@@ -1,19 +1,22 @@
-﻿#define UNITY_5_PLUS
-#if UNITY_4_5 || UNITY_4_6 || UNITY_4_7 || UNITY_4_8 || UNITY_4_9
-#undef UNITY_5_PLUS
-#endif
-
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Reflection;
 using UnityEditor;
 
 namespace DeadMosquito.Stickies
 {
-    static class ObjectTools
+    static class HierarchyObjectIdTools
     {
         private static PropertyInfo cachedInspectorModeInfo;
 
-        internal static long GetLocalIdentifierInFileForObject(Object unityObject)
+        private static readonly Dictionary<int, long> _cache = new Dictionary<int, long>();
+
+        public static long GetIdForHierarchyObject(int instanceId)
+        {
+            return _cache.ContainsKey(instanceId) ? _cache[instanceId] : 0;
+        }
+
+        static long GetLocalIdentifierInFileForObject(Object unityObject)
         {
             long id = 0;
 
@@ -28,11 +31,7 @@ namespace DeadMosquito.Stickies
             SerializedObject serializedObject = new SerializedObject(unityObject);
             cachedInspectorModeInfo.SetValue(serializedObject, InspectorMode.Debug, null);
             SerializedProperty serializedProperty = serializedObject.FindProperty("m_LocalIdentfierInFile");
-            #if UNITY_5_PLUS
             id = serializedProperty.longValue;
-            #else
-            id = serializedProperty.intValue;
-            #endif
             if (id <= 0)
             {
                 PrefabType prefabType = PrefabUtility.GetPrefabType(unityObject);
@@ -50,6 +49,46 @@ namespace DeadMosquito.Stickies
             }
 
             return id;
+        }
+
+        public static void Refresh()
+        {
+            FlushCache();
+            foreach (GameObject obj in Object.FindObjectsOfType(typeof(GameObject)))
+            {
+                if (obj.transform.parent == null)
+                {
+                    Traverse(obj);
+                }
+            }
+        }
+
+        static void Traverse(GameObject obj)
+        {
+            CacheObject(obj);
+
+            foreach (Transform child in obj.transform)
+            {
+                Traverse(child.gameObject);
+            }
+        }
+
+        static void CacheObject(GameObject obj)
+        {
+            var instanceId = obj.GetInstanceID();
+            var localHierarchyId = GetLocalIdentifierInFileForObject(obj);
+            if (localHierarchyId != 0)
+            {
+                _cache[instanceId] = localHierarchyId;
+            }
+        }
+
+        public static void FlushCache()
+        {
+            if (_cache != null)
+            {
+                _cache.Clear();
+            }
         }
     }
 }

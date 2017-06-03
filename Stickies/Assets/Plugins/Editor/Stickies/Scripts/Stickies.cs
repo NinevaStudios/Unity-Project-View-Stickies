@@ -17,6 +17,8 @@ namespace DeadMosquito.Stickies
         {
             EditorApplication.projectWindowItemOnGUI += AddRevealerIconToProjectView;
             EditorApplication.hierarchyWindowItemOnGUI += AddRevealerIconHieararchy;
+            EditorApplication.hierarchyWindowChanged += RefreshHierarchy;
+            RefreshHierarchy();
         }
 
         static void AddRevealerIconToProjectView(string guid, Rect selectionRect)
@@ -24,7 +26,6 @@ namespace DeadMosquito.Stickies
             AddRevealerIcon(guid, selectionRect, ViewType.Project);
             EditorApplication.RepaintProjectWindow();
         }
-
 
         static void AddRevealerIconHieararchy(int instanceID, Rect selectionRect)
         {
@@ -39,15 +40,15 @@ namespace DeadMosquito.Stickies
                 return;
             }
 
-            long id = ObjectTools.GetLocalIdentifierInFileForObject(obj);
-
+            long id = HierarchyObjectIdTools.GetIdForHierarchyObject(instanceID);
             if (id == 0)
             {
                 return;
             }
 
             AddRevealerIcon(id.ToString(), selectionRect, ViewType.Hierarchy);
-            EditorApplication.RepaintHierarchyWindow();
+
+            // EditorApplication.RepaintHierarchyWindow();
         }
 
         static void AddRevealerIcon(string guid, Rect rect, ViewType viewType)
@@ -107,6 +108,16 @@ namespace DeadMosquito.Stickies
         }
 
         #region hierarchy
+
+        static void RefreshHierarchy()
+        {
+            if (!StickiesEditorSettings.EnableHierarchyStickies)
+            {
+                return;
+            }
+
+            HierarchyObjectIdTools.Refresh();
+        }
 
 
         #endregion
