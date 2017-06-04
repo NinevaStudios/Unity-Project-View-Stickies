@@ -117,15 +117,20 @@ Hope you will enjoy using Stickies!
             });
     }
 
-    [MenuItem("Stickies/Create Trash For Performance")]
+    [MenuItem("Stickies/Create Trash For Performance (Project View)")]
     static void CreateTrashForPerformance()
     {
         var files = new List<string>();
 
+        if (!AssetDatabase.IsValidFolder("Assets/X"))
+        {
+            AssetDatabase.CreateFolder("Assets", "X");
+        }
+
         for (int i = 0; i <= 100; i++)
         {
             var fileName = "Assets/X/file" + i + ".txt";
-            System.IO.File.WriteAllText(fileName, "text" + i);
+            File.WriteAllText(fileName, "text" + i);
             files.Add(fileName);
         }
         EditorApplication.SaveAssets();
@@ -135,6 +140,22 @@ Hope you will enjoy using Stickies!
         {
             var guid = AssetDatabase.AssetPathToGUID(fname);
             NoteStorage.Instance.AddOrUpdate(new NoteData(guid)
+                {
+                    color = NoteColor.Rose,
+                    text = "XXX"
+                });
+        }
+    }
+
+    [MenuItem("Stickies/Create Trash For Performance (Hierarchy View)")]
+    static void CreateTrashForPerformanceHierarchy()
+    {
+        for (int i = 0; i <= 100; i++)
+        {
+            var go = new GameObject();
+            go.name = "GameObject " + i;
+            EditorApplication.SaveScene();
+            NoteStorage.Instance.AddOrUpdate(new NoteData(go.GetInstanceID().ToString())
                 {
                     color = NoteColor.Rose,
                     text = "XXX"
